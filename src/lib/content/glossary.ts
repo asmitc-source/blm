@@ -1,5 +1,5 @@
 export const GLOSSARY = [
-  { term: "Business listing management", def: "The practice of creating, verifying, and continuously updating a company’s name, address, phone, hours, categories, and attributes across search, maps, and directories so every location stays accurate." },
+  { term: "Business listing management", def: "The ongoing process of creating, verifying, and synchronizing a company’s name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate." },
   { term: "NAP", def: "Name, Address, Phone: the core identity of a location. Inconsistent NAP is the most common reason aggregators fork a second listing." },
   { term: "Citation", def: "A mention of a business’s NAP on another site, whether a map publisher, directory, or unstructured page." },
   { term: "Google Business Profile (GBP)", def: "Google’s listing product for maps and search. Necessary for local visibility, not sufficient on its own." },

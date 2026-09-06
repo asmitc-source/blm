@@ -14,13 +14,13 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "what-is-business-listing-management",
     title: "What is business listing management?",
     description:
-      "Business listing management defined for US teams: create, verify, and continuously update name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate on Google, Apple, Bing, and the directory network.",
+      "Business listing management defined for US teams: the ongoing process of creating, verifying, and synchronizing name, address, phone (NAP), hours, and categories across search, maps, and directories so every location stays accurate on Google, Apple, Bing, and the directory network.",
     date: "2026-03-12",
     author: "Asmit Choudhary",
     minutes: 9,
     tags: ["Fundamentals"],
     excerpt:
-      "Business listing management is the practice of creating, verifying, and continuously updating a company's name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.",
+      "Business listing management is the ongoing process of creating, verifying, and synchronizing a company's name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.",
   },
   {
     slug: "business-listing-management-cost-2026",

@@ -34,7 +34,7 @@ export function shareMeta(opts: { title: string; description: string; path?: str
     { property: "og:image", content: image },
     { property: "og:image:width", content: OG_IMAGE_WIDTH },
     { property: "og:image:height", content: OG_IMAGE_HEIGHT },
-    { property: "og:image:alt", content: `${SITE.name} — ${SITE.tagline}` },
+    { property: "og:image:alt", content: `${SITE.name}: ${SITE.tagline}` },
     { property: "og:url", content: url },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
@@ -143,5 +143,20 @@ export function breadcrumbJsonLd(items: ReadonlyArray<{ name: string; path: stri
       name: item.name,
       item: `${SITE.domain}${item.path}`,
     })),
+  };
+}
+
+export function definedTermJsonLd(opts: {
+  name: string;
+  description: string;
+  url: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+    inDefinedTermSet: `${SITE.domain}/glossary`,
   };
 }

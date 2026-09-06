@@ -7,7 +7,12 @@ import { loadPublicSite } from "@/lib/cms/public";
 
 export const Route = createFileRoute("/")({
   loader: () => loadPublicSite(),
-  head: () => pageHead({ title: SITE.name, description: SITE.description, path: "/" }),
+  head: () =>
+    pageHead({
+      title: "Business Listing Management",
+      description: SITE.description,
+      path: "/",
+    }),
   component: Home,
 });
 

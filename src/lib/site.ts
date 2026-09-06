@@ -140,7 +140,7 @@ export const AUDIENCES = [
     id: "multi",
     label: "Multi-location brands",
     tile: "a",
-    copy: "Retail, clinics, hospitality, and services with 5–5,000 locations that cannot live in a spreadsheet.",
+    copy: "Retail, clinics, hospitality, and services with 5 to 5,000 locations that cannot live in a spreadsheet.",
   },
   {
     id: "franchise",
@@ -274,7 +274,7 @@ export const WHY = [
 export const FAQ = [
   {
     q: "What is business listing management?",
-    a: "Business listing management is the practice of creating, verifying, and continuously updating a company’s name, address, phone, hours, categories, and attributes across search, maps, and directories so every location stays accurate. BLM does that from one workspace.",
+    a: "Business listing management is the ongoing process of creating, verifying, and synchronizing a company’s name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate. BLM does that from one workspace.",
   },
   {
     q: "What is BLM?",

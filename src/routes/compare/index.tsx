@@ -14,9 +14,9 @@ export const Route = createFileRoute("/compare/")({
   loader: () => loadPublicSite(),
   head: () =>
     pageHead({
-      title: "Compare listing software",
+      title: "Compare business listing management software",
       description:
-        "Compare BLM with Yext, BrightLocal, Moz Local, Uberall, and Birdeye by job, with equal-weakness notes and dated vendor sources. Independent guides for US teams choosing business listing management software.",
+        "Compare business listing management software: BLM vs Yext, BrightLocal, Moz Local, Uberall, and Birdeye by job, with equal-weakness notes and dated vendor sources. Independent guides for US teams.",
       path: "/compare",
     }),
   component: CompareHub,
@@ -102,8 +102,31 @@ function CompareHub() {
         compact
         eyebrow="Compare"
         title="Listing platforms, compared by job, not a logo wall."
-        lede="Click a job. See what Yext, BrightLocal, and BLM each do well, and where each is weaker. Deep guides also cover Moz Local, Uberall, and Birdeye. This is an independent US buying desk, not a scored win-rate chart."
+        lede="Business listing management software should be judged by jobs: NAP health, duplicates, coverage, and how you try it. Click a row. See what Yext, BrightLocal, and BLM each do well, and where each is weaker. Deep guides also cover Moz Local, Uberall, and Birdeye. Independent US buying desk, not a scored win-rate chart."
       >
+        <p className="mb-6 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          New to the category? Read{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>
+          , then check{" "}
+          <Link to="/pricing" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM pricing
+          </Link>{" "}
+          and the{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "best-business-listing-management-software-2026" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            best business listing management software
+          </Link>{" "}
+          guide before you shortlist.
+        </p>
         <div className="overflow-x-auto rounded-3xl hairline">
           <table className="w-full min-w-[40rem] text-left text-sm">
             <thead className="bg-sand">

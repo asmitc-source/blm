@@ -15,9 +15,9 @@ export const Route = createFileRoute("/pricing")({
   loader: () => loadPublicSite(),
   head: () =>
     pageHead({
-      title: "Pricing",
+      title: "Business listing management pricing",
       description:
-        "BLM pricing: Starter listed at $49/month, Growth at $149/month, Enterprise custom. Billing is not live yet — no card required to create a workspace.",
+        "Business listing management cost for BLM: Starter listed at $49/month, Growth at $149/month, Enterprise custom. Billing is not live yet. No card required to create a workspace.",
       path: "/pricing",
     }),
   component: PricingPage,

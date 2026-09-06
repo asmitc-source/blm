@@ -1,5 +1,7 @@
 const markdown = `In 2026, business listing management cost is software plus labor: Starter at $49/month for one location after a 7-day trial, Growth at $149/month for up to 25 locations, Enterprise custom, plus the hidden cost of NAP drift when nobody watches Apple, Bing, and the directory network.
 
+Listed rates also live on the [pricing](/pricing) page. For the category definition, see [what is business listing management?](/blog/what-is-business-listing-management). For vendor jobs, use [compare listing software](/compare).
+
 US operators still under-budget the second half of that sentence. Public SaaS for a focused listing desk is knowable. DIY hours, agency retainers, and missed visits from wrong phones are the lines that surprise finance. This breakdown is a planning model, not a rate card and not a promise that every market prices the same.
 
 If you are still deciding whether to buy software, hire an agency, or stay on a spreadsheet, pair this article with [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and the category definition in [what is business listing management?](/blog/what-is-business-listing-management).

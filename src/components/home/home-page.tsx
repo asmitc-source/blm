@@ -17,8 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
 import { BLOG_POSTS } from "@/lib/content/blog";
-import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, WHY } from "@/lib/site";
-import { faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
+import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, SITE, WHY } from "@/lib/site";
+import { definedTermJsonLd, faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const ask = encodeURIComponent(ASK_PROMPT);
@@ -34,6 +34,14 @@ export function HomePage({ copy }: { copy?: HomeCopy }) {
       <JsonLd data={softwareJsonLd()} />
       <JsonLd data={websiteJsonLd()} />
       <JsonLd data={faqJsonLd(FAQ)} />
+      <JsonLd
+        data={definedTermJsonLd({
+          name: "Business listing management",
+          description:
+            "Business listing management is the ongoing process of creating, verifying, and synchronizing a company's name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate.",
+          url: `${SITE.domain}/blog/what-is-business-listing-management`,
+        })}
+      />
       <Hero />
       <QuickAnswer />
       <LockIn />
@@ -159,7 +167,7 @@ function QuickAnswer() {
             What is business listing management?
           </h2>
           <p className="mt-4 max-w-3xl text-[17px] leading-relaxed text-ink-soft">
-            Business listing management is the practice of creating, verifying, and continuously updating a company’s name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for {COVERAGE} from one workspace.
+            Business listing management is the ongoing process of creating, verifying, and synchronizing a company’s name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate. BLM does that for {COVERAGE} from one workspace.
           </p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
@@ -178,13 +186,47 @@ function QuickAnswer() {
               </li>
             ))}
           </ul>
-          <Link
-            to="/blog/$slug"
-            params={{ slug: "what-is-business-listing-management" }}
-            className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-hover"
-          >
-            Read the full definition <ArrowRight className="size-4" />
-          </Link>
+          <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "what-is-business-listing-management" }}
+              className="inline-flex items-center gap-1 text-brand hover:text-brand-hover"
+            >
+              Full definition <ArrowRight className="size-4" />
+            </Link>
+            <Link to="/compare" className="inline-flex items-center gap-1 text-ink-soft hover:text-ink">
+              Compare listing software
+            </Link>
+            <Link to="/pricing" className="inline-flex items-center gap-1 text-ink-soft hover:text-ink">
+              Business listing management cost
+            </Link>
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "best-business-listing-management-software-2026" }}
+              className="inline-flex items-center gap-1 text-ink-soft hover:text-ink"
+            >
+              Best software guide
+            </Link>
+          </div>
+          <p className="mt-6 max-w-3xl text-xs leading-relaxed text-muted">
+            Sources checked 2026-09-06:{" "}
+            <a className="underline-offset-2 hover:underline" href="https://support.google.com/business/" target="_blank" rel="noreferrer">
+              Google Business Profile Help
+            </a>
+            ,{" "}
+            <a className="underline-offset-2 hover:underline" href="https://businessconnect.apple.com/" target="_blank" rel="noreferrer">
+              Apple Business Connect
+            </a>
+            ,{" "}
+            <a className="underline-offset-2 hover:underline" href="https://www.bingplaces.com/" target="_blank" rel="noreferrer">
+              Bing Places for Business
+            </a>
+            ,{" "}
+            <a className="underline-offset-2 hover:underline" href="https://moz.com/learn/seo/local" target="_blank" rel="noreferrer">
+              Moz Local SEO
+            </a>
+            . Publisher UIs move; confirm the live help article before you file a change.
+          </p>
         </div>
       </Reveal>
     </section>
@@ -394,7 +436,7 @@ function Resources() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Learn more</p>
           <h2 id="resources-title" className="mt-2 font-display text-3xl font-semibold tracking-tight">
-            Learn more about listing management
+            Learn more about business listing management
           </h2>
         </div>
         <Link to="/resources" className="hidden text-sm font-semibold text-ink-soft hover:text-ink sm:inline">

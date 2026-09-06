@@ -1,8 +1,8 @@
-const markdown = `Business listing management is the practice of creating, verifying, and continuously updating a company's name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.
+const markdown = `Business listing management is the ongoing process of creating, verifying, and synchronizing a company's name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.
 
 In the United States, that practice is how multi-location brands, franchises, healthcare groups, and agencies keep storefronts findable when customers bounce between Google Maps, Apple Maps, Bing, voice assistants, and AI answers. It is not a one-time citation sprint. It is the operating system for local presence: one canonical record per location, pushed and re-checked until the public graph matches the door.
 
-If you want the long-form field guide for the same practice (inventory, governance, publisher order of operations), read the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide) on Local Listings Management. This article is the short definition you can cite, plus the NAP, citation, and multi-location mechanics US teams actually run.
+Start on the [BLM homepage](/) for the product view, use the [compare listing software](/compare) hub when you are shortlisting vendors, and check [pricing](/pricing) for listed Starter and Growth rates. If you want the long-form field guide for the same practice (inventory, governance, publisher order of operations), read the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide) on Local Listings Management. This article is the short definition you can cite, plus the NAP, citation, and multi-location mechanics US teams actually run.
 
 ## What does business listing management actually include?
 
@@ -77,7 +77,7 @@ Strip away vendor language and the operating rhythm is stable.
 
 **6. Monitor.** New forks, seasonal hours, and category edits reopen the file. Weekly is enough for most brands; daily matters during a rebrand or acquisition.
 
-Tools differ in coverage, duplicate matching, and whether marketing and franchise ops can share a workspace. Pricing differs too. See [business listing management cost in 2026](/blog/business-listing-management-cost-2026) and the public [pricing](/pricing) page (Starter at $49/month after a 7-day trial, Growth at $149/month for up to 25 locations, Enterprise for larger footprints). For a US buying map that compares how teams actually purchase this category, use [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
+Tools differ in coverage, duplicate matching, and whether marketing and franchise ops can share a workspace. Pricing differs too. See [business listing management cost in 2026](/blog/business-listing-management-cost-2026), the public [pricing](/pricing) page (Starter at $49/month after a 7-day trial, Growth at $149/month for up to 25 locations, Enterprise for larger footprints), and the [compare listing software](/compare) hub for Yext, BrightLocal, Moz Local, Uberall, and Birdeye by job. For a US buying map that compares how teams actually purchase this category, use [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
 
 ## What happens when listings drift?
 
