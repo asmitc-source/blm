@@ -16,7 +16,7 @@ export const Route = createFileRoute("/compare/")({
     pageHead({
       title: "Compare listing software",
       description:
-        "Compare BLM with Yext and BrightLocal. Independent guides for teams choosing business listing management software.",
+        "Compare BLM with Yext and BrightLocal by job, with equal-weakness notes and dated vendor sources. Independent guides for US teams choosing business listing management software.",
       path: "/compare",
     }),
   component: CompareHub,
@@ -25,45 +25,63 @@ export const Route = createFileRoute("/compare/")({
 const ROWS = [
   {
     job: "Listing health score",
-    yext: "Part of a larger suite",
-    bl: "Not the product",
-    blm: "The product",
-    note: "BLM is built around NAP, coverage, duplicates, and hours. Not a knowledge graph with listings attached.",
+    yext: "Inside a broader suite",
+    bl: "Not the core product",
+    blm: "Core desk job",
+    note: "Yext packages listings inside Knowledge Graph and related modules. BrightLocal centers local SEO measurement. BLM is built around NAP, coverage, duplicates, and hours. That focus also means BLM does not ship pages, site search, or SERP charts.",
   },
   {
     job: "Way to try",
-    yext: "Sales-led",
-    bl: "Self-serve reports",
+    yext: "Demo / sales-led",
+    bl: "14-day self-serve trial",
     blm: "Create a workspace",
-    note: "Open a workspace with a work email. No procurement theater to see whether the desk fits.",
+    note: "Yext states there is no standard free trial; evaluation runs through demos and references. BrightLocal offers a 14-day trial with no card. BLM opens a workspace with a work email. Early access still means no promised one-click publisher cutover on day one.",
   },
   {
     job: "Public list price",
-    yext: "Usually not",
-    bl: "Yes, for audits",
-    blm: "Yes",
-    note: "Growth is $149 a month for 25 locations. Enterprise is a conversation, not a surprise.",
+    yext: "Custom solution pricing",
+    bl: "Yes, plan menu",
+    blm: "Yes, listed rates",
+    note: "Yext publishes that pricing is custom by solution, location count, and term, with no single sticker price. BrightLocal shows Track, Manage, and Grow with annual discounts. BLM lists Starter at $49/month and Growth at $149/month for 25 locations when billing goes live. Enterprise stays a conversation.",
   },
   {
-    job: "Duplicate radar",
-    yext: "Yes, enterprise",
-    bl: "Limited",
-    blm: "Core",
-    note: "Near-matches on phone, place id, and name are first-class, including leftover DBA listings.",
+    job: "Duplicate handling",
+    yext: "Verifier / enterprise workflows",
+    bl: "Citation accuracy focus",
+    blm: "Core radar",
+    note: "Yext describes Listings Verifier detecting errors and duplicates against the Knowledge Graph. BrightLocal Citation Tracker flags NAP gaps and missing sites. BLM treats near-matches on phone, place id, and name as first-class tickets. BLM does not claim Yext-scale global publisher breadth.",
   },
   {
     job: "Knowledge graph / pages",
     yext: "Yes",
     bl: "No",
     blm: "No. Listings only",
-    note: "If you need a public knowledge graph, stay on Yext. BLM does not pretend to be that product.",
+    note: "If you need a public knowledge graph, pages, or agentic search stack, stay on Yext. BrightLocal and BLM do not pretend to be that product.",
   },
   {
     job: "Rank tracking",
-    yext: "Add-on / partner",
-    bl: "Yes",
+    yext: "Add-on / partner path",
+    bl: "Core (Local Rank Tracker)",
     blm: "No",
-    note: "BrightLocal is stronger at rank tracking. BLM does not mix SERP charts into listing health.",
+    note: "BrightLocal is stronger at local rank grids and competitor SERP work. BLM does not mix SERP charts into listing health. Keep a rank tracker if you sell rankings.",
+  },
+] as const;
+
+const WEAKNESSES = [
+  {
+    name: "Yext",
+    fit: "Enterprise knowledge graph, 200-plus publisher distribution, governance, and modules beyond listings.",
+    weak: "Custom solution pricing and a sales-led path. Overkill when the RFP is really NAP, duplicates, and hours for a few dozen locations.",
+  },
+  {
+    name: "BrightLocal",
+    fit: "Local SEO workbench: rank tracking, citation audits, GBP audits, white-label reporting, self-serve plans.",
+    weak: "Listing sync and review tools sit inside a measurement suite. Citation Builder is pay-as-you-go. Not a franchise-scale listings-only desk.",
+  },
+  {
+    name: "BLM",
+    fit: "Listing health desk with public rates, workspace try, and scores for NAP, coverage, duplicates, and hours.",
+    weak: "No knowledge graph, no rank tracking, no pages or ads. Narrower publisher story than Yext's 200-plus network claim. Early access: no one-click cutover promise.",
   },
 ] as const;
 
@@ -83,8 +101,8 @@ function CompareHub() {
       <InnerPage
         compact
         eyebrow="Compare"
-        title="Listing platforms, compared without a logo wall."
-        lede="Click a job. See what Yext, BrightLocal, and BLM actually do. Use the guides when procurement asks why not Yext."
+        title="Listing platforms, compared by job, not a logo wall."
+        lede="Click a job. See what Yext, BrightLocal, and BLM each do well, and where each is weaker. This is an independent US buying desk, not a scored win-rate chart."
       >
         <div className="overflow-x-auto rounded-3xl hairline">
           <table className="w-full min-w-[40rem] text-left text-sm">
@@ -119,6 +137,29 @@ function CompareHub() {
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">{active.job}</p>
           <p className="mt-2 text-sm leading-relaxed text-ink-soft">{active.note}</p>
         </div>
+
+        <div className="mt-10">
+          <h2 className="font-display text-2xl font-semibold text-ink">Equal-weakness notes</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-soft">
+            Every shortlist has a fit and a limit. Prefer the product whose weakness you can live with.
+          </p>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {WEAKNESSES.map((w) => (
+              <article key={w.name} className="rounded-2xl bg-cream p-5 hairline">
+                <h3 className="font-display text-lg font-semibold text-ink">{w.name}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                  <span className="font-semibold text-ink">Fit: </span>
+                  {w.fit}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                  <span className="font-semibold text-ink">Weaker when: </span>
+                  {w.weak}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-8 grid items-stretch gap-4 md:grid-cols-2">
           <Reveal className="h-full">
             <Link
@@ -129,7 +170,7 @@ function CompareHub() {
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Enterprise</p>
               <h2 className="mt-2 font-display text-2xl font-semibold">Yext alternative</h2>
               <p className="mt-2 flex-1 text-sm text-muted">
-                When knowledge-graph breadth is more than you need, and listing health is the actual job.
+                When knowledge-graph breadth is more than you need, and listing health is the actual job. Includes where Yext still wins.
               </p>
               <span className="resource-read mt-4 inline-flex items-center gap-1 text-sm font-semibold text-ink">
                 Read the guide <ArrowRight className="size-4" />
@@ -151,7 +192,7 @@ function CompareHub() {
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Agencies</p>
               <h2 className="mt-2 font-display text-2xl font-semibold">BrightLocal alternative</h2>
               <p className="mt-2 flex-1 text-sm text-muted">
-                Rank tracking is not the same as keeping NAP, hours, and duplicates honest across publishers.
+                Rank tracking is not the same as keeping NAP, hours, and duplicates honest across publishers. Keep BrightLocal when SERP grids are the product.
               </p>
               <span className="resource-read mt-4 inline-flex items-center gap-1 text-sm font-semibold text-ink">
                 Read the guide <ArrowRight className="size-4" />
@@ -181,6 +222,74 @@ function CompareHub() {
             ))}
           </div>
         ) : null}
+
+        <section className="mt-10 max-w-3xl" aria-labelledby="compare-sources-title">
+          <h2 id="compare-sources-title" className="font-display text-2xl font-semibold text-ink">
+            Sources
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+            Vendor and BLM pages checked 2026-09-06. Product UIs and commercial terms move. Confirm the live page before you file a change or sign a contract. Claims below are not a measured win rate.
+          </p>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-soft">
+            <li>
+              <a
+                href="https://www.yext.com/knowledge-center/yext-faq"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                Yext: How much does Yext cost? (custom solution pricing, no standard free trial)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.yext.com/platform/listings"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                Yext Listings (200-plus publishers, Listings Verifier, Knowledge Graph distribution)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.yext.com/platform/knowledge-graph"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                Yext Knowledge Graph (pages, listings, reviews, and social cascade from one graph)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.brightlocal.com/pricing/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                BrightLocal pricing (Track / Manage / Grow, Citation Builder from $2 per citation, managed SEO from
+                $1,299/mo)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.brightlocal.com/local-seo-tools/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                BrightLocal local SEO tools (rank tracking, citation audit, listings manage path, annual prices from
+                $31/mo)
+              </a>
+            </li>
+            <li>
+              <Link to="/pricing" className="font-medium text-ink underline-offset-2 hover:underline">
+                BLM pricing (Starter $49/month, Growth $149/month, Enterprise custom)
+              </Link>
+            </li>
+          </ul>
+        </section>
       </InnerPage>
     </SiteShell>
   );
