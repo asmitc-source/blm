@@ -8,7 +8,7 @@ export const SITE = {
   domain: "https://businesslistingmanagement.com",
   oneLiner: `Keep every location accurate across ${COVERAGE}, from one place.`,
   tagline: "Keep every location accurate without the spreadsheet.",
-  description: `BLM is business listing management software for multi-location brands, franchises, agencies, and local SEO teams. Unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one workspace.`,
+  description: `Business listing management software for multi-location brands, franchises, agencies, and local SEO teams. Unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one BLM workspace.`,
   email: "hello@businesslistingmanagement.com",
   salesEmail: "sales@businesslistingmanagement.com",
   author: "Asmit Choudhary",
