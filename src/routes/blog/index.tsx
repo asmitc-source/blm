@@ -39,22 +39,23 @@ function BlogIndex() {
       >
         <div className="grid gap-5">
           {posts.map((post) => (
-            <article key={post.slug} className="grid gap-2 rounded-3xl bg-cream p-6 hairline md:grid-cols-[8rem_1fr]">
+            <Link
+              key={post.slug}
+              to="/blog/$slug"
+              params={{ slug: post.slug }}
+              className="blog-card group relative grid gap-2 overflow-hidden rounded-3xl bg-cream p-6 hairline md:grid-cols-[8rem_1fr]"
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{post.date}</p>
               <div>
-                <Link
-                  to="/blog/$slug"
-                  params={{ slug: post.slug }}
-                  className="font-display text-2xl font-semibold text-ink"
-                >
+                <h2 className="blog-card-title font-display text-2xl font-semibold text-ink">
                   {post.title}
-                </Link>
+                </h2>
                 <p className="mt-2 text-sm text-muted">{post.excerpt}</p>
                 <p className="mt-2 text-xs text-faint">
                   {post.author} · {post.minutes} min
                 </p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </InnerPage>
