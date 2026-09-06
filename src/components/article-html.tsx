@@ -1,3 +1,5 @@
+import { stripDuplicateHtmlOpener } from "@/lib/content/strip-duplicate-opener";
+
 function sanitize(html: string) {
   return html
     .replace(/<script[\s\S]*?<\/script>/gi, "")
@@ -7,6 +9,7 @@ function sanitize(html: string) {
     .replace(/javascript:/gi, "");
 }
 
-export function ArticleHtml({ html }: { html: string }) {
-  return <div className="article-html" dangerouslySetInnerHTML={{ __html: sanitize(html) }} />;
+export function ArticleHtml({ html, answer }: { html: string; answer?: string }) {
+  const body = answer ? stripDuplicateHtmlOpener(html, answer) : html;
+  return <div className="article-html" dangerouslySetInnerHTML={{ __html: sanitize(body) }} />;
 }

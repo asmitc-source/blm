@@ -4,6 +4,7 @@ import { Markdown } from "@/components/markdown";
 import { ArticleHtml } from "@/components/article-html";
 import { JsonLd } from "@/components/json-ld";
 import { loadPublicArticle } from "@/lib/cms/public";
+import { stripDuplicateMarkdownOpener } from "@/lib/content/strip-duplicate-opener";
 import { articleJsonLd, breadcrumbJsonLd, definedTermJsonLd, faqJsonLd, pageHead } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,12 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function BlogPostPage() {
   const { article, markdown, source } = Route.useLoaderData();
+  const answer = article.answer?.trim() ?? "";
+  const bodyMarkdown =
+    source === "static" && markdown
+      ? stripDuplicateMarkdownOpener(markdown, answer)
+      : markdown;
+
   return (
     <SiteShell>
       <JsonLd
@@ -66,21 +73,29 @@ function BlogPostPage() {
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink sm:text-[2.6rem]">
           {article.title}
         </h1>
-        <p className="mt-3 text-sm text-faint">
+        <p className="mt-4 text-sm text-faint">
           {article.author} · {article.date} · {article.minutes} min read
         </p>
-        {article.answer ? (
-          <p className="mt-6 rounded-2xl bg-sand px-4 py-3 text-[17px] leading-relaxed text-ink-soft">
-            {article.answer}
-          </p>
+        {answer ? (
+          <aside className="mt-8 rounded-2xl bg-cream px-5 py-4 hairline sm:px-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand">Definition</p>
+            <p className="mt-2 text-[15px] leading-relaxed text-ink-soft sm:text-base">{answer}</p>
+          </aside>
         ) : null}
-        <div className="mt-8">
-          {source === "static" && markdown ? <Markdown source={markdown} /> : <ArticleHtml html={article.body_html} />}
+        <div className="mt-10">
+          {source === "static" && bodyMarkdown ? (
+            <Markdown source={bodyMarkdown} />
+          ) : (
+            <ArticleHtml html={article.body_html} answer={answer} />
+          )}
         </div>
-        <div className="mt-12 rounded-3xl bg-mint-soft px-6 py-8">
-          <h2 className="font-display text-2xl font-semibold">Run this against a real location</h2>
-          <p className="mt-2 text-sm text-ink-soft">
-            Start a free trial to run this against a real location. The auditor lives behind sign-in so the score is yours.
+        <div className="mt-14 rounded-2xl bg-mint-soft px-6 py-7 hairline sm:px-8">
+          <h2 className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+            Run this against a real location
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
+            Start a free trial to run this against a real location. The auditor lives behind sign-in so the score
+            is yours.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild>
