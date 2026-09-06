@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { authClient, authEnabled } from "@/lib/auth/client";
+import { authClient, authEnabled, oauthEnabled } from "@/lib/auth/client";
 import { submitLead, upsertWorkspace } from "@/lib/leads";
 import { Logo } from "@/components/logo";
 import { SocialButtons } from "@/components/auth/social-buttons";
@@ -153,12 +153,16 @@ function Signup() {
             {saving ? "Creating workspace…" : "Create workspace"}
           </Button>
         </form>
-        <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-[0.14em] text-faint">
-          <span className="h-px flex-1 bg-line" />
-          or
-          <span className="h-px flex-1 bg-line" />
-        </div>
-        <SocialButtons />
+        {oauthEnabled ? (
+          <>
+            <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-[0.14em] text-faint">
+              <span className="h-px flex-1 bg-line" />
+              or
+              <span className="h-px flex-1 bg-line" />
+            </div>
+            <SocialButtons />
+          </>
+        ) : null}
         <p className="mt-6 text-sm text-muted">
           Already have an account?{" "}
           <Link to="/login" className="font-semibold text-ink">

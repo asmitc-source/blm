@@ -1,30 +1,24 @@
 /**
- * The upstream identity providers this app offers for sign-in (via the broker).
+ * Upstream identity providers this app may offer for federated sign-in.
  *
- * Source of truth for BOTH the server (`server.ts`, one `genericOAuth` provider
- * per entry) and the client (`client.ts` / sign-in buttons). Kept in its own
- * dependency-free module so the client can import it without pulling the
- * server-only Better Auth instance (and `pg`) into the browser bundle.
+ * Source of truth for both the server (`server.ts`, one `genericOAuth` provider
+ * per entry when OAuth env is configured) and the client (sign-in buttons).
+ * Kept dependency-free so the client can import it without pulling server-only
+ * Better Auth into the browser bundle.
  *
- * Each app federates to the shared **auth broker** (`GROK_AUTH_ISSUER`), which
- * holds the real Google/X secrets. The app never sees them — it only knows its
- * own per-app client id/secret and which upstream to ask the broker for (`idp`).
- *
- * To add an upstream (e.g. GitHub) once the broker supports it: add one entry
- * here (`{ providerId: "grok-github", idp: "github", label: "GitHub" }`). The
- * `providerId` is this app's local id and the OAuth callback path segment
- * (`/api/auth/oauth2/callback/<providerId>`); `idp` is the hint the broker reads
- * to pick the upstream (Better Auth's id for X is still `twitter`).
+ * Federated OAuth is optional. Email/password is the primary path
+ * (`./email-password`). Leave this list empty unless you configure
+ * `AUTH_ISSUER`, `AUTH_CLIENT_ID`, and `AUTH_CLIENT_SECRET` on the server and
+ * `VITE_OAUTH_ENABLED=true` for the client UI.
  */
-export type GrokProvider = {
-  /** This app's local provider id; also the callback path segment. */
+export type AuthProvider = {
+  /** Local provider id; also the OAuth callback path segment. */
   providerId: string;
-  /** Upstream hint the broker forwards to (Better Auth social id). */
+  /** Upstream IdP hint forwarded to the auth broker, if any. */
   idp: string;
   /** Human label for the sign-in button. */
   label: string;
 };
 
-export const GROK_PROVIDERS: readonly GrokProvider[] = [
-  { providerId: "grok-google", idp: "google", label: "Google" },
-];
+/** Providers shown when OAuth is enabled. Empty by default (email/password only). */
+export const AUTH_PROVIDERS: readonly AuthProvider[] = [];
