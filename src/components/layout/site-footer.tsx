@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import type { FileRouteTypes } from "@/routeTree.gen";
 
-type AppPath = FileRouteTypes["fullPaths"];
+type AppPath = FileRouteTypes["to"];
 
 export function SiteFooter() {
   return (
