@@ -16,6 +16,7 @@ export const Route = createFileRoute("/login")({
       title: "Log in",
       description: "Log in to your BLM workspace to monitor locations and directory health.",
       path: "/login",
+      robots: "noindex, follow",
     }),
   component: Login,
 });
