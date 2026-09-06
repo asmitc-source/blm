@@ -3,8 +3,8 @@
  *
  * The app runs Better Auth at `/api/auth/*`, so the session cookie stays on this
  * app's own origin. Primary sign-in is local email/password
- * (`./email-password`). Optional federated OAuth is enabled only when
- * `AUTH_ISSUER`, `AUTH_CLIENT_ID`, and `AUTH_CLIENT_SECRET` are all set.
+ * (`./email-password`). Optional Google social login is enabled when
+ * `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are both set.
  *
  * Modes:
  *   - Deployed: set `BETTER_AUTH_URL`, `BETTER_AUTH_SECRET`, `DATABASE_URL`, and
@@ -20,7 +20,7 @@
  * `@/lib/auth/middleware`.
  */
 import { betterAuth } from "better-auth";
-import { bearer, genericOAuth } from "better-auth/plugins";
+import { bearer } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { getCookie } from "@tanstack/react-start/server";
 import { randomBytes } from "node:crypto";
@@ -56,14 +56,16 @@ const env = (key: string): string | undefined => {
 // Explicit off-switch. Set `VITE_AUTH_ENABLED=false` to force auth off (dev user).
 const authDisabled = env("VITE_AUTH_ENABLED") === "false";
 
-// Optional federated OAuth (no baked-in third-party issuer defaults).
-const authIssuer = env("AUTH_ISSUER");
-const authClientId = env("AUTH_CLIENT_ID");
-const authClientSecret = env("AUTH_CLIENT_SECRET");
-const oauthConfigured = Boolean(authIssuer && authClientId && authClientSecret);
+// Native Google OAuth (Better Auth socialProviders).
+const googleClientId = env("GOOGLE_CLIENT_ID");
+const googleClientSecret = env("GOOGLE_CLIENT_SECRET");
+const googleConfigured = Boolean(googleClientId && googleClientSecret);
 
 /** True when real auth is enforced (email/password and/or optional OAuth). */
 export const authConfigured = !authDisabled;
+
+/** True when Google social login is fully configured on the server. */
+export const googleOAuthConfigured = googleConfigured;
 
 // This app's own Better Auth origin. When deployed, set BETTER_AUTH_URL to the
 // public site URL. Locally we use a dynamic baseURL over loopback hosts.
@@ -94,15 +96,6 @@ const trustedOrigins: string[] = [
 
 const databaseUrl = env("DATABASE_URL");
 
-const issuerBase = (authIssuer ?? "").replace(/\/+$/, "");
-const oauthAuthorizationUrl = issuerBase
-  ? `${issuerBase}/api/auth/oauth2/authorize`
-  : "";
-const oauthTokenUrl = issuerBase ? `${issuerBase}/api/auth/oauth2/token` : "";
-const oauthUserInfoUrl = issuerBase
-  ? `${issuerBase}/api/auth/oauth2/userinfo`
-  : "";
-
 // Real Postgres when `DATABASE_URL` is set (deployed apps), else the app's
 // embedded PGLite (local/dev) via a Kysely dialect.
 const database = databaseUrl
@@ -112,22 +105,6 @@ const database = databaseUrl
 /** Session token cookie name — also read by the optional OAuth popup completion page. */
 export const SESSION_TOKEN_COOKIE = "__Host-blm-auth.session_token";
 
-const oauthPlugin =
-  authConfigured && oauthConfigured && AUTH_PROVIDERS.length > 0
-    ? genericOAuth({
-        config: AUTH_PROVIDERS.map(({ providerId, idp }) => ({
-          providerId,
-          clientId: authClientId as string,
-          clientSecret: authClientSecret as string,
-          authorizationUrl: oauthAuthorizationUrl,
-          tokenUrl: oauthTokenUrl,
-          userInfoUrl: oauthUserInfoUrl,
-          scopes: ["openid", "profile", "email"],
-          authorizationUrlParams: { idp, prompt: "login" },
-        })),
-      })
-    : null;
-
 export const auth = betterAuth({
   baseURL,
   secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
@@ -135,11 +112,25 @@ export const auth = betterAuth({
 
   trustedOrigins,
 
+  ...(googleConfigured
+    ? {
+        socialProviders: {
+          google: {
+            clientId: googleClientId as string,
+            clientSecret: googleClientSecret as string,
+            accessType: "offline" as const,
+          },
+        },
+      }
+    : {}),
+
   account: {
     encryptOAuthTokens: true,
     accountLinking: {
       enabled: true,
-      trustedProviders: AUTH_PROVIDERS.map((p) => p.providerId),
+      trustedProviders: googleConfigured
+        ? AUTH_PROVIDERS.map((p) => p.providerId)
+        : [],
       requireLocalEmailVerified: false,
     },
   },
@@ -162,7 +153,6 @@ export const auth = betterAuth({
   },
 
   plugins: [
-    ...(oauthPlugin ? [oauthPlugin] : []),
     bearer(),
     // Bridges Better Auth's Set-Cookie into TanStack Start responses. MUST be last.
     tanstackStartCookies(),

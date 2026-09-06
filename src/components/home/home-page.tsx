@@ -7,6 +7,8 @@ import { ProductProof } from "@/components/home/product-proof";
 import { Reveal } from "@/components/home/reveal";
 import { RotateWord } from "@/components/home/rotate-word";
 import { Workflow } from "@/components/home/workflow";
+import { ContactSection } from "@/components/home/contact-section";
+import { NewsletterSection } from "@/components/home/newsletter-section";
 import {
   ChatGptMark,
   ClaudeMark,
@@ -42,6 +44,8 @@ export function HomePage({ copy }: { copy?: HomeCopy }) {
       <Industries />
       <FaqSection />
       <Resources />
+      <NewsletterSection />
+      <ContactSection />
       <FinalCta />
     </main>
     </CopyCtx.Provider>

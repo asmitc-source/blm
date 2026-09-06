@@ -1,4 +1,3 @@
-import { genericOAuthClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import { runPreSignInSignOut, runSignOut } from "../../../scripts/sign-out-plan.mjs";
 import { AUTH_PROVIDERS } from "./providers";
@@ -15,7 +14,6 @@ import { AUTH_PROVIDERS } from "./providers";
  * the visitor stays signed in.
  */
 export const authClient = createAuthClient({
-  plugins: [genericOAuthClient()],
   fetchOptions: {
     onRequest(ctx) {
       const token = getBearerToken();
@@ -64,11 +62,13 @@ function setBearerToken(token: string | null): void {
   }
 }
 
-
 /**
  * Start federated sign-in with one upstream provider (`providerId` from
  * `AUTH_PROVIDERS`). Clears any existing local session first so switching
  * providers actually switches identity.
+ *
+ * Google uses Better Auth's built-in `signIn.social` path
+ * (`GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` on the server).
  */
 export async function signIn(
   providerId: string,
@@ -84,8 +84,8 @@ export async function signIn(
     clearToken: () => setBearerToken(null),
   });
 
-  const { data, error } = await authClient.signIn.oauth2({
-    providerId,
+  const { data, error } = await authClient.signIn.social({
+    provider: providerId as "google",
     callbackURL,
     errorCallbackURL,
   });
@@ -113,4 +113,3 @@ export async function signOut(redirectTo = "/"): Promise<void> {
     },
   });
 }
-
