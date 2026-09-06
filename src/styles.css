@@ -1354,3 +1354,83 @@
     );
   }
 }
+
+/* —— About page polish —— */
+.about-belief-card,
+.about-step-card {
+  transition:
+    transform 220ms var(--ease-out-soft),
+    box-shadow 220ms var(--ease-out-soft);
+}
+
+.about-belief-card:hover,
+.about-belief-card:focus-within,
+.about-step-card:hover,
+.about-step-card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: var(--elev-soft);
+}
+
+.about-independence {
+  transition:
+    transform 280ms var(--ease-out-soft),
+    box-shadow 280ms var(--ease-out-soft);
+}
+
+.about-independence:hover,
+.about-independence:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--elev-lift);
+}
+
+.about-built-card {
+  transition:
+    transform 240ms var(--ease-out-soft),
+    box-shadow 240ms var(--ease-out-soft);
+}
+
+.about-built-card:hover,
+.about-built-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--elev-soft);
+}
+
+.about-fact-chip:hover,
+.about-fact-chip:focus-within {
+  box-shadow: var(--elev-soft);
+}
+
+.about-hero-tiles {
+  animation: about-tiles-float 6.5s var(--ease-out-soft) infinite alternate;
+}
+
+@keyframes about-tiles-float {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-belief-card,
+  .about-step-card,
+  .about-independence,
+  .about-built-card,
+  .about-hero-tiles {
+    animation: none;
+    transition: none;
+  }
+
+  .about-belief-card:hover,
+  .about-belief-card:focus-within,
+  .about-step-card:hover,
+  .about-step-card:focus-within,
+  .about-independence:hover,
+  .about-independence:focus-within,
+  .about-built-card:hover,
+  .about-built-card:focus-within {
+    transform: none;
+  }
+}
