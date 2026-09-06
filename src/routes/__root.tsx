@@ -6,7 +6,7 @@ import { ThemeProvider, themeBootScript } from "@/components/theme";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { SITE } from "@/lib/site";
-import { shareMeta } from "@/lib/seo";
+import { defaultShareImage, shareMeta } from "@/lib/seo";
 import { NotFound } from "@/components/not-found";
 
 const fetchSessionUser = createServerFn({ method: "GET" }).handler(async () => {
@@ -28,6 +28,7 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "image_src", href: defaultShareImage() },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },

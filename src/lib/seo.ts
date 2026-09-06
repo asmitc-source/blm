@@ -1,9 +1,19 @@
 import { SITE } from "@/lib/site";
 
-function publicOrigin() {
+export const OG_IMAGE_PATH = "/og.png";
+export const OG_IMAGE_WIDTH = "1280";
+export const OG_IMAGE_HEIGHT = "640";
+
+export function publicOrigin() {
+  const explicit = process.env.SITE_URL || process.env.VITE_SITE_URL;
+  if (explicit) return String(explicit).replace(/\/+$/, "");
   const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
   if (vercel) return `https://${String(vercel).replace(/^https?:\/\//, "")}`;
   return SITE.domain;
+}
+
+export function defaultShareImage(origin = publicOrigin()) {
+  return `${origin}${OG_IMAGE_PATH}`;
 }
 
 export function pageTitle(title: string) {
@@ -11,10 +21,10 @@ export function pageTitle(title: string) {
   return `${title} · ${SITE.name}`;
 }
 
-export function shareMeta(opts: { title: string; description: string; path?: string }) {
+export function shareMeta(opts: { title: string; description: string; path?: string; image?: string }) {
   const origin = publicOrigin();
   const url = opts.path ? `${origin}${opts.path}` : origin;
-  const image = `${origin}/og.jpg`;
+  const image = opts.image ?? defaultShareImage(origin);
   const title = pageTitle(opts.title);
   return [
     { property: "og:type", content: "website" },
@@ -22,6 +32,9 @@ export function shareMeta(opts: { title: string; description: string; path?: str
     { property: "og:title", content: title },
     { property: "og:description", content: opts.description },
     { property: "og:image", content: image },
+    { property: "og:image:width", content: OG_IMAGE_WIDTH },
+    { property: "og:image:height", content: OG_IMAGE_HEIGHT },
+    { property: "og:image:alt", content: `${SITE.name} — ${SITE.tagline}` },
     { property: "og:url", content: url },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
@@ -53,6 +66,8 @@ export function orgJsonLd() {
     email: SITE.email,
     description: SITE.description,
     founder: { "@type": "Person", name: SITE.author },
+    logo: defaultShareImage(),
+    image: defaultShareImage(),
   };
 }
 
@@ -112,6 +127,7 @@ export function articleJsonLd(opts: {
     author: { "@type": "Person", name: opts.author ?? SITE.editorial },
     publisher: { "@type": "Organization", name: SITE.legalName, url: SITE.domain },
     url: `${SITE.domain}${opts.path}`,
+    image: defaultShareImage(),
   };
 }
 
