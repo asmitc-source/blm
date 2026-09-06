@@ -149,6 +149,40 @@ Honest near-term direction (no fake metrics):
 
 ---
 
+
+## Environment variables
+
+Set these in **Vercel → Project → Settings → Environment Variables** (and locally via `.env.local`; see `.env.example`).
+
+### Google login
+
+| Variable | Purpose |
+| --- | --- |
+| `GOOGLE_CLIENT_ID` | Google OAuth 2.0 client ID |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth 2.0 client secret |
+| `VITE_OAUTH_ENABLED` | Set to `true` to show the Google button on login/signup |
+
+Authorized redirect URI in Google Cloud Console: `https://<your-domain>/api/auth/callback/google` (local: `http://localhost:8080/api/auth/callback/google`).
+
+### Contact + newsletter
+
+Tables `contact_submissions` and `newsletter_subscribers` ship in `migrations/0005_contact_newsletter.sql` (auto-applied on deploy when `DATABASE_URL` is set). For Supabase RLS (anon insert, no public read), also run `supabase/contact_newsletter.sql` in the SQL editor.
+
+Verify contact rows: `select * from contact_submissions order by created_at desc limit 20;`
+Verify subscribers: `select email, status, subscribed_at from newsletter_subscribers order by subscribed_at desc;`
+
+### SMTP (newsletter emails)
+
+| Variable | Example |
+| --- | --- |
+| `SMTP_HOST` | `smtp.office365.com` (or `smtpout.secureserver.net`) |
+| `SMTP_PORT` | `587` (STARTTLS) or `465` (TLS) |
+| `SMTP_USER` | `hello@nakama.in` |
+| `SMTP_PASS` | mailbox password — **Vercel/local only, never commit** |
+| `SMTP_FROM` | `BLM <hello@nakama.in>` |
+
+Welcome emails send on subscribe (subscriber is saved even if SMTP is unset). New-article emails fan out when an admin **publishes** an article via the CMS desk (`cmsSaveArticle` draft → published). Static markdown posts in the repo do not auto-email.
+
 ## License
 
 No license file is present in this repository yet. All rights reserved by the author unless a license is added later.

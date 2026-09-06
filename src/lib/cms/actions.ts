@@ -195,10 +195,21 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
   })
   .handler(async ({ context, data }) => {
     requireAdmin(context.admin);
-    const { saveArticle } = await import("./store");
+    const { saveArticle, getArticle } = await import("./store");
     const { syncArticle } = await import("./supabase.server");
+    const previous = data.id ? await getArticle(data.id) : null;
+    const wasPublished = previous?.status === "published";
     const saved = await saveArticle(data);
     if (saved) await syncArticle(saved).catch(() => undefined);
+    if (saved?.status === "published" && !wasPublished) {
+      const { notifySubscribersNewArticle } = await import("@/lib/newsletter");
+      const excerpt = (saved.description || saved.answer || "").slice(0, 280);
+      await notifySubscribersNewArticle({
+        title: saved.title,
+        slug: saved.slug,
+        excerpt: excerpt || saved.title,
+      }).catch(() => undefined);
+    }
     return saved;
   });
 
