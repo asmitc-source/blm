@@ -96,7 +96,7 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
     }
 
     const { welcomeNewsletterEmail } = await import("@/lib/mail/templates");
-    const { trySendMail } = await import("@/lib/mail/smtp");
+    const { trySendMail } = await import("@/lib/mail/resend");
     const mail = welcomeNewsletterEmail({
       name: data.name ?? existing[0]?.name ?? undefined,
       unsubscribeUrl: unsubscribeUrl(token as string),
@@ -158,7 +158,7 @@ export async function notifySubscribersNewArticle(article: ArticleNotifyInput) {
   );
   const url = `${base}/blog/${article.slug}`;
   const { newArticleEmail } = await import("@/lib/mail/templates");
-  const { trySendMail } = await import("@/lib/mail/smtp");
+  const { trySendMail } = await import("@/lib/mail/resend");
   let sent = 0;
   let failed = 0;
   let skipped = 0;
