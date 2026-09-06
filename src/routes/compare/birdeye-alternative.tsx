@@ -54,14 +54,27 @@ function BirdeyePage() {
       <InnerPage
         eyebrow="Compare · Birdeye"
         title="A Birdeye alternative when listing hygiene is the desk job."
-        lede="Birdeye is built as an agentic marketing platform for multi-location brands. Listing management is one chapter inside reviews, social, search AI, and CX. This page states both fits and weaknesses for US teams. It is not a scored win-rate chart."
+        lede="Birdeye is built as an agentic marketing platform for multi-location brands. Business listing management is one chapter inside reviews, social, search AI, and CX. This page states both fits and weaknesses for US teams. It is not a scored win-rate chart."
       >
         <div className="prose-like max-w-3xl space-y-4 text-[17px] leading-relaxed text-ink-soft">
           <p>
             If your RFP is really about{" "}
-            <strong className="text-ink">NAP consistency, duplicate suppression, and publisher coverage</strong>, you do
-            not automatically need review generation, surveys, messaging, and social AI in the same contract.
-            Birdeye&apos;s own materials describe that broader agentic stack. BLM does not pretend to match it.
+            <strong className="text-ink">business listing management</strong>{" "}
+            (NAP consistency, duplicate suppression, and publisher coverage), you do not automatically need review
+            generation, surveys, messaging, and social AI in the same contract. Birdeye&apos;s own materials describe
+            that broader agentic stack. BLM does not pretend to match it. Start on the{" "}
+            <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+              BLM homepage
+            </Link>{" "}
+            or read{" "}
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "what-is-business-listing-management" }}
+              className="font-medium text-ink underline-offset-2 hover:underline"
+            >
+              what is business listing management
+            </Link>{" "}
+            for the category definition.
           </p>
           <p>
             BLM starts with a workspace and public pricing. Starter unlocks after you sign in. Growth is listed at

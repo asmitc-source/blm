@@ -1,10 +1,10 @@
-const markdown = `Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first. Do not create a "clean" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.
+const markdown = `Finding and fixing duplicate business listings is a core business listing management job: find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Duplicates split reviews, confuse hours, and suppress the map pack. Do not delete first. Do not create a "clean" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.
 
-This is a US field guide, not a theory of local SEO. If you need why listings exist as a graph, read [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings). If you need the category definition, use [what is business listing management?](/blog/what-is-business-listing-management). For the wider operating playbook (including how duplicates fit a full listings program), see the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide).
+This is a US field guide, not a theory of local SEO. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, and use [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) when the team still equates listings with Google alone. For software that queues near-matches, see [best business listing management software in 2026](/blog/best-business-listing-management-software-2026), [compare listing software](/compare), and [pricing](/pricing). For the wider operating playbook (including how duplicates fit a full listings program), see the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide).
 
 ## Why do duplicate listings appear in the first place?
 
-Duplicates are usually not vandalism. They are a byproduct of how place data is created in the United States.
+Duplicates are usually not vandalism. They are a byproduct of how place data is created in the United States, and why business listing management has to treat listings as a graph rather than a one-time citation blast.
 
 Common sources:
 
@@ -21,7 +21,7 @@ Duplicates hurt in three measurable ways. Reviews split, so social proof looks w
 
 ## How do you find duplicates across Google, Apple, Bing, and the directory network?
 
-Search like a customer and like a matcher. Both.
+In business listing management, you search like a customer and like a matcher. Both.
 
 **Customer search.** Brand name plus city. Brand name plus neighborhood. Phone number. Address tokens (street number + street). Category plus city if the name is generic. Do this on Google Maps, Apple Maps, Bing, and Yelp at minimum. Note every profile that a reasonable person might tap.
 
@@ -35,7 +35,7 @@ Record every candidate in one list: publisher, URL or id, NAP as published, revi
 
 ## How do you match two listings to the same location?
 
-Matching is a judgment with evidence. Require more than a similar name.
+Matching inside business listing management is a judgment with evidence. Require more than a similar name.
 
 **Strong signals** (any two together is usually enough):
 
@@ -57,7 +57,7 @@ When in doubt, do not suppress. Watch for a week, collect another signal, then d
 
 ## How do you suppress a duplicate without losing reviews?
 
-Reviews live on profiles. Delete the profile, lose the reviews. That is the whole game.
+Business listing management suppresses duplicates without orphaning reputation. Reviews live on profiles. Delete the profile, lose the reviews. That is the whole game.
 
 **Google.** Prefer merge over delete. In GBP, request a merge so reviews and photos can land on the survivor. Unclaimed duplicates can be reported. If you do not own the fork, you still report it; you just cannot merge from the inside. Never create a third listing to "start clean." For GBP-specific ops around verification and ownership, [Google My Business management](https://locallistingsmanagement.co/google-my-business-management) is the companion desk.
 
@@ -79,7 +79,7 @@ Agencies should put this in the SLA: merge preferred, delete prohibited without 
 
 ## What should you do after the surviving listing is chosen?
 
-Suppression is the middle of the job.
+Suppression is the middle of the business listing management job, not the end.
 
 - Fix NAP on the survivor so it matches canonical exactly.
 - Align hours and categories on the survivor.
@@ -103,7 +103,7 @@ Google merges can show in days; remnants linger. Apple and directories often tak
 
 ### Can software close duplicates by itself?
 
-It can find and queue them, and in some networks it can file the request. A human still chooses the survivor when reviews are at stake. Good software makes that choice obvious (see duplicate radar on the [product](/product) page). It should not hide the choice behind a bulk "clean all" button.
+Business listing management software can find and queue them, and in some networks it can file the request. A human still chooses the survivor when reviews are at stake. Good software makes that choice obvious (see duplicate radar on the [product](/product) page). It should not hide the choice behind a bulk "clean all" button.
 
 ### We already ran a citation campaign. Why are forks still here?
 

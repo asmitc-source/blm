@@ -1,10 +1,10 @@
-const markdown = `Agencies that treat listings as a monthly screenshot lose clients. Treat listing management as an operations product: defined onboarding, SLAs on duplicates and NAP drift, reporting a CMO can read, and a multi-account workspace that scales past 20 brands across Google, Apple, Bing, and the directory network.
+const markdown = `Business listing management for agencies is an operations product, not a monthly screenshot: defined onboarding, SLAs on duplicates and NAP drift, reporting a CMO can read, and a multi-account workspace that scales past 20 brands across Google, Apple, Bing, and the directory network.
 
-The work is the same as in-house listing management (canonical NAP, coverage, duplicates, hours), sold as a retainer with proof. This is for US agency owners and local SEO leads who already sell citations or GBP support and need the practice to survive contact with a 30-client book. The category definition is [what is business listing management?](/blog/what-is-business-listing-management). The budget conversation with clients is [business listing management cost in 2026](/blog/business-listing-management-cost-2026). For how US buyers evaluate the category you are selling into, keep [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) handy in pitches.
+The work is the same as in-house business listing management (canonical NAP, coverage, duplicates, hours), sold as a retainer with proof. This is for US agency owners and local SEO leads who already sell citations or GBP support and need the practice to survive contact with a 30-client book. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) for side-by-side jobs, and check [pricing](/pricing) or [business listing management cost in 2026](/blog/business-listing-management-cost-2026) for listed rates. For how US buyers evaluate the category you are selling into, keep [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) handy in pitches.
 
 ## How should agencies onboard a new listing client?
 
-Onboarding is where you either become the system of record or inherit someone else's mess without a baseline.
+Onboarding for business listing management is where you either become the system of record or inherit someone else's mess without a baseline.
 
 **Week 0: access and canonical file.** Collect Google, Apple Business Connect, Bing Places, Facebook, and Yelp access. Get a location list with approved name, address, phone, hours, and primary category. If the client cannot produce a canonical NAP, you are not late to the work; you are at the beginning. Do not start submitting citations until that file exists.
 
@@ -20,7 +20,7 @@ A clean artifact at the end of onboarding: canonical CSV, publisher access in a 
 
 ## What SLAs actually hold up?
 
-Do not SLA "page one map pack." Do SLA the operations you control.
+Business listing management SLAs should cover the operations you control, not "page one map pack."
 
 SLAs that an honest agency can keep:
 
@@ -38,7 +38,7 @@ Price the SLA. Faster duplicate response and after-hours hours changes are a hig
 
 ## How should agencies report listing work?
 
-Clients cannot see a merge request. They can see a score and a story.
+Clients cannot see a merge request inside business listing management. They can see a score and a story.
 
 A monthly listing report that survives a CMO forward:
 
@@ -56,7 +56,7 @@ Quarterly, add a drift narrative: where new forks came from (franchisee, old ven
 
 ## How does multi-account structure change the work?
 
-Past about 20 clients, the failure mode is not SEO knowledge. It is mixing brands, losing publisher logins, and reporting last month's score for the wrong store.
+Past about 20 clients, business listing management fails less on SEO knowledge than on mixing brands, losing publisher logins, and reporting last month's score for the wrong store.
 
 Multi-account structure means:
 
@@ -69,9 +69,9 @@ Without that structure, agencies fake it with spreadsheets of logins and a heroi
 
 ## When does an agency need software instead of a spreadsheet?
 
-When you cannot personally remember the dirty locations. For most shops that is earlier than they admit: 8 to 10 clients with a few locations each, or two franchise accounts.
+Buy business listing management software when you cannot personally remember the dirty locations. For most shops that is earlier than they admit: 8 to 10 clients with a few locations each, or two franchise accounts.
 
-Buy software when you need Apple/Bing/directory status without logging in as the client, when duplicate risk has to be a queue, when two staff must work the same book without overwriting each other, or when a client asked for a health score you cannot produce in 20 minutes.
+You also need it when Apple/Bing/directory status requires logging in as the client, when duplicate risk has to be a queue, when two staff must work the same book without overwriting each other, or when a client asked for a health score you cannot produce in 20 minutes.
 
 Stay on spreadsheets when you have a handful of single-location clients and you actually look every month, or when you are still defining the product and would hide behind a dashboard.
 
@@ -83,7 +83,7 @@ The product you sell the client is not a tool logo. It is onboarding, SLA, repor
 
 ### Should listing management be a line item or bundled into local SEO?
 
-Make it a named line, even if the invoice is bundled. Clients who cannot see the listing product will cut it first when they want to "keep SEO but pause extras." A score, an SLA, and a report make the line defensible.
+Make business listing management a named line, even if the invoice is bundled. Clients who cannot see the listing product will cut it first when they want to "keep SEO but pause extras." A score, an SLA, and a report make the line defensible. For the software shortlist you may pitch beside the retainer, keep [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) in the deck.
 
 ### How do we handle franchisees who create new Google listings?
 

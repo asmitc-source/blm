@@ -62,25 +62,25 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-find-and-fix-duplicate-business-listings",
     title: "How to find and fix duplicate business listings",
     description:
-      "A practical playbook for finding duplicate listings on Google, Apple, Bing, and directories, and suppressing them without wrecking reviews.",
+      "How to find and fix duplicate business listings inside business listing management: find, match, suppress, and protect reviews across Google, Apple, Bing, and the directory network.",
     date: "2026-06-09",
     author: "Asmit Choudhary",
     minutes: 10,
     tags: ["Duplicates"],
     excerpt:
-      "Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first. Do not create a \"clean\" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
+      "Finding and fixing duplicate business listings is a core business listing management job: find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first. Do not create a \"clean\" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
   },
   {
     slug: "business-listing-management-for-agencies",
     title: "Business listing management for agencies",
     description:
-      "How agencies productize listing management: onboarding, reporting, duplicate SLAs, and a workspace model that scales past 20 clients.",
+      "Business listing management for agencies: onboarding, duplicate and NAP SLAs, CMO-ready reporting, and a multi-account workspace that scales past 20 clients across Google, Apple, Bing, and directories.",
     date: "2026-07-21",
     author: "Asmit Choudhary",
     minutes: 9,
     tags: ["Agencies"],
     excerpt:
-      "Agencies that treat listings as a monthly screenshot lose clients. Treat listing management as an operations product: defined onboarding, SLAs on duplicates and NAP drift, reporting a CMO can read, and a multi-account workspace that scales past 20 brands across Google, Apple, Bing, and the directory network.",
+      "Business listing management for agencies is an operations product, not a monthly screenshot: defined onboarding, SLAs on duplicates and NAP drift, reporting a CMO can read, and a multi-account workspace that scales past 20 brands across Google, Apple, Bing, and the directory network.",
   },
 ];
 

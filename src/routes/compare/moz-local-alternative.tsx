@@ -54,14 +54,27 @@ function MozLocalPage() {
       <InnerPage
         eyebrow="Compare · Moz Local"
         title="A Moz Local alternative when listing hygiene is the desk job."
-        lede="Moz Local is a strong all-in-one local SEO toolkit. A lot of US buyers only needed the listings layer: keep every location accurate on Google, Apple, Bing, and the directory network. This page states both fits and weaknesses. It is not a scored win-rate chart."
+        lede="Moz Local is a strong all-in-one local SEO toolkit. A lot of US buyers only needed business listing management: keep every location accurate on Google, Apple, Bing, and the directory network. This page states both fits and weaknesses. It is not a scored win-rate chart."
       >
         <div className="prose-like max-w-3xl space-y-4 text-[17px] leading-relaxed text-ink-soft">
           <p>
             If your RFP is really about{" "}
-            <strong className="text-ink">NAP consistency, duplicate suppression, and publisher coverage</strong>, you do
-            not automatically need Local Grid heatmaps, review AI add-ons, and social calendars in the same seat. Moz
-            Local&apos;s own materials describe that broader local SEO surface. BLM does not pretend to match it.
+            <strong className="text-ink">business listing management</strong>{" "}
+            (NAP consistency, duplicate suppression, and publisher coverage), you do not automatically need Local Grid
+            heatmaps, review AI add-ons, and social calendars in the same seat. Moz Local&apos;s own materials describe
+            that broader local SEO surface. BLM does not pretend to match it. Start on the{" "}
+            <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+              BLM homepage
+            </Link>{" "}
+            or read{" "}
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "what-is-business-listing-management" }}
+              className="font-medium text-ink underline-offset-2 hover:underline"
+            >
+              what is business listing management
+            </Link>{" "}
+            for the category definition.
           </p>
           <p>
             BLM starts with a workspace and public pricing. Starter unlocks after you sign in. Growth is listed at

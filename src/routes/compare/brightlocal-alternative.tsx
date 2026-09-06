@@ -53,13 +53,25 @@ function BrightPage() {
       <InnerPage
         eyebrow="Compare · BrightLocal"
         title="A BrightLocal alternative when citations are the product, not a PDF."
-        lede="BrightLocal is a staple for local SEO reporting. Listing management is a different job: keep publishers accurate after the report is sent. This page states both fits and weaknesses for US teams. It is not a scored win-rate chart."
+        lede="BrightLocal is a staple for local SEO reporting. Business listing management is a different job: keep publishers accurate after the report is sent. This page states both fits and weaknesses for US teams. It is not a scored win-rate chart."
       >
         <div className="max-w-3xl space-y-4 text-[17px] leading-relaxed text-ink-soft">
           <p>
             Agencies often buy rank tracking and a citation checker, then still log into Google, Apple, and Yelp by hand.
-            BLM is the workspace that sits on that last mile: health scores, duplicate risk, hours gaps, with an auditor
-            you can run after you sign in.
+            Business listing management is the last-mile desk: health scores, duplicate risk, hours gaps, with an auditor
+            you can run after you sign in. Start on the{" "}
+            <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+              BLM homepage
+            </Link>{" "}
+            or read{" "}
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "what-is-business-listing-management" }}
+              className="font-medium text-ink underline-offset-2 hover:underline"
+            >
+              what is business listing management
+            </Link>{" "}
+            for the category definition.
           </p>
           <p>
             If you need keyword grids, keep your tracker. BrightLocal publishes Track, Manage, and Grow plans, annual
