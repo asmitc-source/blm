@@ -10,9 +10,9 @@ export const Route = createFileRoute("/blog/")({
   loader: () => loadPublicSite(),
   head: () =>
     pageHead({
-      title: "Blog",
+      title: "Business listing management blog",
       description:
-        "BLM blog: business listing management guides covering NAP, duplicates, Google Business Profile, cost, and agency operations.",
+        "Business listing management blog from BLM: guides covering NAP, duplicates, Google Business Profile, cost, and agency operations.",
       path: "/blog",
     }),
   component: BlogIndex,
@@ -35,8 +35,23 @@ function BlogIndex() {
       <InnerPage
         eyebrow="Blog"
         title="Listing operations, written in complete sentences."
-        lede="No recycled ‘10 tools’ roundups. Each piece starts with a definition you can cite."
+        lede="Business listing management guides without recycled tool roundups. Each piece starts with a definition you can cite."
       >
+        <p className="mb-8 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          Start with{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>{" "}
+          or return to the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM homepage
+          </Link>
+          .
+        </p>
         <div className="grid gap-5">
           {posts.map((post) => (
             <Link

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { InnerPage } from "@/components/layout/inner-page";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
@@ -7,9 +7,9 @@ import { JsonLd } from "@/components/json-ld";
 export const Route = createFileRoute("/security")({
   head: () =>
     pageHead({
-      title: "Security",
+      title: "Business listing management security",
       description:
-        "How BLM protects listing data: encryption in transit, least-privilege access, session isolation, and a data processing agreement on request.",
+        "How BLM protects business listing management data: encryption in transit, least-privilege access, session isolation, and a data processing agreement on request.",
       path: "/security",
     }),
   component: SecurityPage,
@@ -36,8 +36,23 @@ function SecurityPage() {
       <InnerPage
         eyebrow="Trust"
         title="Protect the graph of where your business exists."
-        lede="Listings contain phone numbers, hours, and sometimes employee names. Treat them like operational data, not marketing collateral."
+        lede="Business listing management data includes phone numbers, hours, and sometimes employee names. Treat it like operational data, not marketing collateral."
       >
+        <p className="mb-8 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          For the product view, see the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM homepage
+          </Link>
+          . For the category definition, read{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>
+          .
+        </p>
         <div className="grid gap-4 md:grid-cols-2">
           {ITEMS.map((item) => (
             <article key={item.t} className="rounded-3xl bg-cream p-6 hairline">

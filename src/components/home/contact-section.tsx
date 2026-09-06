@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Link } from "@tanstack/react-router";
 import { submitContact } from "@/lib/contact";
 import { Reveal } from "@/components/home/reveal";
 import { Button } from "@/components/ui/button";
@@ -58,8 +59,20 @@ export function ContactSection({
             Tell us about your footprint.
           </h1>
           <p className="mt-4 max-w-md text-ink-soft">
-            Sales and onboarding share {SITE.salesEmail}. Prefer a form? Send a note and we will follow up at your work
-            email.
+            Questions about business listing management on BLM? Sales and onboarding share {SITE.salesEmail}. Prefer a
+            form? Send a note and we will follow up at your work email. Or start on the{" "}
+            <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+              homepage
+            </Link>{" "}
+            /{" "}
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "what-is-business-listing-management" }}
+              className="font-medium text-ink underline-offset-2 hover:underline"
+            >
+              what is business listing management
+            </Link>
+            .
           </p>
           <div className="mt-8 flex gap-2" aria-hidden="true">
             <span className="h-2 flex-1 rounded-full bg-[var(--tile-a)]" />

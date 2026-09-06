@@ -9,9 +9,9 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/about")({
   head: () =>
     pageHead({
-      title: "About",
+      title: "About business listing management at BLM",
       description:
-        "BLM is an independent business listing management company building software so every location stays accurate across Google, Apple, Bing, and the directory network.",
+        "About BLM: an independent business listing management company building software so every location stays accurate across Google, Apple, Bing, and the directory network.",
       path: "/about",
     }),
   component: AboutPage,
@@ -29,7 +29,7 @@ function AboutPage() {
       <InnerPage
         eyebrow="About BLM"
         title="Listings are the storefronts most companies forgot they had."
-        lede={`${SITE.legalName} exists because multi-location teams still discover a wrong phone number from a customer, not from a dashboard.`}
+        lede={`${SITE.legalName} builds business listing management software because multi-location teams still discover a wrong phone number from a customer, not from a dashboard.`}
       >
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           <article className="space-y-4 text-[17px] leading-relaxed text-ink-soft">
@@ -37,7 +37,19 @@ function AboutPage() {
               Maps do not wait for a rebrand. Apple, Google, Bing, and a long tail of directories each keep a copy of your name, address, phone, hours, and category. When those copies drift, the map pack splits, reviews orphan, and a franchisee’s weekend hours never leave Google.
             </p>
             <p>
-              BLM is independent software, not a reseller overlay, not a directory that wants your listing as inventory. We build the listing health auditor and the workspace around it so operators can see, in color, what is actually published.
+              BLM is independent business listing management software, not a reseller overlay, not a directory that wants your listing as inventory. We build the listing health auditor and the workspace around it so operators can see, in color, what is actually published. Start on the{" "}
+              <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+                BLM homepage
+              </Link>{" "}
+              or read{" "}
+              <Link
+                to="/blog/$slug"
+                params={{ slug: "what-is-business-listing-management" }}
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                what is business listing management
+              </Link>{" "}
+              for the category definition.
             </p>
             <p>
               The company is led by {SITE.author}. Editorial is published as {SITE.editorial} when a piece is collaborative. We would rather be useful to local SEO teams than famous to them.

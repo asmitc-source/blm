@@ -9,9 +9,9 @@ import { JsonLd } from "@/components/json-ld";
 export const Route = createFileRoute("/integrations")({
   head: () =>
     pageHead({
-      title: "Integrations",
+      title: "Business listing management integrations",
       description:
-        "BLM connects Google Business Profile, Apple Maps, Bing Places, Facebook, Yelp, and the directory network used in local search.",
+        "Business listing management integrations on BLM: Google Business Profile, Apple Maps, Bing Places, Facebook, Yelp, and the directory network used in local search.",
       path: "/integrations",
     }),
   component: IntegrationsPage,
@@ -37,8 +37,23 @@ function IntegrationsPage() {
       <InnerPage
         eyebrow="Integrations"
         title="Google, Apple, Bing, and the directory network customers still open."
-        lede="A listing is not a Google-only object. BLM treats maps, social discovery, and classic directories as one coverage graph."
+        lede="Business listing management is not a Google-only job. BLM treats maps, social discovery, and classic directories as one coverage graph so every location stays accurate."
       >
+        <p className="mb-8 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          See the product view on the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM homepage
+          </Link>{" "}
+          or the category definition in{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>
+          .
+        </p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {INTEGRATIONS.map((item) => (
             <article key={item.name} className="rounded-3xl bg-cream p-5 hairline">

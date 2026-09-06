@@ -13,18 +13,18 @@ export const Route = createFileRoute("/resources")({
   loader: () => loadPublicSite(),
   head: () =>
     pageHead({
-      title: "Resources",
+      title: "Business listing management resources",
       description:
-        "Guides, comparisons, and glossary entries on business listing management, NAP, duplicates, Google Business Profile, and directory coverage.",
+        "Business listing management resources: guides, comparisons, and glossary entries on NAP, duplicates, Google Business Profile, and directory coverage.",
       path: "/resources",
     }),
   component: ResourcesPage,
 });
 
 const HUBS = [
-  { to: "/blog" as const, title: "Blog", copy: "Cornerstone articles on listing management, cost, Google vs the rest, and agency ops.", tile: "a" },
-  { to: "/compare" as const, title: "Compare", copy: "Independent alternatives to Yext and BrightLocal: what to keep, what to drop.", tile: "b" },
-  { to: "/glossary" as const, title: "Glossary", copy: "NAP, citations, GBP, Apple Business Connect, duplicates, and the rest of the vocabulary.", tile: "c" },
+  { to: "/blog" as const, title: "Blog", copy: "Cornerstone articles on business listing management, cost, Google vs the rest, and agency ops.", tile: "a" },
+  { to: "/compare" as const, title: "Compare", copy: "Independent business listing management alternatives: what to keep, what to drop.", tile: "b" },
+  { to: "/glossary" as const, title: "Glossary", copy: "Business listing management vocabulary: NAP, citations, GBP, duplicates, and more.", tile: "c" },
 ];
 
 function ResourcesPage() {
@@ -45,8 +45,23 @@ function ResourcesPage() {
         compact
         eyebrow="Resources"
         title="The citation engine for listing operators."
-        lede="Direct-answer guides written so humans and models can quote them. Start with the definition, then cost, then duplicates."
+        lede="Business listing management guides written so humans and models can quote them. Start with the definition, then cost, then duplicates."
       >
+        <p className="mb-8 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          Begin with{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>{" "}
+          or the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM homepage
+          </Link>{" "}
+          product view.
+        </p>
         {featured ? (
           <Link
             to="/blog/$slug"

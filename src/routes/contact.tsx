@@ -7,8 +7,9 @@ import { JsonLd } from "@/components/json-ld";
 export const Route = createFileRoute("/contact")({
   head: () =>
     pageHead({
-      title: "Contact",
-      description: "Contact BLM sales or support about listing management, demos, and early access.",
+      title: "Contact business listing management at BLM",
+      description:
+        "Contact BLM about business listing management for multi-location brands, franchises, agencies, and local SEO teams. Sales, onboarding, and support.",
       path: "/contact",
     }),
   component: ContactPage,

@@ -77,7 +77,7 @@ function Hero() {
             style={{ animationDelay: "90ms" }}
           >
             {copy?.lede ??
-              `Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one workspace.`}
+              `Business listing management without the spreadsheet: unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one BLM workspace.`}
           </p>
           <div
             className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3"

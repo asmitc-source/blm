@@ -12,9 +12,9 @@ import { JsonLd } from "@/components/json-ld";
 export const Route = createFileRoute("/book")({
   head: () =>
     pageHead({
-      title: "Book a call",
+      title: "Book a business listing management call",
       description:
-        "Book a 30-minute BLM call for franchise, agency, or multi-location listing management. See NAP drift, duplicates, and coverage on your real footprint.",
+        "Book a 30-minute business listing management call with BLM. See NAP drift, duplicates, and coverage on your real multi-location footprint, then map Starter, Growth, or Enterprise.",
       path: "/book",
     }),
   component: BookPage,
@@ -49,8 +49,31 @@ function BookPage() {
       <InnerPage
         eyebrow="Book a call"
         title="Thirty minutes on your actual footprint."
-        lede="Share a few locations. We walk NAP drift, duplicates, and publisher coverage on your real multi-location footprint, then map Starter, Growth, and Enterprise to your team. The calendar invite goes to contact@nakama.in."
+        lede="Book a business listing management walkthrough on locations you name. We cover NAP drift, duplicates, and publisher coverage, then map Starter, Growth, and Enterprise to your team."
       >
+        <p className="mb-8 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          New to the category? Read{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>
+          , start on the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM homepage
+          </Link>
+          ,{" "}
+          <Link to="/compare" className="font-medium text-ink underline-offset-2 hover:underline">
+            compare listing software
+          </Link>
+          , or check{" "}
+          <Link to="/pricing" className="font-medium text-ink underline-offset-2 hover:underline">
+            business listing management pricing
+          </Link>
+          .
+        </p>
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="rounded-2xl bg-cream p-6 hairline">
             <p className="text-sm font-semibold text-ink">Leave your details</p>
@@ -104,7 +127,7 @@ function BookPage() {
               <p className="text-sm font-semibold text-ink">What you get on the call</p>
               <ul className="mt-3 space-y-3 text-sm text-ink-soft">
                 {[
-                  "A listing health score on locations you name",
+                  "A business listing management health score on locations you name",
                   "How duplicates and NAP drift show up in the product",
                   "Coverage across Google, Apple, Bing, and the directory network",
                   "What Starter, Growth, and Enterprise look like for your team",

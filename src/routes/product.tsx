@@ -14,9 +14,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/product")({
   head: () =>
     pageHead({
-      title: "Product",
+      title: "Business listing management software",
       description:
-        "BLM product: NAP consistency, directory coverage, duplicate detection, hours and category monitoring for multi-location brands.",
+        "Business listing management software from BLM: NAP consistency, directory coverage, duplicate detection, hours and category monitoring for multi-location brands.",
       path: "/product",
     }),
   component: ProductPage,
@@ -109,6 +109,21 @@ function ProductPage() {
         lede="BLM is business listing management software for teams who cannot afford a different address on Google, Apple, Bing, and the directory network."
       />
       <section className="page-wrap py-10 sm:py-16">
+        <p className="mb-8 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          Business listing management here means one governed NAP, duplicate radar, and publisher coverage you can inspect. Start on the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            BLM homepage
+          </Link>{" "}
+          or read{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>{" "}
+          for the category definition.
+        </p>
         <ProductDesk />
         <div className="mt-10 grid gap-4 lg:grid-cols-2">
           {FEATURES.map((item, i) => (

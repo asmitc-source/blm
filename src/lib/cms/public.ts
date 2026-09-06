@@ -8,7 +8,7 @@ import type { CmsArticle, SiteCopy } from "./types";
 function fallbackCopy(): SiteCopy {
   return {
     home: {
-      lede: "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one workspace.",
+      lede: "Business listing management without the spreadsheet: unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one BLM workspace.",
       trialLine:
         "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
     },

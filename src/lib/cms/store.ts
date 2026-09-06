@@ -52,13 +52,13 @@ function asArticle(row: Record<string, unknown>): CmsArticle {
 
 const defaultCopy = (): SiteCopy => ({
   home: {
-    lede: "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one workspace.",
+    lede: "Business listing management without the spreadsheet: unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one BLM workspace.",
     trialLine:
       "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
   },
   pricingTitle: "Business listing management pricing: Starter $49. Growth $149.",
   pricingLede:
-    "Starter listed at $49/month, Growth at $149/month, Enterprise custom. Start a free trial on Starter, or book a call for Growth and Enterprise. Listed prices apply when billing goes live.",
+    "Business listing management cost for BLM: Starter listed at $49/month, Growth at $149/month, Enterprise custom. Start a free trial or book a call. Listed prices apply when billing goes live.",
   plans: PRICING.map((p) => ({
     id: p.id,
     name: p.name,

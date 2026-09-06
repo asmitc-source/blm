@@ -10,7 +10,7 @@ export const Route = createFileRoute("/demo")({
     pageHead({
       title: "Book a call",
       description:
-        "Book a BLM call for franchise, agency, or multi-location listing management. Calendar invite goes to contact@nakama.in.",
+        "Book a business listing management call with BLM for franchise, agency, or multi-location teams. Redirects to /book.",
       path: "/demo",
     }),
   component: DemoRedirect,
