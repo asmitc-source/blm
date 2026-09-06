@@ -95,7 +95,7 @@ function Hero() {
             className="animate-fade-up mt-3 inline-flex items-center gap-1 text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
             style={{ animationDelay: "280ms" }}
           >
-            Or book a call on a real footprint <ArrowRight className="size-4" />
+            Or book a call about your listings <ArrowRight className="size-4" />
           </Link>
           <AskRow />
         </div>
