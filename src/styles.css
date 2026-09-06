@@ -1356,11 +1356,46 @@
 }
 
 /* —— About page polish —— */
+
+/* Belief / step cards — full-perimeter accent border on hover */
 .about-belief-card,
 .about-step-card {
+  --about-accent-from: var(--tile-a);
+  --about-accent-to: var(--tile-d);
+  border: 1.5px solid var(--line);
   transition:
     transform 220ms var(--ease-out-soft),
-    box-shadow 220ms var(--ease-out-soft);
+    box-shadow 220ms var(--ease-out-soft),
+    border-color 220ms var(--ease-out-soft);
+}
+
+.about-belief-card::before,
+.about-step-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    135deg,
+    var(--about-accent-from),
+    var(--about-accent-to),
+    var(--about-accent-from)
+  );
+  background-size: 200% 200%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 280ms var(--ease-out-soft),
+    background-position 600ms var(--ease-out-soft);
 }
 
 .about-belief-card:hover,
@@ -1369,6 +1404,15 @@
 .about-step-card:focus-within {
   transform: translateY(-4px);
   box-shadow: var(--elev-soft);
+  border-color: transparent;
+}
+
+.about-belief-card:hover::before,
+.about-belief-card:focus-within::before,
+.about-step-card:hover::before,
+.about-step-card:focus-within::before {
+  opacity: 1;
+  background-position: 100% 50%;
 }
 
 .about-independence {
@@ -1383,33 +1427,149 @@
   box-shadow: var(--elev-lift);
 }
 
-.about-built-card {
+/* Built-by profile — always-on multi-tile gradient border */
+.about-built-shell {
+  position: relative;
+  isolation: isolate;
+  border-radius: 1.5rem;
+  padding: 2px;
+  overflow: hidden;
+  background: transparent;
   transition:
     transform 240ms var(--ease-out-soft),
     box-shadow 240ms var(--ease-out-soft);
 }
 
-.about-built-card:hover,
-.about-built-card:focus-within {
+.about-built-border {
+  position: absolute;
+  inset: -45%;
+  background: conic-gradient(
+    from 210deg,
+    var(--tile-a),
+    var(--tile-b),
+    var(--tile-c),
+    var(--tile-d),
+    var(--tile-a)
+  );
+  animation: about-built-border-drift 14s linear infinite;
+  pointer-events: none;
+}
+
+.about-built-shell:hover,
+.about-built-shell:focus-within {
   transform: translateY(-2px);
   box-shadow: var(--elev-soft);
 }
 
-.about-fact-chip:hover,
-.about-fact-chip:focus-within {
-  box-shadow: var(--elev-soft);
+.about-built-card {
+  position: relative;
 }
 
+@keyframes about-built-border-drift {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hero LogoMark — staggered tile motion */
 .about-hero-tiles {
-  animation: about-tiles-float 6.5s var(--ease-out-soft) infinite alternate;
+  animation: about-tiles-bob 7s ease-in-out infinite alternate;
 }
 
-@keyframes about-tiles-float {
+.logo-mark-animate .logo-tile {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.logo-mark-animate .logo-tile-a {
+  animation: about-tile-a 5.2s ease-in-out infinite;
+}
+
+.logo-mark-animate .logo-tile-b {
+  animation: about-tile-b 5.8s ease-in-out infinite;
+  animation-delay: -0.9s;
+}
+
+.logo-mark-animate .logo-tile-c {
+  animation: about-tile-c 6.4s ease-in-out infinite;
+  animation-delay: -1.6s;
+}
+
+.logo-mark-animate .logo-tile-d {
+  animation: about-tile-d 5.5s ease-in-out infinite;
+  animation-delay: -2.2s;
+}
+
+@keyframes about-tiles-bob {
   from {
-    transform: translateY(0);
+    transform: translateY(0) rotate(-1.5deg);
   }
   to {
-    transform: translateY(-8px);
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+
+@keyframes about-tile-a {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: brightness(1);
+  }
+  40% {
+    transform: translate(-1.2px, -2.4px) rotate(-6deg) scale(1.06);
+    filter: brightness(1.12);
+  }
+  70% {
+    transform: translate(0.6px, 1px) rotate(3deg) scale(0.97);
+    filter: brightness(0.96);
+  }
+}
+
+@keyframes about-tile-b {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: brightness(1) saturate(1);
+  }
+  35% {
+    transform: translate(2px, -1.6px) rotate(7deg) scale(1.05);
+    filter: brightness(1.1) saturate(1.15);
+  }
+  65% {
+    transform: translate(-0.8px, 1.4px) rotate(-4deg) scale(0.96);
+    filter: brightness(0.95) saturate(0.95);
+  }
+}
+
+@keyframes about-tile-c {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: brightness(1);
+  }
+  30% {
+    transform: translate(-1.8px, 1.8px) rotate(5deg) scale(0.95);
+    filter: brightness(0.94);
+  }
+  60% {
+    transform: translate(1.2px, -2px) rotate(-8deg) scale(1.07);
+    filter: brightness(1.14);
+  }
+}
+
+@keyframes about-tile-d {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: brightness(1) saturate(1);
+  }
+  45% {
+    transform: translate(1.6px, 2px) rotate(-5deg) scale(1.04);
+    filter: brightness(1.08) saturate(1.12);
+  }
+  75% {
+    transform: translate(-1px, -1.2px) rotate(6deg) scale(0.96);
+    filter: brightness(0.97) saturate(0.95);
   }
 }
 
@@ -1417,10 +1577,25 @@
   .about-belief-card,
   .about-step-card,
   .about-independence,
-  .about-built-card,
-  .about-hero-tiles {
-    animation: none;
+  .about-built-shell,
+  .about-hero-tiles,
+  .logo-mark-animate .logo-tile,
+  .about-built-border {
+    animation: none !important;
     transition: none;
+  }
+
+  .about-built-border {
+    inset: 0;
+    transform: none;
+    background: conic-gradient(
+      from 45deg,
+      var(--tile-a),
+      var(--tile-b),
+      var(--tile-c),
+      var(--tile-d),
+      var(--tile-a)
+    );
   }
 
   .about-belief-card:hover,
@@ -1429,8 +1604,15 @@
   .about-step-card:focus-within,
   .about-independence:hover,
   .about-independence:focus-within,
-  .about-built-card:hover,
-  .about-built-card:focus-within {
+  .about-built-shell:hover,
+  .about-built-shell:focus-within {
     transform: none;
+  }
+
+  .about-belief-card:hover::before,
+  .about-belief-card:focus-within::before,
+  .about-step-card:hover::before,
+  .about-step-card:focus-within::before {
+    opacity: 1;
   }
 }

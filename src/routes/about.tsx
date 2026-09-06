@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Crosshair, Scale, Sparkles } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -26,21 +27,24 @@ const BELIEFS = [
     copy: "NAP, hours, and categories are not a quarterly cleanup. They are how customers find the right door — and how map packs stay honest.",
     Icon: Crosshair,
     soft: "bg-coral-soft text-coral",
-    accent: "from-[var(--tile-a)] to-[var(--tile-b)]",
+    accentFrom: "var(--tile-a)",
+    accentTo: "var(--tile-b)",
   },
   {
     title: "Cite primary sources",
     copy: "We would rather link a publisher rule or a field guide than invent certainty. Reviews and comparisons stay equal-weakness on purpose.",
     Icon: BookOpen,
     soft: "bg-sky-soft text-sky",
-    accent: "from-[var(--tile-b)] to-[var(--tile-c)]",
+    accentFrom: "var(--tile-b)",
+    accentTo: "var(--tile-c)",
   },
   {
     title: "Honest tradeoffs over theater",
     copy: "Prefer clear ceilings and real gaps over “best of” lists. Ship the definition of business listing management so a human or an LLM can quote it without guessing.",
     Icon: Scale,
     soft: "bg-butter-soft text-butter",
-    accent: "from-[var(--tile-c)] to-[var(--tile-d)]",
+    accentFrom: "var(--tile-c)",
+    accentTo: "var(--tile-d)",
   },
 ] as const;
 
@@ -62,11 +66,10 @@ const STEPS = [
   },
 ] as const;
 
-const FACTS = [
-  { label: "Status", value: "Independent product" },
-  { label: "Category", value: "Business listing management" },
-  { label: "Built for", value: "Multi-location, franchise, agency, local SEO" },
-  { label: "Access", value: "Free trial · early access" },
+const STEP_ACCENTS = [
+  { from: "var(--tile-a)", to: "var(--tile-b)" },
+  { from: "var(--tile-b)", to: "var(--tile-c)" },
+  { from: "var(--tile-c)", to: "var(--tile-d)" },
 ] as const;
 
 function AboutPage() {
@@ -127,7 +130,7 @@ function Hero() {
 
           <div className="relative hidden justify-self-end sm:block" aria-hidden="true">
             <div className="about-hero-tiles">
-              <LogoMark className="size-36 drop-shadow-sm lg:size-44" />
+              <LogoMark animateTiles className="size-36 drop-shadow-sm lg:size-44" />
             </div>
           </div>
         </div>
@@ -158,14 +161,15 @@ function WhyExist() {
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {BELIEFS.map((b, i) => (
           <Reveal key={b.title} delay={i * 70} className="h-full">
-            <article className="about-belief-card group relative flex h-full flex-col overflow-hidden rounded-3xl bg-cream p-6 hairline">
-              <span
-                className={cn(
-                  "pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r opacity-90 transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:scale-x-100",
-                  b.accent,
-                )}
-                aria-hidden="true"
-              />
+            <article
+              className="about-belief-card group relative flex h-full flex-col overflow-hidden rounded-3xl bg-cream p-6"
+              style={
+                {
+                  "--about-accent-from": b.accentFrom,
+                  "--about-accent-to": b.accentTo,
+                } as CSSProperties
+              }
+            >
               <span className={cn("inline-flex size-11 items-center justify-center rounded-2xl", b.soft)}>
                 <b.Icon className="size-5" aria-hidden="true" />
               </span>
@@ -203,13 +207,15 @@ function HowWeWork() {
         <ol className="mt-10 grid gap-4 lg:grid-cols-3">
           {STEPS.map((s, i) => (
             <Reveal key={s.n} delay={i * 80} className="h-full">
-              <li className="about-step-card relative h-full overflow-hidden rounded-3xl bg-paper p-6 pt-7 hairline">
-                <span
-                  className="pointer-events-none absolute right-5 top-5 font-display text-6xl font-semibold leading-none text-sand/90 sm:text-7xl"
-                  aria-hidden="true"
-                >
-                  {s.n}
-                </span>
+              <li
+                className="about-step-card relative h-full overflow-hidden rounded-3xl bg-paper p-6 pt-7"
+                style={
+                  {
+                    "--about-accent-from": STEP_ACCENTS[i].from,
+                    "--about-accent-to": STEP_ACCENTS[i].to,
+                  } as CSSProperties
+                }
+              >
                 <p className="relative text-xs font-semibold uppercase tracking-[0.14em] text-muted">Step {s.n}</p>
                 <h3 className="relative mt-3 max-w-[14ch] font-display text-xl font-semibold tracking-tight text-ink sm:max-w-none">
                   {s.title}
@@ -275,76 +281,65 @@ function BuiltBy() {
   return (
     <section className="page-wrap pb-16 sm:pb-20" aria-labelledby="built-by-title">
       <Reveal>
-        <div className="about-built-card group grid overflow-hidden rounded-3xl bg-cream hairline lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="relative flex flex-col justify-between gap-8 border-b border-line bg-sand/50 p-8 sm:p-10 lg:border-b-0 lg:border-r">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Built by</p>
-              <div className="mt-6 size-24 overflow-hidden rounded-3xl shadow-soft ring-1 ring-line transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:-translate-y-1 group-hover:shadow-lift">
-                <picture>
-                  <source srcSet="/team/asmit-choudhary.webp" type="image/webp" />
-                  <img
-                    src="/team/asmit-choudhary.jpg"
-                    alt={SITE.author}
-                    width={96}
-                    height={96}
-                    className="size-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </picture>
+        <div className="about-built-shell">
+          <div className="about-built-border" aria-hidden="true" />
+          <div className="about-built-card group relative z-[1] grid overflow-hidden rounded-[calc(1.5rem-2px)] bg-cream lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="relative flex flex-col justify-between gap-8 border-b border-line bg-sand/50 p-8 sm:p-10 lg:border-b-0 lg:border-r">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Built by</p>
+                <div className="mt-6 size-24 overflow-hidden rounded-3xl shadow-soft ring-1 ring-line transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:-translate-y-1 group-hover:shadow-lift">
+                  <picture>
+                    <source srcSet="/team/asmit-choudhary.webp" type="image/webp" />
+                    <img
+                      src="/team/asmit-choudhary.jpg"
+                      alt={SITE.author}
+                      width={96}
+                      height={96}
+                      className="size-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+                <h2 id="built-by-title" className="mt-6 font-display text-3xl font-semibold tracking-tight text-ink">
+                  {SITE.author}
+                </h2>
+                <p className="mt-1 text-sm font-medium text-muted">{SITE.legalName}</p>
               </div>
-              <h2 id="built-by-title" className="mt-6 font-display text-3xl font-semibold tracking-tight text-ink">
-                {SITE.author}
-              </h2>
-              <p className="mt-1 text-sm font-medium text-muted">{SITE.legalName}</p>
+              <p className="text-sm text-muted">
+                Editorial publishes as {SITE.editorial} when a piece is collaborative.
+              </p>
             </div>
-            <p className="text-sm text-muted">
-              Editorial publishes as {SITE.editorial} when a piece is collaborative.
-            </p>
-          </div>
-          <div className="flex flex-col justify-center gap-5 p-8 sm:p-10">
-            <p className="text-[17px] leading-relaxed text-ink-soft">
-              {SITE.author} built BLM. He holds a B.Tech in Mechanical Engineering from IIT Roorkee (2026)
-              and has interned at Ninjacart and Deloitte. He also edits the independent{" "}
-              <a
-                href="https://locallistingsmanagement.co"
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-ink underline-offset-2 hover:underline"
-              >
-                Local Listings Management
-              </a>{" "}
-              publication.
-            </p>
-            <p className="text-[17px] leading-relaxed text-ink-soft">
-              The brief is simple: build business listing management software operators actually open on a
-              Monday — not another overlay that rents someone else’s directory graph.
-            </p>
-            <div className="mt-2 flex flex-wrap gap-3">
-              <Button asChild>
-                <Link to="/trial">Start free trial</Link>
-              </Button>
-              <Button asChild variant="secondary">
-                <Link to="/book">Book a call</Link>
-              </Button>
+            <div className="flex flex-col justify-center gap-5 p-8 sm:p-10">
+              <p className="text-[17px] leading-relaxed text-ink-soft">
+                {SITE.author} built BLM. He holds a B.Tech in Mechanical Engineering from IIT Roorkee (2026)
+                and has interned at Ninjacart and Deloitte. He also edits the independent{" "}
+                <a
+                  href="https://locallistingsmanagement.co"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-ink underline-offset-2 hover:underline"
+                >
+                  Local Listings Management
+                </a>{" "}
+                publication.
+              </p>
+              <p className="text-[17px] leading-relaxed text-ink-soft">
+                The brief is simple: build business listing management software operators actually open on a
+                Monday — not another overlay that rents someone else’s directory graph.
+              </p>
+              <div className="mt-2 flex flex-wrap gap-3">
+                <Button asChild>
+                  <Link to="/trial">Start free trial</Link>
+                </Button>
+                <Button asChild variant="secondary">
+                  <Link to="/book">Book a call</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </Reveal>
-
-      <div className="mt-5 flex flex-wrap gap-2.5" aria-label="Company facts">
-        {FACTS.map((f, i) => (
-          <Reveal key={f.label} delay={i * 45}>
-            <div className="about-fact-chip group inline-flex max-w-full items-baseline gap-2 rounded-full bg-cream px-4 py-2.5 hairline transition-[transform,box-shadow,border-color] duration-200 ease-[var(--ease-out-soft)] hover:-translate-y-0.5 hover:shadow-soft">
-              <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-                {f.label}
-              </span>
-              <span className="h-3 w-px shrink-0 bg-line" aria-hidden="true" />
-              <span className="truncate text-sm font-semibold tracking-tight text-ink">{f.value}</span>
-            </div>
-          </Reveal>
-        ))}
-      </div>
     </section>
   );
 }
