@@ -92,7 +92,7 @@ function Hero() {
           </div>
           <Link
             to="/book"
-            className="group animate-fade-up mt-3 inline-flex items-center gap-1 text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
+            className="group animate-fade-up mt-3 inline-flex cursor-pointer items-center gap-1 text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline"
             style={{ animationDelay: "280ms" }}
           >
             Or book a call about your listings{" "}
@@ -187,20 +187,20 @@ function QuickAnswer() {
             <Link
               to="/blog/$slug"
               params={{ slug: "what-is-business-listing-management" }}
-              className="inline-flex items-center gap-1 text-brand hover:text-brand-hover"
+              className="inline-flex cursor-pointer items-center gap-1 text-brand underline-offset-2 hover:text-brand-hover hover:underline focus-visible:underline"
             >
               Full definition <ArrowRight className="size-4" />
             </Link>
-            <Link to="/compare" className="inline-flex items-center gap-1 text-ink-soft hover:text-ink">
+            <Link to="/compare" className="inline-flex cursor-pointer items-center gap-1 text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline">
               Compare listing software
             </Link>
-            <Link to="/pricing" className="inline-flex items-center gap-1 text-ink-soft hover:text-ink">
+            <Link to="/pricing" className="inline-flex cursor-pointer items-center gap-1 text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline">
               Business listing management cost
             </Link>
             <Link
               to="/blog/$slug"
               params={{ slug: "best-business-listing-management-software-2026" }}
-              className="inline-flex items-center gap-1 text-ink-soft hover:text-ink"
+              className="inline-flex cursor-pointer items-center gap-1 text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline"
             >
               Best software guide
             </Link>
@@ -436,7 +436,7 @@ function Resources() {
             Learn more about business listing management
           </h2>
         </div>
-        <Link to="/resources" className="hidden text-sm font-semibold text-ink-soft hover:text-ink sm:inline">
+        <Link to="/resources" className="hidden cursor-pointer text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline sm:inline">
           All resources
         </Link>
       </Reveal>

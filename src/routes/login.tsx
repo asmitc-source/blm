@@ -84,11 +84,11 @@ function Login() {
         ) : null}
         <p className="mt-6 text-sm text-muted">
           New here?{" "}
-          <Link to="/trial" className="font-semibold text-ink">
+          <Link to="/trial" className="cursor-pointer font-semibold text-ink underline-offset-2 hover:underline focus-visible:underline">
             Start free trial
           </Link>
           {" · "}
-          <Link to="/book" className="font-semibold text-ink">
+          <Link to="/book" className="cursor-pointer font-semibold text-ink underline-offset-2 hover:underline focus-visible:underline">
             Book a call
           </Link>
         </p>

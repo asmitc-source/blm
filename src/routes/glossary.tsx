@@ -88,7 +88,7 @@ function GlossaryPage() {
                             key={link.label}
                             to="/blog/$slug"
                             params={{ slug: link.slug }}
-                            className="text-brand hover:text-brand-hover"
+                            className="cursor-pointer text-brand underline-offset-2 hover:text-brand-hover hover:underline focus-visible:underline"
                           >
                             {link.label}
                           </Link>
@@ -96,20 +96,20 @@ function GlossaryPage() {
                       }
                       if (link.to === "/compare") {
                         return (
-                          <Link key={link.label} to="/compare" className="text-ink-soft hover:text-ink">
+                          <Link key={link.label} to="/compare" className="cursor-pointer text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline">
                             {link.label}
                           </Link>
                         );
                       }
                       if (link.to === "/pricing") {
                         return (
-                          <Link key={link.label} to="/pricing" className="text-ink-soft hover:text-ink">
+                          <Link key={link.label} to="/pricing" className="cursor-pointer text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline">
                             {link.label}
                           </Link>
                         );
                       }
                       return (
-                        <Link key={link.label} to="/" className="text-ink-soft hover:text-ink">
+                        <Link key={link.label} to="/" className="cursor-pointer text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline">
                           {link.label}
                         </Link>
                       );

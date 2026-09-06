@@ -123,7 +123,7 @@ export function ProductProof({ explore = true }: { explore?: boolean }) {
             </p>
           </div>
           {explore ? (
-          <Link to="/product" className="inline-flex items-center gap-1 text-sm font-semibold text-ink-soft hover:text-ink">
+          <Link to="/product" className="inline-flex cursor-pointer items-center gap-1 text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline">
             Explore the product <ArrowRight className="size-4" />
           </Link>
           ) : null}

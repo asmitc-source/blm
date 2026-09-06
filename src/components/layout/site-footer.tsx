@@ -53,7 +53,7 @@ function FooterCol({
             <Link
               to={item.href as AppPath}
               preload="intent"
-              className="text-sm text-ink-soft transition-colors hover:text-ink"
+              className="cursor-pointer text-sm text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline"
             >
               {item.label}
             </Link>
