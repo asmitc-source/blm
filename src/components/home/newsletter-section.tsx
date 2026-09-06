@@ -36,7 +36,6 @@ export function NewsletterSection() {
     <section id="newsletter" className="page-wrap py-16 sm:py-20" aria-labelledby="home-newsletter-title">
       <Reveal>
         <div className="newsletter-card">
-          <div className="newsletter-card-glow" aria-hidden="true" />
           <div className="newsletter-card-border">
             <div className="newsletter-card-spin" aria-hidden="true" />
             <div className="newsletter-card-inner relative bg-paper px-6 py-12 sm:px-12">
