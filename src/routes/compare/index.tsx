@@ -206,6 +206,35 @@ function CompareHub() {
             </Link>
           </Reveal>
         </div>
+
+        <div className="mt-8 grid gap-3 md:grid-cols-3">
+          {(
+            [
+              {
+                to: "/compare/moz-local-alternative" as const,
+                title: "Moz Local alternative",
+                copy: "Coming soon stub: Moz Local vs a listings-only desk.",
+              },
+              {
+                to: "/compare/uberall-alternative" as const,
+                title: "Uberall alternative",
+                copy: "Coming soon stub: location marketing suites vs listing hygiene.",
+              },
+              {
+                to: "/compare/birdeye-alternative" as const,
+                title: "Birdeye alternative",
+                copy: "Coming soon stub: reputation suites vs NAP and coverage ops.",
+              },
+            ] as const
+          ).map((item) => (
+            <Link key={item.to} to={item.to} className="rounded-2xl bg-cream px-5 py-4 hairline">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Coming soon</p>
+              <h3 className="mt-1 font-display text-lg font-semibold text-ink">{item.title}</h3>
+              <p className="mt-1 text-sm text-muted">{item.copy}</p>
+            </Link>
+          ))}
+        </div>
+
         {extras.length ? (
           <div className="mt-8 grid gap-3">
             {extras.map((a) => (
