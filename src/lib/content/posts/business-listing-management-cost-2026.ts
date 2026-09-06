@@ -8,11 +8,11 @@ DIY means a staff member owns Google, Apple, Bing, and a handful of directories 
 
 A realistic monthly load for someone who already has another job:
 
-- **5 locations:** 4–8 hours to check core publishers, fix obvious mismatches, and chase one duplicate. Feasible if that person is disciplined.
-- **15–25 locations:** 20–40 hours if they are logging into each publisher. That is a part-time job pretending to be a side task.
+- **5 locations:** 4-8 hours to check core publishers, fix obvious mismatches, and chase one duplicate. Feasible if that person is disciplined.
+- **15-25 locations:** 20-40 hours if they are logging into each publisher. That is a part-time job pretending to be a side task.
 - **50+ locations:** DIY without bulk tools is theater. You will update Google and hope the rest of the graph follows. It will not. Read [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) before you bet the year on GBP alone.
 
-Hourly cost is whatever you pay that person. At $50–$80 loaded cost, 25 hours is $1,250–$2,000 a month — before a rebrand or holiday hours. DIY only looks cheap in months when nothing changes. Those months are not when listings break.
+Hourly cost is whatever you pay that person. At $50-$80 loaded cost, 25 hours is $1,250-$2,000 a month, before a rebrand or holiday hours. DIY only looks cheap in months when nothing changes. Those months are not when listings break.
 
 If you want an honest first measurement of that mess, use the [Listing Health Auditor](/). Free listing audit, no credit card. It will not replace a person. It will tell you whether that person is fighting NAP drift or just gardening Google.
 
@@ -22,15 +22,15 @@ Agencies sell listing work as a citation package, a local SEO line item, or a st
 
 **Cleanup / onboarding (one-time)**
 
-- Small footprint (1–5 locations): often $500–$2,500 to inventory, claim, suppress obvious duplicates, and unify NAP.
-- Mid (10–25): $2,500–$8,000 is common when duplicates and aggregator lag are in play.
+- Small footprint (1-5 locations): often $500-$2,500 to inventory, claim, suppress obvious duplicates, and unify NAP.
+- Mid (10-25): $2,500-$8,000 is common when duplicates and aggregator lag are in play.
 - National / franchise: project pricing. The work is less “submit to 50 directories” and more “match and suppress at scale.”
 
 **Monthly retainers**
 
-- Monitoring and light corrections for a handful of locations: roughly $300–$800/month.
-- Multi-location local SEO that includes listings: $1,000–$5,000+/month, with listings as a fraction of the fee.
-- Pure listing operations for 25+ locations: often $1,500–$10,000+/month depending on SLA, reporting, and whether the agency owns publisher logins.
+- Monitoring and light corrections for a handful of locations: roughly $300-$800/month.
+- Multi-location local SEO that includes listings: $1,000-$5,000+/month, with listings as a fraction of the fee.
+- Pure listing operations for 25+ locations: often $1,500-$10,000+/month depending on SLA, reporting, and whether the agency owns publisher logins.
 
 You are not only paying for submissions. You are paying for someone to notice a fork on Apple, to file the right suppression, and to explain in a report why the score moved. Agencies that still send a monthly screenshot of GBP are underpricing the risk and overclaiming the work. The better model is in [business listing management for agencies](/blog/business-listing-management-for-agencies).
 
@@ -46,9 +46,9 @@ Vendor list prices in this category span three worlds: cheap rank-and-citation t
 
 **Focused listing management.** This is where BLM publishes numbers. On [pricing](/pricing):
 
-- **Starter** — unlocks after you create a workspace. NAP / coverage / duplicate / hours scores, email the report, one location.
-- **Growth** — $149/month for up to 25 locations, Google / Apple / Bing and core directories, duplicate risk alerts, hours and category gaps, shared workspace, weekly digest.
-- **Enterprise** — custom. Unlimited locations, agency multi-account structure, SSO and roles, bulk corrections, dedicated success, custom directory coverage.
+- **Starter:** unlocks after you create a workspace. NAP / coverage / duplicate / hours scores, email the report, one location.
+- **Growth:** $149/month for up to 25 locations, Google, Apple, Bing, and the directory network, duplicate risk alerts, hours and category gaps, shared workspace, weekly digest.
+- **Enterprise:** custom. Unlimited locations, agency multi-account structure, SSO and roles, bulk corrections, dedicated success, custom directory coverage.
 
 That is the public ladder: create a workspace, run a small footprint, then buy governance when the spreadsheet starts lying. Starter is behind sign-in so the lead is captured. Not a timed coupon.
 
@@ -61,14 +61,14 @@ Compare that to DIY hours or a $2,000 agency line. Software wins when it removes
 Drift is the cost that never gets its own GL code. It shows up as:
 
 - **Missed calls and visits.** Wrong phone, wrong hours, wrong pin. A clinic that is “open” on Apple and closed in reality burns reputation. A retailer with a disconnected tracking number on Bing burns paid demand.
-- **Split reviews.** Duplicates divide social proof. A 4.6 from 400 reviews and a 3.1 from 40 looks like two businesses. Map packs prefer the cleaner entity. Customers prefer the one with more proof — if they can find it. The fix is [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings), not another citation blast.
+- **Split reviews.** Duplicates divide social proof. A 4.6 from 400 reviews and a 3.1 from 40 looks like two businesses. Map packs prefer the cleaner entity. Customers prefer the one with more proof, if they can find it. The fix is [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings), not another citation blast.
 - **Paid media waste.** Store ads, call-only campaigns, and location extensions inherit listing data. Feeding them a stale NAP is paying to send people into a wall.
 - **Franchise conflict.** When corporate and a franchisee both “own” Google, hours thrash. Each thrash is a customer-facing error and an internal argument.
 - **Rebrand lag.** Legal and brand spend six figures on a name change, then Apple and directories serve the old string for months because nobody owned the graph.
 
 None of that invoices as “listing management.” All of it is listing management failing.
 
-A simple way to price drift: take last quarter’s location-level revenue, estimate a small miss rate from hours and NAP errors (even 1–2% at a few stores is real money), and compare it to $149/month or an agency retainer. Most multi-location teams find the software line is not the scary number.
+A simple way to price drift: take last quarter’s location-level revenue, estimate a small miss rate from hours and NAP errors (even 1-2% at a few stores is real money), and compare it to $149/month or an agency retainer. Most multi-location teams find the software line is not the scary number.
 
 ## How should a team budget for the first year?
 
@@ -92,15 +92,28 @@ Create a workspace. Starter unlocks after you sign in. Growth is $149/month when
 
 ### What counts as a location for pricing?
 
-A unique storefront NAP — one canonical name, address, and phone. Service-area businesses count as one location per coverage area you publish. If two pins share a phone and a suite, you likely have a duplicate, not two billable locations. Fix the graph before you argue the invoice.
+A unique storefront NAP: one canonical name, address, and phone. Service-area businesses count as one location per coverage area you publish. If two pins share a phone and a suite, you likely have a duplicate, not two billable locations. Fix the graph before you argue the invoice.
 
 ### Should we buy software or hire an agency first?
 
-If nobody has inventoried listings, start with an audit and a cleanup project — agency or internal. If you already know the mess and cannot watch 25 doors by hand, buy the desk and keep labor for suppressions and franchise communication. Most durable programs use both. Software without an owner is a dashboard. An agency without a system of record is a slideshow.
+If nobody has inventoried listings, start with an audit and a cleanup project (agency or internal). If you already know the mess and cannot watch 25 doors by hand, buy the desk and keep labor for suppressions and franchise communication. Most durable programs use both. Software without an owner is a dashboard. An agency without a system of record is a slideshow.
 
 ### Why do enterprise contracts get so large?
 
-Because location count, publisher SLAs, legal review, SSO, and professional services stack. That can be rational at hundreds or thousands of doors. It is not a law of nature for 20 locations. Compare the work you need — health, duplicates, coverage — to the contract, using the [product](/product) scope as a checklist rather than a logo wall.
+Because location count, publisher SLAs, legal review, SSO, and professional services stack. That can be rational at hundreds or thousands of doors. It is not a law of nature for 20 locations. Compare the work you need (health, duplicates, coverage) to the contract, using the [product](/product) scope as a checklist rather than a logo wall.
+
+## Sources
+
+Publisher and local-search references checked 2026-09-06. Confirm rules in each help center before you file a change; product UIs move.
+
+- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
+- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
+- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
+- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
+- [Apple Maps / Business Connect resources](https://register.apple.com/resources): program and place-data guidance for brands.
+- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
+- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
+- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

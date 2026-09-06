@@ -20,7 +20,9 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogIndex() {
   const data = Route.useLoaderData();
-  const posts = (data.articles.length ? data.articles : BLOG_POSTS).map(toCard);
+  const bundled = new Set(BLOG_POSTS.map((p) => p.slug));
+  const extras = data.articles.filter((a) => !bundled.has(a.slug));
+  const posts = [...BLOG_POSTS, ...extras].map(toCard);
 
   return (
     <SiteShell>

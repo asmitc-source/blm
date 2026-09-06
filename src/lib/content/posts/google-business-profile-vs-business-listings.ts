@@ -1,4 +1,4 @@
-const markdown = `Google Business Profile is one listing. Business listings are the whole citation graph — Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directories that still sit under them. Managing only GBP is necessary and not sufficient. Customers still search, navigate, and tap calls on platforms Google does not control.
+const markdown = `Google Business Profile is one listing. Business listings are the whole citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directories that still sit under them. Managing only GBP is necessary and not sufficient. Customers still search, navigate, and tap calls on platforms Google does not control.
 
 If your local program is “we keep Google tidy,” this piece is the argument for treating listings as a graph. The definition of the practice is in [what is business listing management?](/blog/what-is-business-listing-management). The buying criteria are in [best business listing management software in 2026](/blog/best-business-listing-management-software-2026).
 
@@ -20,7 +20,7 @@ What GBP does not do:
 - Prevent a duplicate from existing on Google *or* anywhere else.
 - Speak for customers who navigate with Apple Maps, ask Bing Copilot, or tap a directory in a hotel concierge iPad.
 
-Treating GBP as “our listing” is a category error. It is **a** listing — the loudest one. The rest of the graph still answers the phone.
+Treating GBP as “our listing” is a category error. It is **a** listing (the loudest one). The rest of the graph still answers the phone.
 
 A practical test: change Sunday hours on Google only. Drive the route in CarPlay or look the store up on an iPhone Maps app. If those surfaces disagree, you do not have listing management. You have a Google hobby. The [Listing Health Auditor](/) will show that disagreement as coverage and hours scores. Free listing audit, no credit card.
 
@@ -46,7 +46,7 @@ Apple Maps matters when:
 
 Apple is slower to reflect edits, pickier about matching, and less documented in agency playbooks. That is an argument for watching it more, not less. A brand that is perfect on Google and a year behind on Apple is inaccurate for a specific, high-spend cohort.
 
-Apple Business Connect is the owner tool. If nobody on your team has access, you do not manage Apple; you hope. Add it to the same canonical-NAP process you use for GBP. If the name string differs — DBA versus legal, extra city token, missing suite — expect a duplicate or a suppressed pin rather than a merge.
+Apple Business Connect is the owner tool. If nobody on your team has access, you do not manage Apple; you hope. Add it to the same canonical-NAP process you use for GBP. If the name string differs (DBA versus legal, extra city token, missing suite), expect a duplicate or a suppressed pin rather than a merge.
 
 ## What about Bing, directories, and in-car navigation?
 
@@ -54,9 +54,9 @@ Apple Business Connect is the owner tool. If nobody on your team has access, you
 
 **Directories** (Yelp, BBB, Yellow Pages, Tripadvisor, and category sites) are both discovery and data exhaust. Even when they send little traffic, they are inputs to aggregators and to customers who trust a review site more than a map. A Yelp fork with the old tracking number will keep teaching the graph the wrong phone.
 
-**In-car and other maps** (Here, MapQuest, embedded nav) rarely get a login. They consume aggregator feeds. You influence them by keeping Foursquare and similar networks aligned with canonical NAP — not by posting on GBP and waiting.
+**In-car and other maps** (Here, MapQuest, embedded nav) rarely get a login. They consume aggregator feeds. You influence them by keeping Foursquare and similar networks aligned with canonical NAP, not by posting on GBP and waiting.
 
-None of this means you must manually garden 80 directories. It means you measure **coverage** and **parity**, then write to the publishers that actually move the graph. Core set for most multi-location brands: Google, Apple, Bing, Facebook, Yelp, plus aggregator hygiene. The long tail is a score, not a scavenger hunt. Public [pricing](/pricing) for BLM is built around that core (Growth includes Google, Apple, Bing, and core directories) rather than a vanity directory count.
+None of this means you must manually garden 80 directories. It means you measure **coverage** and **parity**, then write to the publishers that actually move the graph. Core set for most multi-location brands: Google, Apple, Bing, Facebook, Yelp, plus aggregator hygiene. The long tail is a score, not a scavenger hunt. Public [pricing](/pricing) for BLM is built around that core (Growth includes Google, Apple, Bing, and the directory network) rather than a vanity directory count.
 
 ## When is Google-only a reasonable choice?
 
@@ -103,11 +103,24 @@ No. You need accurate core maps, clean aggregator inputs, and the directories yo
 
 ### Where should the canonical NAP live?
 
-In a system of record you control — a listing workspace, not a Google field. Push outward. If Google is the only copy of the truth, a well-meaning manager with the mobile app can change the truth for the whole company without changing Apple. The [product](/product) exists to make that record explicit.
+In a system of record you control: a listing workspace, not a Google field. Push outward. If Google is the only copy of the truth, a well-meaning manager with the mobile app can change the truth for the whole company without changing Apple. The [product](/product) exists to make that record explicit.
 
 ### How fast should we expect non-Google publishers to update?
 
 Hours to weeks, depending on the publisher and whether you have owner access. Plan for lag. “We submitted it” is not “customers see it.” Re-scan live records. That re-scan is the difference between listing management and listing theater.
+
+## Sources
+
+Publisher and local-search references checked 2026-09-06. Confirm rules in each help center before you file a change; product UIs move.
+
+- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
+- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
+- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
+- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
+- [Apple Maps / Business Connect resources](https://register.apple.com/resources): program and place-data guidance for brands.
+- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
+- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
+- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

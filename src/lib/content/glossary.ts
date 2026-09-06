@@ -10,7 +10,7 @@ export const GLOSSARY = [
   { term: "Service-area business (SAB)", def: "A business that hides a street address and shows a coverage area instead. Still needs consistent NAP and categories." },
   { term: "Primary category", def: "The single best category a publisher uses to classify the location. Mismatched primaries confuse both ranking and customer expectations." },
   { term: "Aggregator", def: "A data provider that syndicates NAP to many directories. Drift at the aggregator layer fans out everywhere." },
-  { term: "Health score", def: "BLM’s 0–100 summary of NAP consistency, coverage, duplicate risk, and hours/category gaps." },
+  { term: "Health score", def: "BLM’s 0-100 summary of NAP consistency, coverage, duplicate risk, and hours/category gaps." },
   { term: "Map pack", def: "The local 3-pack (or similar) of map results in search. Listing issues are a frequent suppression cause." },
   { term: "Storefront vs brand page", def: "A location listing versus a brand-level entity. Mixing them is a common duplicate source." },
   { term: "Tracking number", def: "A call-analytics number used in ads or landing pages. If it leaks onto map listings, NAP splits." },

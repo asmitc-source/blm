@@ -1,4 +1,4 @@
-const markdown = `Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews — in that order — across Google, Apple, Bing, and directories. Do not delete first. Do not create a “clean” new profile and hope the old one dies. Choose a survivor, merge or report the rest, and watch the fork come back until aggregators catch up.
+const markdown = `Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews (in that order) across Google, Apple, Bing, and the directory network. Do not delete first. Do not create a “clean” new profile and hope the old one dies. Choose a survivor, merge or report the rest, and watch the fork come back until aggregators catch up.
 
 This is a field guide, not a theory of local SEO. If you need why listings exist as a graph, read [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings). If you need the category definition, use [what is business listing management?](/blog/what-is-business-listing-management).
 
@@ -19,7 +19,7 @@ You will not prevent all of these. You can detect them on a schedule and close t
 
 Duplicates hurt in three measurable ways. Reviews split, so social proof looks weaker. Hours and phones diverge, so customers get the wrong one. Ranking signals split, so the map pack prefers a cleaner competitor. Cleanup is reputation work, not janitorial vanity.
 
-## How do you find duplicates across Google, Apple, Bing, and directories?
+## How do you find duplicates across Google, Apple, Bing, and the directory network?
 
 Search like a customer and like a matcher. Both.
 
@@ -65,7 +65,7 @@ Write the rule down so franchisees and agencies cannot invent local exceptions. 
 
 Reviews live on profiles. Delete the profile, lose the reviews. That is the whole game.
 
-**Google.** Prefer **merge** over delete. In GBP, request a merge so reviews and photos can land on the survivor. Unclaimed duplicates can be suggested as duplicates / reported. If you do not own the fork, you still report it — you just cannot merge from the inside. Never create a third listing to “start clean.”
+**Google.** Prefer **merge** over delete. In GBP, request a merge so reviews and photos can land on the survivor. Unclaimed duplicates can be suggested as duplicates / reported. If you do not own the fork, you still report it. you just cannot merge from the inside. Never create a third listing to “start clean.”
 
 **Apple Maps.** Use Apple Business Connect where you have access; report incorrect places where you do not. Apple’s process is slower and less merge-shaped than Google’s. Document the surviving place id. Expect lag.
 
@@ -93,7 +93,7 @@ Suppression is the middle of the job.
 - **Close the source.** If an agency’s old citation sheet or a franchisee habit created the extra profile, change that process. Otherwise you are mowing.
 - **Do not blast new citations** until the survivor is clean. Feeding 50 directories two versions of the truth is how you pay to rebuild the mess.
 
-For footprint and budget, duplicates change the cleanup line more than the software line. Ten locations with forks are a project; ten clean locations are a subscription. Numbers are in [business listing management cost in 2026](/blog/business-listing-management-cost-2026) and on [pricing](/pricing) — Free audits, Growth at $149/month for 25 locations, Enterprise for bulk workflow at scale.
+For footprint and budget, duplicates change the cleanup line more than the software line. Ten locations with forks are a project; ten clean locations are a subscription. Numbers are in [business listing management cost in 2026](/blog/business-listing-management-cost-2026) and on [pricing](/pricing): Starter at $49/month after trial, Growth at $149/month for up to 25 locations, Enterprise for bulk workflow at scale.
 
 If you only remember four verbs: **find, match, suppress, keep reviews.** Everything else is publisher-specific paperwork.
 
@@ -101,7 +101,7 @@ If you only remember four verbs: **find, match, suppress, keep reviews.** Everyt
 
 ### Should we just delete the listing with fewer reviews?
 
-Almost never. Delete is how reviews disappear and how the remaining profile looks younger than it is. Merge or report as duplicate. Delete only when the profile is spam, a nonexistent place, or a clear policy violation — and still screenshot first.
+Almost never. Delete is how reviews disappear and how the remaining profile looks younger than it is. Merge or report as duplicate. Delete only when the profile is spam, a nonexistent place, or a clear policy violation , and still screenshot first.
 
 ### How long until a suppressed duplicate disappears?
 
@@ -109,11 +109,24 @@ Google merges can show in days; remnants linger. Apple and directories often tak
 
 ### Can software close duplicates by itself?
 
-It can find and queue them, and in some networks it can file the request. A human still chooses the survivor when reviews are at stake. Good software makes that choice obvious — see duplicate radar on the [product](/product) page. It should not hide the choice behind a bulk “clean all” button.
+It can find and queue them, and in some networks it can file the request. A human still chooses the survivor when reviews are at stake. Good software makes that choice obvious. see duplicate radar on the [product](/product) page. It should not hide the choice behind a bulk “clean all” button.
 
 ### We already ran a citation campaign. Why are forks still here?
 
 Because campaigns publish NAP; they do not reconcile identities. If the campaign used a tracking number or a different suite format, it likely **created** forks. Stop submitting. Inventory, pick survivors, then submit only the canonical record. A fresh [Listing Health Auditor](/) run is the cheapest way to see whether the campaign helped or multiplied you.
+
+## Sources
+
+Publisher and local-search references checked 2026-09-06. Confirm rules in each help center before you file a change; product UIs move.
+
+- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
+- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
+- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
+- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
+- [Apple Maps / Business Connect resources](https://register.apple.com/resources): program and place-data guidance for brands.
+- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
+- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
+- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

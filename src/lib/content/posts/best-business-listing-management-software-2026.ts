@@ -1,4 +1,4 @@
-const markdown = `The best business listing management software in 2026 is the one that catches NAP drift, duplicates, and coverage gaps before customers do — not the one with the longest publisher logo wall. Evaluate coverage you can verify, duplicate workflow that preserves reviews, a workspace marketing and ops will actually share, and a price that matches your location count. Yext, BrightLocal, and focused desks like BLM solve overlapping jobs; they are not interchangeable.
+const markdown = `The best business listing management software in 2026 is the one that catches NAP drift, duplicates, and coverage gaps before customers do , not the one with the longest publisher logo wall. Evaluate coverage you can verify, duplicate workflow that preserves reviews, a workspace marketing and ops will actually share, and a price that matches your location count. Yext, BrightLocal, and focused desks like BLM solve overlapping jobs; they are not interchangeable.
 
 This is a buying guide for people who have sat through a demo and still could not tell whether the product would notice a suite-line mismatch on Apple. If you need the definition of the practice first, start with [what is business listing management?](/blog/what-is-business-listing-management). If you need the budget, use [business listing management cost in 2026](/blog/business-listing-management-cost-2026).
 
@@ -6,7 +6,7 @@ This is a buying guide for people who have sat through a demo and still could no
 
 Ignore feature matrices until these five jobs are named in the demo.
 
-**Canonical NAP.** You enter one approved name, address, and phone per location. The software diffs live publishers against that string — punctuation, Ste vs Suite, tracking numbers, DBA vs legal. If the tool only stores what you uploaded, it is a spreadsheet with a login.
+**Canonical NAP.** You enter one approved name, address, and phone per location. The software diffs live publishers against that string: punctuation, Ste vs Suite, tracking numbers, DBA vs legal. If the tool only stores what you uploaded, it is a spreadsheet with a login.
 
 **Coverage you can inspect.** Google Business Profile is table stakes. Apple Maps / Apple Business Connect, Bing Places, Facebook, Yelp, and a directory/aggregator layer are the rest of the customer graph. A logo wall is not coverage. A per-publisher status (synced, mismatch, missing, duplicate) is coverage.
 
@@ -35,7 +35,7 @@ Duplicates are where software proves it understands listings as a graph, not a f
 
 A 2026-ready workflow:
 
-- Detects near-matches across Google, Apple, Bing, and directories — not only exact name matches.
+- Detects near-matches across Google, Apple, Bing, and the directory network, not only exact name matches.
 - Shows why two records were paired (phone, address tokens, place ids).
 - Recommends a surviving listing and warns if reviews or photos would be orphaned.
 - Tracks suppression or merge state per publisher, because Google’s merge is not Apple’s process.
@@ -51,9 +51,9 @@ Different jobs, overlapping category language. Be precise.
 
 **Yext** is the enterprise knowledge graph: broad publisher network, strong brand governance, sales-led contracts. It is a fit when legal, localization, and thousands of entities justify the process. It is a poor fit when you needed Apple/Bing parity and duplicate alerts for 25 locations without a six-figure conversation. If that is the tension, read the [Yext alternative](/compare/yext-alternative) page before you sit through another security questionnaire you did not need yet.
 
-**BrightLocal** is a local SEO workbench: rank tracking, citation tracking, reporting white-label that agencies already know. It is a fit when listings are a chapter of a broader retainer and the agency lives in reports. It is a weaker fit when the painful object is a multi-location graph — franchise hours, Apple Business Connect, duplicate radar across maps. That fork is documented on the [BrightLocal alternative](/compare/brightlocal-alternative) page.
+**BrightLocal** is a local SEO workbench: rank tracking, citation tracking, reporting white-label that agencies already know. It is a fit when listings are a chapter of a broader retainer and the agency lives in reports. It is a weaker fit when the painful object is a multi-location graph. franchise hours, Apple Business Connect, duplicate radar across maps. That fork is documented on the [BrightLocal alternative](/compare/brightlocal-alternative) page.
 
-**BLM** is a listing desk: health scores (NAP, coverage, duplicates, hours), canonical records, a shared workspace, and public [pricing](/pricing) — Free audits, Growth at $149/month for 25 locations, Enterprise for unlimited locations and agency multi-account. Independent, not a reseller overlay. The point is not to “beat” a logo wall. The point is to make drift visible in color.
+**BLM** is a listing desk: health scores (NAP, coverage, duplicates, hours), canonical records, a shared workspace, and public [pricing](/pricing): Starter at $49/month after trial, Growth at $149/month for up to 25 locations, Enterprise for unlimited locations and agency multi-account. Independent, not a reseller overlay. The point is not to “beat” a logo wall. The point is to make drift visible in color.
 
 A fair evaluation is not “who has more publishers on a slide.” It is:
 
@@ -89,10 +89,10 @@ Buy the exception queue. Treat the rest as optional.
 
 Keep the POC ugly and short.
 
-- Load 10–25 real locations, including one you know is dirty.
+- Load 10 to 25 real locations, including one you know is dirty.
 - Require live status on Google, Apple, and Bing within the trial window.
 - File at least one duplicate and watch the suggested survivor.
-- Change hours on one location and see which publishers the tool claims to update — then verify live.
+- Change hours on one location and see which publishers the tool claims to update, then verify live.
 - Put a marketer and an ops person in the same workspace. If they cannot both work without a training call, the UI will not stick.
 
 BLM’s path is intentionally unromantic: [create a workspace](/signup), run the listing auditor, then Growth or Enterprise when the score is part of the week. Use the same standard on every vendor. If they cannot start from your NAP, they are selling a story about your NAP.
@@ -109,11 +109,24 @@ Sometimes. Sometimes expensive software is a publisher network you will not use 
 
 ### Can we switch later without redoing cleanup?
 
-Cleanup is the asset — canonical NAP, claimed profiles, suppressed duplicates. Tools should be replaceable. Export the canonical file. Keep publisher logins in a password manager, not trapped in a vendor. Switching cost is real; lock-in is optional.
+Cleanup is the asset. canonical NAP, claimed profiles, suppressed duplicates. Tools should be replaceable. Export the canonical file. Keep publisher logins in a password manager, not trapped in a vendor. Switching cost is real; lock-in is optional.
 
 ### What is a reasonable first contract length?
 
 Annual makes sense once the workflow is proven. For a first buy, prefer monthly or a short commitment while you confirm Apple/Bing writes and duplicate queues. Create a workspace first so you are not negotiating a year blind.
+
+## Sources
+
+Publisher and local-search references checked 2026-09-06. Confirm rules in each help center before you file a change; product UIs move.
+
+- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
+- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
+- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
+- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
+- [Apple Maps / Business Connect resources](https://register.apple.com/resources): program and place-data guidance for brands.
+- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
+- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
+- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

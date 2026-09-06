@@ -39,38 +39,41 @@ export const loadPublicSite = createServerFn({ method: "GET" }).handler(async ()
 export const loadPublicArticle = createServerFn({ method: "GET" })
   .validator((d: unknown) => ({ slug: String((d as { slug?: string })?.slug ?? "") }))
   .handler(async ({ data }) => {
+    // Bundled library posts win over CMS so content-lane git updates publish without a DB rewrite.
+    const post = BLOG_POSTS.find((p) => p.slug === data.slug);
+    const markdown = POST_BODY[data.slug];
+    if (post && markdown) {
+      return {
+        source: "static" as const,
+        article: {
+          id: post.slug,
+          slug: post.slug,
+          title: post.title,
+          answer: post.excerpt,
+          description: post.description,
+          body_html: markdownToHtml(markdown),
+          author: post.author,
+          tags: post.tags,
+          kind: "article" as const,
+          status: "published" as const,
+          date: post.date,
+          minutes: post.minutes,
+          cover_url: null,
+          created_at: post.date,
+          updated_at: post.date,
+        } satisfies CmsArticle,
+        markdown,
+      };
+    }
     try {
       const { getArticleBySlug, seedCmsIfEmpty } = await import("./store");
       await seedCmsIfEmpty();
       const cms = await getArticleBySlug(data.slug, true);
       if (cms) return { source: "cms" as const, article: cms, markdown: "" };
     } catch {
-      /* fall through to bundled posts */
+      /* no CMS article */
     }
-    const post = BLOG_POSTS.find((p) => p.slug === data.slug);
-    const markdown = POST_BODY[data.slug];
-    if (!post || !markdown) return null;
-    return {
-      source: "static" as const,
-      article: {
-        id: post.slug,
-        slug: post.slug,
-        title: post.title,
-        answer: post.excerpt,
-        description: post.description,
-        body_html: markdownToHtml(markdown),
-        author: post.author,
-        tags: post.tags,
-        kind: "article" as const,
-        status: "published" as const,
-        date: post.date,
-        minutes: post.minutes,
-        cover_url: null,
-        created_at: post.date,
-        updated_at: post.date,
-      } satisfies CmsArticle,
-      markdown,
-    };
+    return null;
   });
 
 export function toCard(post: CmsArticle | BlogPost) {

@@ -1,6 +1,8 @@
-const markdown = `Business listing management is how a company keeps every location’s name, address, phone, hours, categories, and attributes accurate across maps, search, and directories. It is not a one-time citation sprint. It is the ongoing work of making Google, Apple Maps, Bing, Yelp, and the rest of the graph agree on the same storefront — and noticing when they stop.
+const markdown = `Business listing management is the practice of creating, verifying, and continuously updating a company's name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.
 
-If you run more than a handful of locations, that work is already happening. Someone is logging into publishers, pasting hours, and hoping last quarter’s spreadsheet still matches the door. This article defines the practice, explains NAP and citations, and shows why multi-location brands treat listings as infrastructure rather than a checklist.
+It is not a one-time citation sprint. It is the ongoing work of making Google, Apple Maps, Bing, Yelp, and the rest of the graph agree on the same storefront, and noticing when they stop.
+
+If you run more than a handful of locations, that work is already happening. Someone is logging into publishers, pasting hours, and hoping last quarter's spreadsheet still matches the door. This article defines the practice, explains NAP and citations, and shows why multi-location brands treat listings as infrastructure rather than a checklist.
 
 ## What does business listing management actually include?
 
@@ -8,7 +10,7 @@ At the center is a **canonical record** per location: the approved name, address
 
 That system usually covers four jobs:
 
-- **Create and verify** listings on the publishers that matter for discovery — Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, Yelp, and a long tail of directories and aggregators.
+- **Create and verify** listings on the publishers that matter for discovery: Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, Yelp, and a long tail of directories and aggregators.
 - **Keep NAP identical** across those publishers, including the boring details that break matching: suite lines, Ste vs Suite, tracking numbers, DBA versus legal name.
 - **Watch for duplicates**, missing coverage, and hours or category gaps that confuse customers and split the map pack.
 - **Report health** so marketing, ops, and agencies share one picture instead of six logins.
@@ -28,7 +30,7 @@ The mismatches that actually hurt are rarely dramatic. They look like:
 
 Those variants are enough to split reviews, suppress the map pack, and send voice assistants to the wrong pin. Consistency is not a style preference. It is how the graph decides you exist once.
 
-Holiday hours and temporary closures are the other NAP-adjacent failure. Google might show Sunday 10–4 because a manager updated GBP from a phone. Apple still shows the printed hours from March. That is listing drift, and customers treat the wrong one as the brand’s word.
+Holiday hours and temporary closures are the other NAP-adjacent failure. Google might show Sunday 10-4 because a manager updated GBP from a phone. Apple still shows the printed hours from March. That is listing drift, and customers treat the wrong one as the brand’s word.
 
 If you want a baseline before you argue about whose spreadsheet is right, [create a workspace](/signup). The listing auditor scores NAP, coverage, duplicates, and hours once you are signed in.
 
@@ -45,7 +47,7 @@ Two practical implications:
 - Cleaning Google alone does not clean the graph. See [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings).
 - Unstructured citations are slow to fix; structured listings are the lever you can actually pull on a schedule.
 
-Business listing management focuses on the structured layer — the listings you can verify, monitor, and correct — while treating the long tail as coverage you measure, not a vanity count of 200 directories.
+Business listing management focuses on the structured layer (the listings you can verify, monitor, and correct), while treating the long tail as coverage you measure, not a vanity count of 200 directories.
 
 ## Why do multi-location brands need a system, not a spreadsheet?
 
@@ -78,7 +80,7 @@ Strip away vendor language and the operating rhythm is stable.
 
 **6. Monitor.** New forks, seasonal hours, and category edits reopen the file. Weekly is enough for most brands; daily matters during a rebrand or acquisition.
 
-That is the whole job. Tools differ in coverage, duplicate matching, and whether marketing and franchise ops can share a workspace. Pricing differs too — see [business listing management cost in 2026](/blog/business-listing-management-cost-2026) and the public [pricing](/pricing) page (Free audits, Growth at $149/month for 25 locations, Enterprise for larger footprints). The practice does not change because the invoice does.
+That is the whole job. Tools differ in coverage, duplicate matching, and whether marketing and franchise ops can share a workspace. Pricing differs too. See [business listing management cost in 2026](/blog/business-listing-management-cost-2026) and the public [pricing](/pricing) page (Starter at $49/month, Growth at $149/month for up to 25 locations, Enterprise for larger footprints). The practice does not change because the invoice does.
 
 ## What happens when listings drift?
 
@@ -93,7 +95,7 @@ Customers experience drift as:
 
 Internally, drift shows up as “local SEO is down” tickets that are actually data problems. Rank tracking will move. So will conversion on location pages. The cause is often a fork or a NAP mismatch, not a missing blog post.
 
-The cost is not theoretical. Missed appointments, reviews about hours you did publish *somewhere*, and paid ads sending traffic to a dead NAP are listing failures. The [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) is the stack that catches that before a customer does — not the one with the longest publisher logo wall.
+The cost is not theoretical. Missed appointments, reviews about hours you did publish *somewhere*, and paid ads sending traffic to a dead NAP are listing failures. The [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) is the stack that catches that before a customer does , not the one with the longest publisher logo wall.
 
 Give the work a named owner. Brand owns canonical NAP and categories; stores own hours; an agency executes against an SLA. Shared logins with no system of record are how Google gets updated and Apple does not.
 
@@ -113,7 +115,20 @@ After any rebrand, move, acquisition, or hours policy change, audit immediately.
 
 ### Is this only for huge franchises?
 
-No. The pain starts when you cannot personally remember every publisher state. For many teams that is 5–15 locations, or one location with an aggressive duplicate problem. Multi-location is where the practice becomes mandatory; it is useful earlier than people think.
+No. The pain starts when you cannot personally remember every publisher state. For many teams that is 5 to 15 locations, or one location with an aggressive duplicate problem. Multi-location is where the practice becomes mandatory; it is useful earlier than people think.
+
+## Sources
+
+Publisher and local-search references checked 2026-09-06. Confirm rules in each help center before you file a change; product UIs move.
+
+- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
+- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
+- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
+- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
+- [Apple Maps / Business Connect resources](https://register.apple.com/resources): program and place-data guidance for brands.
+- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
+- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
+- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

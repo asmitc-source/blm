@@ -14,13 +14,13 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "what-is-business-listing-management",
     title: "What is business listing management?",
     description:
-      "A direct definition of business listing management, why NAP consistency matters, and how multi-location brands keep Google, Apple, Bing, and directories accurate.",
+      "Business listing management defined: create, verify, and continuously update name, address, phone, hours, and categories across search, maps, and directories. Why NAP consistency matters for multi-location brands on Google, Apple, Bing, and the directory network.",
     date: "2026-03-12",
     author: "Asmit Choudhary",
     minutes: 9,
     tags: ["Fundamentals"],
     excerpt:
-      "Business listing management is how a company keeps every location’s name, address, phone, hours, and categories accurate across maps and directories.",
+      "Business listing management is the practice of creating, verifying, and continuously updating a company's name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.",
   },
   {
     slug: "business-listing-management-cost-2026",
@@ -28,11 +28,11 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       "What teams actually pay for listing management in 2026: Starter after you create a workspace, per-location SaaS, enterprise platforms, and the hidden cost of DIY citations.",
     date: "2026-04-02",
-    author: "BLM Editorial",
+    author: "Asmit Choudhary",
     minutes: 8,
     tags: ["Pricing"],
     excerpt:
-      "Listing software in 2026 ranges from a workspace you create to six-figure enterprise contracts. The real cost is the locations you leave unsynced.",
+      "In 2026, business listing management cost is software plus labor: Starter at $49/month for one location after a 7-day trial, Growth at $149/month for up to 25 locations, Enterprise custom, plus the hidden cost of NAP drift when nobody watches Apple, Bing, and the directory network.",
   },
   {
     slug: "best-business-listing-management-software-2026",
@@ -44,7 +44,7 @@ export const BLOG_POSTS: BlogPost[] = [
     minutes: 11,
     tags: ["Comparisons"],
     excerpt:
-      "The best listing platform is the one that catches NAP drift, duplicates, and coverage gaps before customers do, not the one with the longest publisher logo wall.",
+      "The best business listing management software in 2026 is the system that catches NAP drift, duplicates, and coverage gaps before customers do, not the longest publisher logo wall. Score it on canonical NAP, verified status across Google, Apple, Bing, and the directory network, duplicate workflow that protects reviews, a shared workspace, and public pricing that matches your location count.",
   },
   {
     slug: "google-business-profile-vs-business-listings",
@@ -52,11 +52,11 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       "GBP is one listing. Business listings are the whole citation graph. Why managing only Google leaves Apple, Bing, and directories out of date.",
     date: "2026-02-20",
-    author: "BLM Editorial",
+    author: "Asmit Choudhary",
     minutes: 8,
     tags: ["Google"],
     excerpt:
-      "Google Business Profile is necessary and not sufficient. Customers still search Apple Maps, Bing, Yelp, and in-car navigation.",
+      "Google Business Profile is one listing. Business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when customers still search and navigate on platforms Google does not control.",
   },
   {
     slug: "how-to-find-and-fix-duplicate-business-listings",
@@ -68,7 +68,7 @@ export const BLOG_POSTS: BlogPost[] = [
     minutes: 10,
     tags: ["Duplicates"],
     excerpt:
-      "Duplicates split reviews, confuse hours, and suppress the map pack. Here is how operators actually find and close them.",
+      "Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first; choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
   },
   {
     slug: "business-listing-management-for-agencies",
@@ -76,11 +76,11 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       "How agencies productize listing management: onboarding, reporting, duplicate SLAs, and a workspace model that scales past 20 clients.",
     date: "2026-07-21",
-    author: "BLM Editorial",
+    author: "Asmit Choudhary",
     minutes: 9,
     tags: ["Agencies"],
     excerpt:
-      "Agencies that treat listings as a monthly screenshot lose clients. Treat it as an operations product instead.",
+      "Agencies that treat listings as a monthly screenshot lose clients. Treat listing management as an operations product: defined onboarding, SLAs on duplicates and NAP drift, reporting a CMO can read, and a multi-account workspace that scales past 20 brands across Google, Apple, Bing, and the directory network.",
   },
 ];
 
