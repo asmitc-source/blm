@@ -14,7 +14,7 @@ export const Route = createFileRoute("/about")({
     pageHead({
       title: "About BLM — business listing management",
       description:
-        "About BLM: independent business listing management software founded by Asmit Choudhary. Keep every location accurate across Google, Apple, Bing, and the directory network.",
+        "About BLM: independent business listing management software built by Asmit Choudhary. Keep every location accurate across Google, Apple, Bing, and the directory network.",
       path: "/about",
     }),
   component: AboutPage,
@@ -26,18 +26,21 @@ const BELIEFS = [
     copy: "NAP, hours, and categories are not a quarterly cleanup. They are how customers find the right door — and how map packs stay honest.",
     Icon: Crosshair,
     soft: "bg-coral-soft text-coral",
+    accent: "from-[var(--tile-a)] to-[var(--tile-b)]",
   },
   {
     title: "Cite primary sources",
     copy: "We would rather link a publisher rule or a field guide than invent certainty. Reviews and comparisons stay equal-weakness on purpose.",
     Icon: BookOpen,
     soft: "bg-sky-soft text-sky",
+    accent: "from-[var(--tile-b)] to-[var(--tile-c)]",
   },
   {
     title: "Honest tradeoffs over theater",
     copy: "Prefer clear ceilings and real gaps over “best of” lists. Ship the definition of business listing management so a human or an LLM can quote it without guessing.",
     Icon: Scale,
     soft: "bg-butter-soft text-butter",
+    accent: "from-[var(--tile-c)] to-[var(--tile-d)]",
   },
 ] as const;
 
@@ -81,8 +84,7 @@ function AboutPage() {
         <WhyExist />
         <HowWeWork />
         <Independence />
-        <Founder />
-        <FactsStrip />
+        <BuiltBy />
         <ClosingCta />
       </main>
     </SiteShell>
@@ -92,39 +94,43 @@ function AboutPage() {
 function Hero() {
   return (
     <section className="hero-wash relative overflow-hidden border-b border-line">
-      <div
-        className="pointer-events-none absolute -right-8 top-10 hidden gap-2 sm:flex lg:right-16 lg:top-16"
-        aria-hidden="true"
-      >
-        <span className="size-14 rounded-2xl bg-[var(--tile-a)] opacity-90" />
-        <span className="size-14 rounded-2xl bg-[var(--tile-b)] opacity-90" />
-        <span className="mt-8 size-14 rounded-2xl bg-[var(--tile-c)] opacity-90" />
-        <span className="mt-8 size-14 rounded-2xl bg-[var(--tile-d)] opacity-90" />
-      </div>
       <div className="page-wrap py-14 sm:py-20 lg:py-24">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Company</p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl lg:text-[3.4rem] lg:leading-[1.1]">
-          About BLM
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl">
-          {SITE.legalName} builds software that keeps every location’s name, address, phone, hours, and
-          categories accurate across Google, Apple, Bing, and the directories that matter — from one
-          workspace.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Button asChild size="lg">
-            <Link to="/trial">Start free trial</Link>
-          </Button>
-          <Button asChild size="lg" variant="secondary">
-            <Link to="/book">Book a call</Link>
-          </Button>
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Company</p>
+            <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl lg:text-[3.4rem] lg:leading-[1.1]">
+              About BLM
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl">
+              {SITE.legalName} builds software that keeps every location’s name, address, phone, hours, and
+              categories accurate across Google, Apple, Bing, and the directories that matter — from one
+              workspace.
+            </p>
+            <div className="mt-8 flex flex-col items-start gap-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button asChild size="lg">
+                  <Link to="/trial">Start free trial</Link>
+                </Button>
+                <Button asChild size="lg" variant="secondary">
+                  <Link to="/book">Book a call</Link>
+                </Button>
+              </div>
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-1 pl-0.5 text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline"
+              >
+                Or say hello{" "}
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative hidden justify-self-end sm:block" aria-hidden="true">
+            <div className="about-hero-tiles">
+              <LogoMark className="size-36 drop-shadow-sm lg:size-44" />
+            </div>
+          </div>
         </div>
-        <Link
-          to="/contact"
-          className="group mt-4 inline-flex items-center gap-1 text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline"
-        >
-          Or say hello <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-        </Link>
       </div>
     </section>
   );
@@ -151,8 +157,15 @@ function WhyExist() {
 
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {BELIEFS.map((b, i) => (
-          <Reveal key={b.title} delay={i * 70}>
-            <article className="flex h-full flex-col rounded-3xl bg-cream p-6 hairline">
+          <Reveal key={b.title} delay={i * 70} className="h-full">
+            <article className="about-belief-card group relative flex h-full flex-col overflow-hidden rounded-3xl bg-cream p-6 hairline">
+              <span
+                className={cn(
+                  "pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r opacity-90 transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:scale-x-100",
+                  b.accent,
+                )}
+                aria-hidden="true"
+              />
               <span className={cn("inline-flex size-11 items-center justify-center rounded-2xl", b.soft)}>
                 <b.Icon className="size-5" aria-hidden="true" />
               </span>
@@ -189,16 +202,18 @@ function HowWeWork() {
 
         <ol className="mt-10 grid gap-4 lg:grid-cols-3">
           {STEPS.map((s, i) => (
-            <Reveal key={s.n} delay={i * 80}>
-              <li className="relative h-full overflow-hidden rounded-3xl bg-paper p-6 hairline">
+            <Reveal key={s.n} delay={i * 80} className="h-full">
+              <li className="about-step-card relative h-full overflow-hidden rounded-3xl bg-paper p-6 pt-7 hairline">
                 <span
-                  className="absolute -right-1 -top-3 font-display text-7xl font-semibold leading-none text-sand/90"
+                  className="pointer-events-none absolute right-5 top-5 font-display text-6xl font-semibold leading-none text-sand/90 sm:text-7xl"
                   aria-hidden="true"
                 >
                   {s.n}
                 </span>
                 <p className="relative text-xs font-semibold uppercase tracking-[0.14em] text-muted">Step {s.n}</p>
-                <h3 className="relative mt-3 font-display text-xl font-semibold tracking-tight text-ink">{s.title}</h3>
+                <h3 className="relative mt-3 max-w-[14ch] font-display text-xl font-semibold tracking-tight text-ink sm:max-w-none">
+                  {s.title}
+                </h3>
                 <p className="relative mt-2 text-sm leading-relaxed text-ink-soft">{s.copy}</p>
               </li>
             </Reveal>
@@ -213,19 +228,30 @@ function Independence() {
   return (
     <section className="page-wrap py-16 sm:py-20" aria-labelledby="independence-title">
       <Reveal>
-        <div className="relative overflow-hidden rounded-3xl bg-ink px-6 py-10 text-cream sm:px-10 sm:py-12">
+        <div className="about-independence group relative overflow-hidden rounded-3xl bg-ink px-6 py-10 text-cream sm:px-10 sm:py-12">
           <div
-            className="pointer-events-none absolute inset-0 opacity-40"
+            className="about-independence-glow pointer-events-none absolute inset-0 opacity-40 transition-opacity duration-500 group-hover:opacity-70"
             aria-hidden="true"
             style={{
               background:
                 "radial-gradient(ellipse 50% 60% at 0% 0%, color-mix(in oklab, var(--tile-a) 55%, transparent), transparent 60%), radial-gradient(ellipse 40% 50% at 100% 100%, color-mix(in oklab, var(--tile-c) 45%, transparent), transparent 55%)",
             }}
           />
+          <div
+            className="about-independence-glow-b pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-50"
+            aria-hidden="true"
+            style={{
+              background:
+                "radial-gradient(ellipse 45% 55% at 100% 0%, color-mix(in oklab, var(--tile-b) 50%, transparent), transparent 58%), radial-gradient(ellipse 40% 50% at 0% 100%, color-mix(in oklab, var(--tile-d) 40%, transparent), transparent 55%)",
+            }}
+          />
           <div className="relative grid gap-8 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-12">
             <div className="flex items-center gap-3">
-              <LogoMark className="size-12" />
-              <Sparkles className="size-5 text-[var(--tile-b)]" aria-hidden="true" />
+              <LogoMark className="size-12 transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:-rotate-3 group-hover:scale-105" />
+              <Sparkles
+                className="size-5 text-[var(--tile-b)] transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:rotate-12 group-hover:scale-110"
+                aria-hidden="true"
+              />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--tile-b)]">Independence</p>
@@ -245,34 +271,32 @@ function Independence() {
   );
 }
 
-function Founder() {
-  const initials = SITE.author
-    .split(" ")
-    .map((p) => p[0])
-    .join("")
-    .slice(0, 2);
-
+function BuiltBy() {
   return (
-    <section className="page-wrap pb-16 sm:pb-20" aria-labelledby="founder-title">
+    <section className="page-wrap pb-16 sm:pb-20" aria-labelledby="built-by-title">
       <Reveal>
-        <div className="grid overflow-hidden rounded-3xl bg-cream hairline lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="about-built-card group grid overflow-hidden rounded-3xl bg-cream hairline lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative flex flex-col justify-between gap-8 border-b border-line bg-sand/50 p-8 sm:p-10 lg:border-b-0 lg:border-r">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Who builds it</p>
-              <div
-                className="mt-6 flex size-24 items-center justify-center rounded-3xl font-display text-3xl font-semibold text-[var(--on-tile)] shadow-soft"
-                style={{
-                  background:
-                    "linear-gradient(135deg, var(--tile-a), var(--tile-b) 45%, var(--tile-c) 75%, var(--tile-d))",
-                }}
-                aria-hidden="true"
-              >
-                {initials}
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Built by</p>
+              <div className="mt-6 size-24 overflow-hidden rounded-3xl shadow-soft ring-1 ring-line transition-transform duration-300 ease-[var(--ease-out-soft)] group-hover:-translate-y-1 group-hover:shadow-lift">
+                <picture>
+                  <source srcSet="/team/asmit-choudhary.webp" type="image/webp" />
+                  <img
+                    src="/team/asmit-choudhary.jpg"
+                    alt={SITE.author}
+                    width={96}
+                    height={96}
+                    className="size-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
-              <h2 id="founder-title" className="mt-6 font-display text-3xl font-semibold tracking-tight text-ink">
+              <h2 id="built-by-title" className="mt-6 font-display text-3xl font-semibold tracking-tight text-ink">
                 {SITE.author}
               </h2>
-              <p className="mt-1 text-sm font-semibold text-ink-soft">Founder, {SITE.name}</p>
+              <p className="mt-1 text-sm font-medium text-muted">{SITE.legalName}</p>
             </div>
             <p className="text-sm text-muted">
               Editorial publishes as {SITE.editorial} when a piece is collaborative.
@@ -280,7 +304,7 @@ function Founder() {
           </div>
           <div className="flex flex-col justify-center gap-5 p-8 sm:p-10">
             <p className="text-[17px] leading-relaxed text-ink-soft">
-              {SITE.author} founded BLM. He holds a B.Tech in Mechanical Engineering from IIT Roorkee (2026)
+              {SITE.author} built BLM. He holds a B.Tech in Mechanical Engineering from IIT Roorkee (2026)
               and has interned at Ninjacart and Deloitte. He also edits the independent{" "}
               <a
                 href="https://locallistingsmanagement.co"
@@ -307,24 +331,19 @@ function Founder() {
           </div>
         </div>
       </Reveal>
-    </section>
-  );
-}
 
-function FactsStrip() {
-  return (
-    <section className="border-y border-line bg-paper" aria-label="Company facts">
-      <div className="page-wrap py-10 sm:py-12">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {FACTS.map((f, i) => (
-            <Reveal key={f.label} delay={i * 50}>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{f.label}</p>
-                <p className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">{f.value}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+      <div className="mt-5 flex flex-wrap gap-2.5" aria-label="Company facts">
+        {FACTS.map((f, i) => (
+          <Reveal key={f.label} delay={i * 45}>
+            <div className="about-fact-chip group inline-flex max-w-full items-baseline gap-2 rounded-full bg-cream px-4 py-2.5 hairline transition-[transform,box-shadow,border-color] duration-200 ease-[var(--ease-out-soft)] hover:-translate-y-0.5 hover:shadow-soft">
+              <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                {f.label}
+              </span>
+              <span className="h-3 w-px shrink-0 bg-line" aria-hidden="true" />
+              <span className="truncate text-sm font-semibold tracking-tight text-ink">{f.value}</span>
+            </div>
+          </Reveal>
+        ))}
       </div>
     </section>
   );
