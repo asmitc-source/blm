@@ -6,6 +6,24 @@ import { markdownToHtml } from "./convert";
 import { hashPassword } from "./crypto";
 import type { ArticleKind, ArticleStatus, CmsArticle, CmsFaq, PricingPlan, SiteCopy } from "./types";
 
+function serverless() {
+  return Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+}
+
+async function sbAdmin() {
+  const { supabaseAdmin } = await import("./supabase.server");
+  return supabaseAdmin();
+}
+
+async function localSql() {
+  if (serverless()) return null;
+  try {
+    return await getSql();
+  } catch {
+    return null;
+  }
+}
+
 function tagsFrom(value: unknown) {
   if (Array.isArray(value)) return value.map(String).filter(Boolean);
   if (typeof value === "string") return value.split(",").map((t) => t.trim()).filter(Boolean);
@@ -53,7 +71,8 @@ const defaultCopy = (): SiteCopy => ({
 });
 
 export async function seedCmsIfEmpty() {
-  const sql = await getSql();
+  const sql = await localSql();
+  if (!sql) return { hasAdmin: true };
   try {
     await sql`select 1 from cms_admins limit 1`;
   } catch {
@@ -107,33 +126,37 @@ export async function seedCmsIfEmpty() {
 }
 
 export async function upsertAdminFromAuth(id: string, username: string) {
-  const sql = await getSql();
-  const rows = await sql<{ id: string; username: string }>`
-    select id, username from cms_admins where id = ${id} or username = ${username} limit 1
-  `;
-  if (!rows[0]) {
-    await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${"supabase-auth"})`;
+  const sql = await localSql();
+  if (sql) {
+    const rows = await sql<{ id: string; username: string }>`
+      select id, username from cms_admins where id = ${id} or username = ${username} limit 1
+    `;
+    if (!rows[0]) {
+      await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${"supabase-auth"})`;
+    }
   }
   try {
-    const { supabaseAdmin } = await import("./supabase.server");
-    const sb = await supabaseAdmin();
-    await sb?.from("cms_admins").upsert({ id: rows[0]?.id ?? id, username, password_hash: "supabase-auth" });
+    const sb = await sbAdmin();
+    await sb?.from("cms_admins").upsert({ id, username, password_hash: "supabase-auth" });
   } catch {
-    /* local is enough for preview */
+    /* jwt login does not need a row */
   }
-  return rows[0] ?? { id, username };
+  return { id, username };
 }
 
 export async function createAdmin(username: string, password: string) {
-  const sql = await getSql();
+  const sql = await localSql();
   const id = crypto.randomUUID();
   const password_hash = await hashPassword(password);
-  await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${password_hash})`;
+  if (sql) {
+    await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${password_hash})`;
+  }
   return { id, username };
 }
 
 export async function findAdminByUsername(username: string) {
-  const sql = await getSql();
+  const sql = await localSql();
+  if (!sql) return null;
   const rows = await sql<{ id: string; username: string; password_hash: string }>`
     select id, username, password_hash from cms_admins where username = ${username} limit 1
   `;
@@ -141,12 +164,25 @@ export async function findAdminByUsername(username: string) {
 }
 
 export async function createSession(adminId: string, token: string, days = 14) {
-  const sql = await getSql();
   const expires = new Date(Date.now() + days * 86400000).toISOString();
-  await sql`
-    insert into cms_sessions (id, admin_id, token, expires_at)
-    values (${crypto.randomUUID()}, ${adminId}, ${token}, ${expires})
-  `;
+  const sql = await localSql();
+  if (sql) {
+    await sql`
+      insert into cms_sessions (id, admin_id, token, expires_at)
+      values (${crypto.randomUUID()}, ${adminId}, ${token}, ${expires})
+    `;
+  }
+  try {
+    const sb = await sbAdmin();
+    await sb?.from("cms_sessions").insert({
+      id: crypto.randomUUID(),
+      admin_id: adminId,
+      token,
+      expires_at: expires,
+    });
+  } catch {
+    /* jwt is the source of truth */
+  }
 }
 
 export async function sessionAdmin(token: string | null | undefined) {
@@ -167,9 +203,10 @@ export async function sessionAdmin(token: string | null | undefined) {
       }
     }
   } catch {
-    /* fall through to local */
+    /* fall through */
   }
-  const sql = await getSql();
+  const sql = await localSql();
+  if (!sql) return null;
   const rows = await sql<{ id: string; username: string }>`
     select a.id, a.username
     from cms_sessions s
@@ -182,24 +219,50 @@ export async function sessionAdmin(token: string | null | undefined) {
 
 export async function destroySession(token: string | null | undefined) {
   if (!token) return;
-  const sql = await getSql();
-  await sql`delete from cms_sessions where token = ${token}`;
+  const sql = await localSql();
+  if (sql) await sql`delete from cms_sessions where token = ${token}`;
+  try {
+    const sb = await sbAdmin();
+    await sb?.from("cms_sessions").delete().eq("token", token);
+  } catch {
+    /* ignore */
+  }
 }
 
 export async function listArticles() {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    const { data } = await sb.from("cms_articles").select("*").order("date", { ascending: false });
+    return (data ?? []).map((row) => asArticle(row as Record<string, unknown>));
+  }
+  const sql = await localSql();
+  if (!sql) return [];
   const rows = await sql`select * from cms_articles order by date desc, updated_at desc`;
   return rows.map(asArticle);
 }
 
 export async function getArticle(id: string) {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    const { data } = await sb.from("cms_articles").select("*").eq("id", id).maybeSingle();
+    return data ? asArticle(data as Record<string, unknown>) : null;
+  }
+  const sql = await localSql();
+  if (!sql) return null;
   const rows = await sql`select * from cms_articles where id = ${id} limit 1`;
   return rows[0] ? asArticle(rows[0]) : null;
 }
 
 export async function getArticleBySlug(slug: string, onlyPublished = false) {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    let q = sb.from("cms_articles").select("*").eq("slug", slug);
+    if (onlyPublished) q = q.eq("status", "published");
+    const { data } = await q.maybeSingle();
+    return data ? asArticle(data as Record<string, unknown>) : null;
+  }
+  const sql = await localSql();
+  if (!sql) return null;
   const rows = onlyPublished
     ? await sql`select * from cms_articles where slug = ${slug} and status = ${"published"} limit 1`
     : await sql`select * from cms_articles where slug = ${slug} limit 1`;
@@ -207,7 +270,15 @@ export async function getArticleBySlug(slug: string, onlyPublished = false) {
 }
 
 export async function listPublished(kind?: ArticleKind) {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    let q = sb.from("cms_articles").select("*").eq("status", "published").order("date", { ascending: false });
+    if (kind) q = q.eq("kind", kind);
+    const { data } = await q;
+    return (data ?? []).map((row) => asArticle(row as Record<string, unknown>));
+  }
+  const sql = await localSql();
+  if (!sql) return [];
   const rows = kind
     ? await sql`select * from cms_articles where status = ${"published"} and kind = ${kind} order by date desc`
     : await sql`select * from cms_articles where status = ${"published"} order by date desc`;
@@ -230,10 +301,31 @@ export type ArticleInput = {
 };
 
 export async function saveArticle(input: ArticleInput) {
-  const sql = await getSql();
   const id = input.id || crypto.randomUUID();
+  const payload = {
+    id,
+    slug: input.slug,
+    title: input.title,
+    answer: input.answer,
+    description: input.description,
+    body_html: input.body_html,
+    author: input.author,
+    tags: input.tags.join(","),
+    kind: input.kind,
+    status: input.status,
+    date: input.date,
+    minutes: input.minutes,
+    updated_at: new Date().toISOString(),
+  };
+  const sb = await sbAdmin();
+  if (sb) {
+    await sb.from("cms_articles").upsert(payload);
+    return getArticle(id);
+  }
+  const sql = await localSql();
+  if (!sql) return getArticle(id);
   const existing = await sql<{ id: string }>`select id from cms_articles where id = ${id} limit 1`;
-  const tags = input.tags.join(",");
+  const tags = payload.tags;
   if (existing[0]) {
     await sql`
       update cms_articles set
@@ -265,12 +357,29 @@ export async function saveArticle(input: ArticleInput) {
 }
 
 export async function deleteArticle(id: string) {
-  const sql = await getSql();
-  await sql`delete from cms_articles where id = ${id}`;
+  const sb = await sbAdmin();
+  if (sb) {
+    await sb.from("cms_articles").delete().eq("id", id);
+    return;
+  }
+  const sql = await localSql();
+  if (sql) await sql`delete from cms_articles where id = ${id}`;
 }
 
 export async function listFaqs(page = "home") {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    const { data } = await sb.from("cms_faqs").select("*").eq("page", page).order("sort", { ascending: true });
+    return (data ?? []).map((r) => ({
+      id: String(r.id),
+      question: String(r.question),
+      answer: String(r.answer),
+      page: String(r.page),
+      sort: Number(r.sort ?? 0),
+    })) as CmsFaq[];
+  }
+  const sql = await localSql();
+  if (!sql) return [];
   const rows = await sql`select * from cms_faqs where page = ${page} order by sort asc`;
   return rows.map((r) => ({
     id: String(r.id),
@@ -282,18 +391,43 @@ export async function listFaqs(page = "home") {
 }
 
 export async function saveFaqs(page: string, items: { question: string; answer: string }[]) {
-  const sql = await getSql();
+  const rows = items.map((item, i) => ({
+    id: crypto.randomUUID(),
+    question: item.question,
+    answer: item.answer,
+    page,
+    sort: i,
+  }));
+  const sb = await sbAdmin();
+  if (sb) {
+    await sb.from("cms_faqs").delete().eq("page", page);
+    if (rows.length) await sb.from("cms_faqs").insert(rows);
+    return;
+  }
+  const sql = await localSql();
+  if (!sql) return;
   await sql`delete from cms_faqs where page = ${page}`;
-  for (const [i, item] of items.entries()) {
+  for (const row of rows) {
     await sql`
       insert into cms_faqs (id, question, answer, page, sort)
-      values (${crypto.randomUUID()}, ${item.question}, ${item.answer}, ${page}, ${i})
+      values (${row.id}, ${row.question}, ${row.answer}, ${row.page}, ${row.sort})
     `;
   }
 }
 
 export async function getSiteCopy(): Promise<SiteCopy> {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    const { data } = await sb.from("cms_settings").select("value").eq("key", "site").maybeSingle();
+    if (!data?.value) return defaultCopy();
+    try {
+      return { ...defaultCopy(), ...JSON.parse(String(data.value)) } as SiteCopy;
+    } catch {
+      return defaultCopy();
+    }
+  }
+  const sql = await localSql();
+  if (!sql) return defaultCopy();
   const rows = await sql<{ value: string }>`select value from cms_settings where key = ${"site"} limit 1`;
   if (!rows[0]?.value) return defaultCopy();
   try {
@@ -304,28 +438,66 @@ export async function getSiteCopy(): Promise<SiteCopy> {
 }
 
 export async function saveSiteCopy(copy: SiteCopy) {
-  const sql = await getSql();
   const value = JSON.stringify(copy);
+  const sb = await sbAdmin();
+  if (sb) {
+    await sb.from("cms_settings").upsert({ key: "site", value, updated_at: new Date().toISOString() });
+    return;
+  }
+  const sql = await localSql();
+  if (!sql) return;
   const existing = await sql<{ key: string }>`select key from cms_settings where key = ${"site"} limit 1`;
   if (existing[0]) await sql`update cms_settings set value = ${value}, updated_at = now() where key = ${"site"}`;
   else await sql`insert into cms_settings (key, value) values (${"site"}, ${value})`;
 }
 
 export async function getSetting(key: string) {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    const { data } = await sb.from("cms_settings").select("value").eq("key", key).maybeSingle();
+    return data?.value ? String(data.value) : "";
+  }
+  const sql = await localSql();
+  if (!sql) return "";
   const rows = await sql<{ value: string }>`select value from cms_settings where key = ${key} limit 1`;
   return rows[0]?.value ?? "";
 }
 
 export async function setSetting(key: string, value: string) {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    await sb.from("cms_settings").upsert({ key, value, updated_at: new Date().toISOString() });
+    return;
+  }
+  const sql = await localSql();
+  if (!sql) return;
   const existing = await sql<{ key: string }>`select key from cms_settings where key = ${key} limit 1`;
   if (existing[0]) await sql`update cms_settings set value = ${value}, updated_at = now() where key = ${key}`;
   else await sql`insert into cms_settings (key, value) values (${key}, ${value})`;
 }
 
 export async function dashboardStats() {
-  const sql = await getSql();
+  const sb = await sbAdmin();
+  if (sb) {
+    const articles = await sb.from("cms_articles").select("id", { count: "exact", head: true });
+    const live = await sb.from("cms_articles").select("id", { count: "exact", head: true }).eq("status", "published");
+    const drafts = await sb.from("cms_articles").select("id", { count: "exact", head: true }).eq("status", "draft");
+    let leads = 0;
+    try {
+      const l = await sb.from("leads").select("id", { count: "exact", head: true });
+      leads = l.count ?? 0;
+    } catch {
+      leads = 0;
+    }
+    return {
+      articles: articles.count ?? 0,
+      published: live.count ?? 0,
+      drafts: drafts.count ?? 0,
+      leads,
+    };
+  }
+  const sql = await localSql();
+  if (!sql) return { articles: 0, published: 0, drafts: 0, leads: 0 };
   const arts = await sql<{ n: number }>`select count(*)::int as n from cms_articles`;
   const live = await sql<{ n: number }>`select count(*)::int as n from cms_articles where status = ${"published"}`;
   const drafts = await sql<{ n: number }>`select count(*)::int as n from cms_articles where status = ${"draft"}`;

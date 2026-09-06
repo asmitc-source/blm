@@ -19,9 +19,11 @@ export const cmsBootstrap = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     try {
-    const { seedCmsIfEmpty } = await import("./store");
     const { pingSupabase, supabaseConfigured, supabaseUrl } = await import("./supabase.server");
-    const seed = await seedCmsIfEmpty();
+    if (!process.env.VERCEL) {
+      const { seedCmsIfEmpty } = await import("./store");
+      await seedCmsIfEmpty();
+    }
     const configured = await supabaseConfigured();
     const ping = configured ? await pingSupabase() : { ok: false as const, reason: "missing-url" };
     return {
@@ -76,45 +78,23 @@ export const cmsLogin = createServerFn({ method: "POST" })
     return { username, password };
   })
   .handler(async ({ data }) => {
-    const { seedCmsIfEmpty, findAdminByUsername, createSession, upsertAdminFromAuth } = await import("./store");
-    await seedCmsIfEmpty();
     const email = data.username.includes("@") ? data.username : data.username;
     const { supabaseAdmin, supabaseAnon } = await import("./supabase.server");
     const authClient = (await supabaseAnon()) ?? (await supabaseAdmin());
-    if (authClient) {
-      const { data: auth, error } = await authClient.auth.signInWithPassword({ email, password: data.password });
-      if (!error && auth.user && auth.session?.access_token) {
-        const admin = await upsertAdminFromAuth(auth.user.id, (auth.user.email ?? email).toLowerCase());
-        const token = auth.session.access_token;
-        await createSession(admin.id, token);
-        const sb = await supabaseAdmin();
-        if (sb) {
-          await sb.from("cms_admins").upsert({
-            id: admin.id,
-            username: admin.username,
-            password_hash: "supabase-auth",
-          });
-          await sb.from("cms_sessions").insert({
-            id: crypto.randomUUID(),
-            admin_id: admin.id,
-            token,
-            expires_at: new Date(Date.now() + 14 * 86400000).toISOString(),
-          });
-        }
-        return { token, username: admin.username };
-      }
-    }
-    const admin = await findAdminByUsername(email);
-    if (!admin || admin.password_hash === "supabase-auth") {
+    if (!authClient) throw new Error("Wrong id or password.");
+    const { data: auth, error } = await authClient.auth.signInWithPassword({ email, password: data.password });
+    if (error || !auth.user || !auth.session?.access_token) {
       throw new Error("Wrong id or password.");
     }
-    const { verifyPassword } = await import("./crypto");
-    if (!(await verifyPassword(data.password, admin.password_hash))) {
-      throw new Error("Wrong id or password.");
+    const username = (auth.user.email ?? email).toLowerCase();
+    try {
+      const { upsertAdminFromAuth, createSession } = await import("./store");
+      await upsertAdminFromAuth(auth.user.id, username);
+      await createSession(auth.user.id, auth.session.access_token);
+    } catch {
+      /* session is the supabase JWT */
     }
-    const token = newToken();
-    await createSession(admin.id, token);
-    return { token, username: admin.username };
+    return { token: auth.session.access_token, username };
   });
 
 export const cmsLogout = createServerFn({ method: "POST" })
