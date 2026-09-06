@@ -6,10 +6,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SITE } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
-export function ContactSection() {
+export function ContactSection({
+  source = "contact",
+  className,
+}: {
+  source?: string;
+  className?: string;
+}) {
   const [status, setStatus] = useState<"idle" | "saving" | "done" | "error">("idle");
   const [error, setError] = useState("");
+  const idPrefix = "contact";
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,7 +32,7 @@ export function ContactSection() {
           email: String(data.get("email") ?? ""),
           company: String(data.get("company") ?? ""),
           message: String(data.get("message") ?? ""),
-          source: "homepage",
+          source,
           website: String(data.get("website") ?? ""),
           userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
         },
@@ -38,15 +46,20 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="border-y border-line bg-cream py-16 sm:py-24" aria-labelledby="home-contact-title">
+    <section
+      id="contact"
+      className={cn("border-y border-line bg-cream py-16 sm:py-24", className)}
+      aria-labelledby="contact-title"
+    >
       <div className="page-wrap grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Contact us</p>
-          <h2 id="home-contact-title" className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 id="contact-title" className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
             Tell us about your footprint.
-          </h2>
+          </h1>
           <p className="mt-4 max-w-md text-ink-soft">
-            Sales and onboarding share {SITE.salesEmail}. Prefer a form? Send a note and we will follow up at your work email.
+            Sales and onboarding share {SITE.salesEmail}. Prefer a form? Send a note and we will follow up at your work
+            email.
           </p>
           <div className="mt-8 flex gap-2" aria-hidden="true">
             <span className="h-2 flex-1 rounded-full bg-[var(--tile-a)]" />
@@ -60,7 +73,10 @@ export function ContactSection() {
           <div className="relative overflow-hidden rounded-3xl bg-paper p-6 shadow-[var(--shadow-soft)] hairline sm:p-8">
             <span
               className="pointer-events-none absolute -right-8 -top-8 size-40 rounded-full opacity-40"
-              style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--tile-c) 55%, transparent), transparent 70%)" }}
+              style={{
+                background:
+                  "radial-gradient(circle, color-mix(in oklab, var(--tile-c) 55%, transparent), transparent 70%)",
+              }}
               aria-hidden="true"
             />
             {status === "done" ? (
@@ -74,18 +90,24 @@ export function ContactSection() {
             ) : (
               <form onSubmit={onSubmit} className="relative grid gap-4">
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Name" name="name" autoComplete="name" required />
-                  <Field label="Work email" name="email" type="email" autoComplete="email" required />
+                  <Field idPrefix={idPrefix} label="Name" name="name" autoComplete="name" required />
+                  <Field idPrefix={idPrefix} label="Work email" name="email" type="email" autoComplete="email" required />
                 </div>
-                <Field label="Company (optional)" name="company" autoComplete="organization" />
+                <Field idPrefix={idPrefix} label="Company (optional)" name="company" autoComplete="organization" />
                 <div className="grid gap-1.5">
-                  <Label htmlFor="home-contact-message">Message</Label>
-                  <Textarea id="home-contact-message" name="message" rows={4} required placeholder="Locations, directories, timeline…" />
+                  <Label htmlFor={`${idPrefix}-message`}>Message</Label>
+                  <Textarea
+                    id={`${idPrefix}-message`}
+                    name="message"
+                    rows={4}
+                    required
+                    placeholder="Locations, directories, timeline…"
+                  />
                 </div>
                 {/* honeypot */}
                 <div className="absolute -left-[9999px] top-auto h-0 w-0 overflow-hidden" aria-hidden="true">
-                  <label htmlFor="home-contact-website">Website</label>
-                  <input id="home-contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                  <label htmlFor={`${idPrefix}-website`}>Website</label>
+                  <input id={`${idPrefix}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" />
                 </div>
                 {error ? <p className="text-sm text-coral">{error}</p> : null}
                 <Button type="submit" disabled={status === "saving"} size="lg">
@@ -101,12 +123,14 @@ export function ContactSection() {
 }
 
 function Field({
+  idPrefix,
   label,
   name,
   type = "text",
   required,
   autoComplete,
 }: {
+  idPrefix: string;
   label: string;
   name: string;
   type?: string;
@@ -115,8 +139,8 @@ function Field({
 }) {
   return (
     <div className="grid gap-1.5">
-      <Label htmlFor={`home-contact-${name}`}>{label}</Label>
-      <Input id={`home-contact-${name}`} name={name} type={type} required={required} autoComplete={autoComplete} />
+      <Label htmlFor={`${idPrefix}-${name}`}>{label}</Label>
+      <Input id={`${idPrefix}-${name}`} name={name} type={type} required={required} autoComplete={autoComplete} />
     </div>
   );
 }

@@ -1297,3 +1297,84 @@
   border-color: var(--tile-a);
   background: color-mix(in oklab, var(--tile-b) 16%, var(--cream));
 }
+
+
+/* Newsletter card — animated pastel border */
+@property --newsletter-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes newsletter-border-spin {
+  to {
+    --newsletter-angle: 360deg;
+  }
+}
+
+.newsletter-card {
+  isolation: isolate;
+}
+
+.newsletter-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--newsletter-angle),
+    var(--tile-a),
+    var(--tile-b),
+    var(--tile-c),
+    var(--tile-d),
+    var(--tile-a)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: newsletter-border-spin 12s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.92;
+}
+
+.newsletter-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--newsletter-angle),
+    color-mix(in oklab, var(--tile-a) 55%, transparent),
+    color-mix(in oklab, var(--tile-b) 55%, transparent),
+    color-mix(in oklab, var(--tile-c) 55%, transparent),
+    color-mix(in oklab, var(--tile-d) 55%, transparent),
+    color-mix(in oklab, var(--tile-a) 55%, transparent)
+  );
+  filter: blur(14px);
+  opacity: 0.28;
+  animation: newsletter-border-spin 12s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .newsletter-card::before {
+  opacity: 1;
+}
+
+.dark .newsletter-card::after {
+  opacity: 0.38;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .newsletter-card::before,
+  .newsletter-card::after {
+    animation: none;
+  }
+}

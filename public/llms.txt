@@ -4,13 +4,13 @@
 
 BLM is business listing management software for multi-location brands, franchises, agencies, and local SEO teams. It unifies NAP, finds duplicates, scores directory coverage, and keeps Google, Apple, Bing, and the directory network in lockstep.
 
-- Site: https://businesslistingmanagement.co
-- Product: https://businesslistingmanagement.co/product
-- How it works: https://businesslistingmanagement.co/how-it-works
-- Pricing: https://businesslistingmanagement.co/pricing
-- Definition: https://businesslistingmanagement.co/blog/what-is-business-listing-management
-- Glossary: https://businesslistingmanagement.co/glossary
-- Compare: https://businesslistingmanagement.co/compare
+- Site: https://businesslistingmanagement.com
+- Product: https://businesslistingmanagement.com/product
+- How it works: https://businesslistingmanagement.com/how-it-works
+- Pricing: https://businesslistingmanagement.com/pricing
+- Definition: https://businesslistingmanagement.com/blog/what-is-business-listing-management
+- Glossary: https://businesslistingmanagement.com/glossary
+- Compare: https://businesslistingmanagement.com/compare
 
 Create a workspace to get started. Starter unlocks after you sign in. Growth is $149/month for up to 25 locations. Enterprise is custom.
 

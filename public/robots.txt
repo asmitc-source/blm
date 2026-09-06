@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://businesslistingmanagement.co/sitemap.xml
+Sitemap: https://businesslistingmanagement.com/sitemap.xml

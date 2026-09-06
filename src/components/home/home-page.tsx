@@ -7,7 +7,6 @@ import { ProductProof } from "@/components/home/product-proof";
 import { Reveal } from "@/components/home/reveal";
 import { RotateWord } from "@/components/home/rotate-word";
 import { Workflow } from "@/components/home/workflow";
-import { ContactSection } from "@/components/home/contact-section";
 import { NewsletterSection } from "@/components/home/newsletter-section";
 import {
   ChatGptMark,
@@ -18,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
 import { BLOG_POSTS } from "@/lib/content/blog";
-import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, WHY } from "@/lib/site";
+import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, SITE, WHY } from "@/lib/site";
 import { faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +44,7 @@ export function HomePage({ copy }: { copy?: HomeCopy }) {
       <FaqSection />
       <Resources />
       <NewsletterSection />
-      <ContactSection />
+      <ContactCta />
       <FinalCta />
     </main>
     </CopyCtx.Provider>
@@ -428,6 +427,30 @@ function Resources() {
           </Reveal>
         ))}
       </div>
+    </section>
+  );
+}
+
+
+function ContactCta() {
+  return (
+    <section className="page-wrap pb-6" aria-labelledby="home-contact-cta-title">
+      <Reveal>
+        <div className="flex flex-col items-start justify-between gap-5 rounded-3xl border border-line bg-cream px-6 py-8 sm:flex-row sm:items-center sm:px-10">
+          <div className="max-w-xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Contact</p>
+            <h2 id="home-contact-cta-title" className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+              Tell us about your footprint.
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+              Sales and onboarding share {SITE.salesEmail}. Prefer a form? We will follow up at your work email.
+            </p>
+          </div>
+          <Button asChild size="lg" className="shrink-0">
+            <Link to="/contact">Contact us</Link>
+          </Button>
+        </div>
+      </Reveal>
     </section>
   );
 }

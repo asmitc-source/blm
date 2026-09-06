@@ -37,7 +37,7 @@ function parseContact(data: unknown): ContactInput {
     email,
     company: asString(d.company).trim() || undefined,
     message,
-    source: asString(d.source).trim() || "homepage",
+    source: asString(d.source).trim() || "contact",
     userAgent,
     website,
   };
@@ -70,7 +70,7 @@ export const submitContact = createServerFn({ method: "POST" })
         ${data.company ?? null},
         ${data.message},
         ${data.userAgent ?? null},
-        ${data.source ?? "homepage"}
+        ${data.source ?? "contact"}
       )
     `;
     return { ok: true as const, id };

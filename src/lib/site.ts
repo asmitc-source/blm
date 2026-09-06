@@ -5,12 +5,12 @@ export const COVERAGE_LONG =
 export const SITE = {
   name: "BLM",
   legalName: "Business Listing Management",
-  domain: "https://businesslistingmanagement.co",
+  domain: "https://businesslistingmanagement.com",
   oneLiner: `Keep every location accurate across ${COVERAGE}, from one place.`,
   tagline: "Keep every location accurate without the spreadsheet.",
   description: `BLM is business listing management software for multi-location brands, franchises, agencies, and local SEO teams. Unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one workspace.`,
-  email: "hello@businesslistingmanagement.co",
-  salesEmail: "sales@businesslistingmanagement.co",
+  email: "hello@businesslistingmanagement.com",
+  salesEmail: "sales@businesslistingmanagement.com",
   author: "Asmit Choudhary",
   editorial: "BLM Editorial",
 } as const;
@@ -22,6 +22,7 @@ export const NAV = [
   { href: "/compare", label: "Compare" },
   { href: "/blog", label: "Blog" },
   { href: "/resources", label: "Resources" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 export const FOOTER = {
@@ -320,7 +321,7 @@ export const FAQ = [
   },
 ] as const;
 
-export const ASK_PROMPT = `What is business listing management, and how does BLM at businesslistingmanagement.co keep multi-location listings accurate across ${COVERAGE}?`;
+export const ASK_PROMPT = `What is business listing management, and how does BLM at businesslistingmanagement.com keep multi-location listings accurate across ${COVERAGE}?`;
 
 export const DIRECTORIES = [
   "Google",
