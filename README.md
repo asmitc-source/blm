@@ -170,17 +170,14 @@ Tables `contact_submissions` and `newsletter_subscribers` ship in `migrations/00
 Verify contact rows: `select * from contact_submissions order by created_at desc limit 20;`
 Verify subscribers: `select email, status, subscribed_at from newsletter_subscribers order by subscribed_at desc;`
 
-### SMTP (newsletter emails)
+### Resend (newsletter emails)
 
 | Variable | Example |
 | --- | --- |
-| `SMTP_HOST` | `smtp.office365.com` (or `smtpout.secureserver.net`) |
-| `SMTP_PORT` | `587` (STARTTLS) or `465` (TLS) |
-| `SMTP_USER` | `hello@nakama.in` |
-| `SMTP_PASS` | mailbox password — **Vercel/local only, never commit** |
-| `SMTP_FROM` | `BLM <hello@nakama.in>` |
+| `RESEND_API_KEY` | API key from [resend.com](https://resend.com) — **Vercel/local only, never commit** |
+| `RESEND_FROM` | `BLM <hello@businesslistingmanagement.com>` (default if unset) |
 
-Welcome emails send on subscribe (subscriber is saved even if SMTP is unset). New-article emails fan out when an admin **publishes** an article via the CMS desk (`cmsSaveArticle` draft → published). Static markdown posts in the repo do not auto-email.
+Welcome emails send on subscribe (subscriber is saved even if Resend is unset). New-article emails fan out when an admin **publishes** an article via the CMS desk (`cmsSaveArticle` draft → published). Static markdown posts in the repo do not auto-email.
 
 ## License
 
