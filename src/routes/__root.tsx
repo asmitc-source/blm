@@ -1,5 +1,4 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider, themeBootScript } from "@/components/theme";
 import { Toaster } from "sonner";
@@ -8,14 +7,12 @@ import { SITE } from "@/lib/site";
 import { defaultShareImage, shareMeta } from "@/lib/seo";
 import { NotFound } from "@/components/not-found";
 
-const fetchSessionUser = createServerFn({ method: "GET" }).handler(async () => {
-  const { getSessionUser } = await import("@/lib/auth/verify.server");
-  const u = await getSessionUser();
-  return u ? { id: u.id, email: u.email } : null;
-});
+const FONT_CSS =
+  "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap";
 
 export const Route = createRootRoute({
-  beforeLoad: async () => ({ sessionUser: await fetchSessionUser() }),
+  // Session is resolved client-side via Better Auth useSession (AuthSlot).
+  // A root beforeLoad that awaited getSession blocked every soft navigation.
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -32,10 +29,8 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap",
-      },
+      { rel: "preload", as: "style", href: FONT_CSS },
+      { rel: "stylesheet", href: FONT_CSS },
     ],
   }),
   notFoundComponent: NotFound,

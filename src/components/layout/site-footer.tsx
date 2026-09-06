@@ -2,6 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { FOOTER, SITE } from "@/lib/site";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import type { FileRouteTypes } from "@/routeTree.gen";
+
+type AppPath = FileRouteTypes["to"];
 
 export function SiteFooter() {
   return (
@@ -47,9 +50,13 @@ function FooterCol({
       <ul className="mt-3 space-y-2">
         {items.map((item) => (
           <li key={`${item.href}-${item.label}`}>
-            <a className="text-sm text-ink-soft transition-colors hover:text-ink" href={item.href}>
+            <Link
+              to={item.href as AppPath}
+              preload="intent"
+              className="text-sm text-ink-soft transition-colors hover:text-ink"
+            >
               {item.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

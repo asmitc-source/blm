@@ -3,5 +3,15 @@ import { AppErrorComponent } from "@/lib/error-component";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
-  return createRouter({ routeTree, defaultErrorComponent: AppErrorComponent });
+  return createRouter({
+    routeTree,
+    defaultErrorComponent: AppErrorComponent,
+    // Soft navigations: prefetch on hover/focus, keep loaders warm so clicks feel instant.
+    defaultPreload: "intent",
+    defaultPreloadDelay: 50,
+    defaultStaleTime: 60_000,
+    defaultPreloadStaleTime: 30_000,
+    scrollRestoration: true,
+    scrollRestorationBehavior: "instant",
+  });
 }

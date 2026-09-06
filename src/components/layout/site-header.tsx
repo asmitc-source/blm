@@ -11,20 +11,32 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
+    let raf = 0;
     const onScroll = () => {
-      const root = document.documentElement;
-      const max = root.scrollHeight - root.clientHeight;
-      setProgress(max > 0 ? root.scrollTop / max : 0);
-      setScrolled(root.scrollTop > 8);
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        const root = document.documentElement;
+        const max = root.scrollHeight - root.clientHeight;
+        const next = max > 0 ? root.scrollTop / max : 0;
+        if (progressRef.current) {
+          progressRef.current.style.transform = `scaleX(${next})`;
+        }
+        const nextScrolled = root.scrollTop > 8;
+        setScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
+      });
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
   }, []);
 
   useEffect(() => {
@@ -45,6 +57,7 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   to={item.href}
+                  preload="intent"
                   className={cn(
                     "glass-nav-item",
                     (pathname === item.href || pathname.startsWith(`${item.href}/`)) && "is-active",
@@ -73,7 +86,7 @@ export function SiteHeader() {
         </div>
       </div>
       <div className="absolute inset-x-0 bottom-0 h-px bg-transparent">
-        <div className="h-full origin-left bg-brand/80" style={{ transform: `scaleX(${progress})` }} />
+        <div ref={progressRef} className="h-full origin-left bg-brand/80" style={{ transform: "scaleX(0)" }} />
       </div>
       <div className={cn("border-t border-line/60 xl:hidden", open ? "block" : "hidden")}>
         <nav className="chrome-pad flex flex-col gap-1.5 py-3" aria-label="Mobile">
@@ -90,6 +103,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 to={item.href}
+                preload="intent"
                 className={cn(
                   "glass-nav-item w-full justify-start px-4",
                   (pathname === item.href || pathname.startsWith(`${item.href}/`)) && "is-active",
