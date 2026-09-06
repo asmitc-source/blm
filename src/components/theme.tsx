@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { Moon, Sun } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export type Theme = "light" | "dark";
 
@@ -55,28 +54,20 @@ export function useTheme() {
 }
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, toggle } = useTheme();
+  const next = theme === "dark" ? "light" : "dark";
   return (
-    <div className="theme-switch" role="group" aria-label="Color theme">
-      <span className={cn("theme-switch-thumb", theme === "dark" && "is-dark")} aria-hidden="true" />
-      <button
-        type="button"
-        className={cn("theme-switch-opt", theme === "light" && "is-on")}
-        aria-pressed={theme === "light"}
-        aria-label="Light mode"
-        onClick={() => setTheme("light")}
-      >
-        <Sun className="size-4" strokeWidth={2.2} />
-      </button>
-      <button
-        type="button"
-        className={cn("theme-switch-opt", theme === "dark" && "is-on")}
-        aria-pressed={theme === "dark"}
-        aria-label="Dark mode"
-        onClick={() => setTheme("dark")}
-      >
-        <Moon className="size-4" strokeWidth={2.2} />
-      </button>
-    </div>
+    <button
+      type="button"
+      className="glass-icon inline-flex size-11 items-center justify-center rounded-full"
+      aria-label={next === "dark" ? "Switch to dark mode" : "Switch to light mode"}
+      onClick={toggle}
+    >
+      {theme === "dark" ? (
+        <Sun className="relative z-[1] size-5" strokeWidth={2.2} />
+      ) : (
+        <Moon className="relative z-[1] size-5" strokeWidth={2.2} />
+      )}
+    </button>
   );
 }
