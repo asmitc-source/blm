@@ -1,7 +1,6 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { AuthProvider } from "@/lib/auth/provider";
-import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { ThemeProvider, themeBootScript } from "@/components/theme";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
@@ -50,7 +49,6 @@ function RootDocument() {
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body className="min-h-svh bg-paper text-ink">
-        <PreviewHostBridge />
         <AuthProvider>
           <ThemeProvider>
             <Outlet />

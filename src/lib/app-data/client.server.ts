@@ -15,17 +15,16 @@ import {
 
 assertAppDataServerOnly("app-data/client.server");
 
-export const CONNECTORS_HOST_STAGING = "connectors.app-builder-testing.com";
-export const CONNECTORS_HOST_PROD = "connectors.grok.me";
+
+function isLoopbackHost(host: string): boolean {
+  return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+}
 
 function env(key: string): string | undefined {
   const v = process.env[key]?.trim();
   return v || undefined;
 }
 
-function isLoopbackHost(host: string): boolean {
-  return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
-}
 
 type InboundContext = {
   token: string | null;
@@ -33,21 +32,9 @@ type InboundContext = {
   connectorsBase: string | null;
 };
 
-function connectorsBaseFor(publicHost: string | null): string | null {
-  const explicit = env("GROK_CONNECTORS_URL");
+function connectorsBaseFor(_publicHost: string | null): string | null {
+  const explicit = env("CONNECTORS_URL");
   if (explicit) return explicit.replace(/\/+$/, "");
-
-  const host = publicHost?.toLowerCase();
-  if (!host || isLoopbackHost(host)) return null;
-  if (
-    host === "app-builder-testing.com" ||
-    host.endsWith(".app-builder-testing.com")
-  ) {
-    return `https://${CONNECTORS_HOST_STAGING}`;
-  }
-  if (host === "grok.me" || host.endsWith(".grok.me")) {
-    return `https://${CONNECTORS_HOST_PROD}`;
-  }
   return null;
 }
 
@@ -68,7 +55,7 @@ function inboundContext(): InboundContext {
   const envToken =
     process.env.NODE_ENV === "production"
       ? null
-      : (env("GROK_CONNECTOR_ACCESS_TOKEN") ?? null);
+      : (env("CONNECTOR_ACCESS_TOKEN") ?? null);
   return {
     token: headerToken ?? envToken,
     publicHost,
@@ -142,25 +129,9 @@ async function gatePost(
   return { status: res.status, json };
 }
 
-function gateSigninUrl(ctx: InboundContext): string | undefined {
-  const base = ctx.connectorsBase;
-  if (!base) return undefined;
-  try {
-    const connectorsHost = new URL(base).host.toLowerCase();
-    const gateHost = connectorsHost.replace(/^connectors\./, "gate.");
-    if (gateHost === connectorsHost) return undefined;
-    const publicHost = ctx.publicHost?.toLowerCase();
-    const gated =
-      publicHost && !isLoopbackHost(publicHost)
-        ? `https://${publicHost}`
-        : undefined;
-    const signin = `https://${gateHost}/__gate/signin`;
-    return gated
-      ? `${signin}?return_to=${encodeURIComponent(gated)}`
-      : signin;
-  } catch {
-    return undefined;
-  }
+function gateSigninUrl(_ctx: InboundContext): string | undefined {
+  // Connectors login URL is supplied by the connectors API response when needed.
+  return undefined;
 }
 
 function missingAuthResult(ctx: InboundContext): CallToolResult {
@@ -170,7 +141,7 @@ function missingAuthResult(ctx: InboundContext): CallToolResult {
     data: null,
     loginRequired: true,
     errorMessage:
-      "missing_connector_token: open this app through the edge gate " +
+      "missing_connector_token: open this app through the connectors edge " +
       "(the server must receive x-connector-access-token on the inbound request)",
     ...(loginUrl ? { loginUrl } : {}),
   };

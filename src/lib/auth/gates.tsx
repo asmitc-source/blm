@@ -1,13 +1,14 @@
 import { type ReactNode, useState } from "react";
 import { Navigate } from "@tanstack/react-router";
-import { GROK_PROVIDERS, authEnabled, signIn, signOut } from "./client";
-import { hasGateSessionMarker } from "./gate-session-marker";
+import { AUTH_PROVIDERS, authEnabled, oauthEnabled, signIn, signOut } from "./client";
 import { resolveSignInGateState } from "./sign-in-gate";
-import { useCurrentUser, useCurrentUserState } from "./use-current-user";
+import { useCurrentUserState } from "./use-current-user";
 import { GoogleMark } from "@/components/brand-marks";
 import { Button } from "@/components/ui/button";
 
-const VISIBLE_PROVIDERS = GROK_PROVIDERS.filter((p) => p.idp === "google");
+const VISIBLE_PROVIDERS = oauthEnabled
+  ? AUTH_PROVIDERS.filter((p) => p.idp === "google")
+  : [];
 
 export function SignedIn({ children }: { children: ReactNode }) {
   const { user, isPending } = useCurrentUserState();
@@ -43,6 +44,7 @@ export function SignInButtons() {
   if (!authEnabled) {
     return <p className="text-sm text-muted">Sign-in is disabled in this environment.</p>;
   }
+  if (VISIBLE_PROVIDERS.length === 0) return null;
   return (
     <div className="flex w-full max-w-sm flex-col gap-2">
       {VISIBLE_PROVIDERS.map((p) => (
@@ -65,14 +67,13 @@ export function UserButton() {
   const { user, isPending } = useCurrentUserState();
   const [signingOut, setSigningOut] = useState(false);
   const [error, setError] = useState("");
-  const gateSession = hasGateSessionMarker();
 
   if (isPending) {
     return <div className="glass-chip h-11 w-24 animate-pulse" />;
   }
   if (!user) return null;
 
-  const canSignOut = authEnabled && !user.isDevFallback && !gateSession;
+  const canSignOut = authEnabled && !user.isDevFallback;
 
   return (
     <div className="flex items-center gap-2">
