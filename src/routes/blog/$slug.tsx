@@ -80,11 +80,11 @@ function BlogPostPage() {
         <div className="mt-12 rounded-3xl bg-mint-soft px-6 py-8">
           <h2 className="font-display text-2xl font-semibold">Run this against a real location</h2>
           <p className="mt-2 text-sm text-ink-soft">
-            Create a workspace to run this against a real footprint. The auditor lives behind sign-in so the score is yours.
+            Start a free trial to run this against a real footprint. The auditor lives behind sign-in so the score is yours.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild>
-              <Link to="/signup">Create workspace</Link>
+              <Link to="/trial">Start free trial</Link>
             </Button>
             <Button asChild variant="secondary">
               <Link to="/pricing">See pricing</Link>

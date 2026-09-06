@@ -10,11 +10,11 @@ function fallbackCopy(): SiteCopy {
     home: {
       lede: "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one workspace.",
       trialLine:
-        "Create a workspace. No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
+        "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
     },
     pricingTitle: "Business listing management pricing: Starter $49. Growth $149.",
     pricingLede:
-      "Business listing management cost for BLM: create a Starter or Growth workspace with no card. Listed prices apply when billing goes live.",
+      "Business listing management cost for BLM: Starter listed at $49/month, Growth at $149/month, Enterprise custom. Start a free trial or book a call. Listed prices apply when billing goes live.",
     plans: PRICING.map((p) => ({ ...p, features: [...p.features] })),
   };
 }

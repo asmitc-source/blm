@@ -18,7 +18,7 @@ A realistic monthly load for someone who already has another job:
 
 Hourly cost is whatever you pay that person. Loaded internal cost turns those hours into a real monthly line before a rebrand or holiday-hours season. DIY only looks cheap in months when nothing changes. Those months are not when listings break.
 
-If you want an honest first measurement, [create a workspace](/signup) and run the listing auditor. It will not replace a person. It will tell you whether that person is fighting NAP drift or just gardening Google.
+If you want an honest first measurement, [start a free trial](/trial) and run the listing auditor. It will not replace a person. It will tell you whether that person is fighting NAP drift or just gardening Google.
 
 ## What do agencies charge for listing retainers in 2026?
 
@@ -76,7 +76,7 @@ A simple way to frame drift for a US planning meeting: compare a small miss rate
 
 A first-year budget that holds up usually has four lines.
 
-**Discovery.** [Create a workspace](/signup), run the listing auditor on the worst locations, export the issues. Keep the baseline score.
+**Discovery.** [Start a free trial](/trial), run the listing auditor on the worst locations, export the issues. Keep the baseline score.
 
 **Cleanup.** Labor: internal ops, an agency project, or both. Size it to duplicate count and publisher chaos, not to location count alone.
 
@@ -90,7 +90,7 @@ If you need a single sentence for finance: pay a small, known amount to keep NAP
 
 ### How do I start without a sales call?
 
-[Create a workspace](/signup). Starter unlocks after a 7-day trial at $49/month. Growth is $149/month when 25 locations and publisher sync matter. Details sit on [pricing](/pricing).
+[Start a free trial](/trial). Starter unlocks after a 7-day trial at $49/month. Growth is $149/month when 25 locations and publisher sync matter. Details sit on [pricing](/pricing).
 
 ### What counts as a location for pricing?
 

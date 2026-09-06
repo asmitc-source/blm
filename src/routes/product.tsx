@@ -143,13 +143,13 @@ function ProductPage() {
         </div>
         <div className="cta-band mt-12 rounded-3xl border border-line px-6 py-10 sm:px-10">
           <h2 className="font-display text-3xl font-semibold">See it on your own locations</h2>
-          <p className="mt-2 max-w-xl text-ink-soft">Create a workspace. Book a demo if you already run a national footprint.</p>
+          <p className="mt-2 max-w-xl text-ink-soft">Start a free trial. Book a call if you already run a national footprint.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild>
-              <Link to="/signup">Create workspace</Link>
+              <Link to="/trial">Start free trial</Link>
             </Button>
             <Button asChild variant="secondary">
-              <Link to="/demo">Book a demo</Link>
+              <Link to="/book">Book a call</Link>
             </Button>
           </div>
         </div>

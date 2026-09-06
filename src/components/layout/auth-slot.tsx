@@ -19,8 +19,8 @@ export function AuthSlot({ compact = false }: { compact?: boolean }) {
       <Button asChild size={compact ? "sm" : "md"} variant="secondary">
         <Link to="/login">Log in</Link>
       </Button>
-      <Button asChild size={compact ? "sm" : "md"}>
-        <Link to="/signup">Create workspace</Link>
+      <Button asChild size={compact ? "sm" : "md"} variant="ghost">
+        <Link to="/book">Book a call</Link>
       </Button>
     </div>
   );

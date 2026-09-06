@@ -82,7 +82,7 @@ function AppWorkspace() {
         </p>
 
         <div className="mt-6 rounded-2xl bg-cream px-5 py-4 hairline">
-          <p className="text-sm font-semibold text-ink">No card required</p>
+          <p className="text-sm font-semibold text-ink">You are on a free trial path</p>
           <p className="mt-1 text-sm text-ink-soft">
             We logged this workspace as a lead. Billing is not live yet. When it is, Starter is listed at $49/month and Growth at $149/month.
           </p>
@@ -90,8 +90,8 @@ function AppWorkspace() {
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <DashCard icon={<MapPin className="size-5 text-brand" />} label="Locations" value={locations ?? "Add first"} hint="Storefronts in this workspace" />
-          <DashCard icon={<Radar className="size-5 text-sky" />} label="Coverage" value="–" hint="Connect publishers to fill" />
-          <DashCard icon={<Copy className="size-5 text-ink-soft" />} label="Duplicates" value="–" hint="Near-match radar" />
+          <DashCard icon={<Radar className="size-5 text-sky" />} label="Coverage" value="-" hint="Connect publishers to fill" />
+          <DashCard icon={<Copy className="size-5 text-ink-soft" />} label="Duplicates" value="-" hint="Near-match radar" />
           <DashCard icon={<Bell className="size-5 text-butter" />} label="Alerts" value="0" hint="Hours, NAP, takedowns" />
         </div>
 
@@ -100,7 +100,7 @@ function AppWorkspace() {
             <Link to="/pricing">See Growth</Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link to="/demo">Talk to sales</Link>
+            <Link to="/book">Book a call</Link>
           </Button>
         </div>
 

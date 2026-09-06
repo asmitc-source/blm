@@ -84,7 +84,7 @@ function Hero() {
             style={{ animationDelay: "160ms" }}
           >
             <Button asChild size="lg">
-              <Link to="/signup">Create workspace</Link>
+              <Link to="/trial">Start free trial</Link>
             </Button>
             <Button asChild size="lg" variant="secondary">
               <a href="#how-it-works">See how it works</a>
@@ -92,14 +92,14 @@ function Hero() {
           </div>
           <p className="animate-fade-up mt-4 text-sm text-muted" style={{ animationDelay: "220ms" }}>
             {copy?.trialLine ??
-              "Create a workspace. No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live."}
+              "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live."}
           </p>
           <Link
-            to="/demo"
+            to="/book"
             className="animate-fade-up mt-3 inline-flex items-center gap-1 text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
             style={{ animationDelay: "280ms" }}
           >
-            Or book a walkthrough on a real footprint <ArrowRight className="size-4" />
+            Or book a call on a real footprint <ArrowRight className="size-4" />
           </Link>
           <AskRow />
         </div>
@@ -174,7 +174,7 @@ function QuickAnswer() {
               "Best for multi-location brands, franchises, agencies, and local SEO teams.",
               "Built for NAP consistency, duplicate control, and directory coverage you can inspect.",
               `Works across ${COVERAGE}. Not a single publisher login.`,
-              "Create a workspace, then Growth and Enterprise when governance and SSO matter.",
+              "Start a free trial, then Growth and Enterprise when governance and SSO matter.",
             ].map((item, i) => (
               <li
                 key={item}
@@ -483,14 +483,14 @@ function FinalCta() {
             Replace spreadsheet listing ops with a presence your team can govern.
           </h2>
           <p className="relative mx-auto mt-4 max-w-xl text-ink-soft">
-            Create a workspace. See how it works. Book a demo if you already manage a national footprint. No card required.
+            Start a free trial for product access. Book a call if you already manage a national footprint.
           </p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg">
-              <Link to="/signup">Create workspace</Link>
+              <Link to="/trial">Start free trial</Link>
             </Button>
             <Button asChild size="lg" variant="secondary">
-              <Link to="/demo">Book a demo</Link>
+              <Link to="/book">Book a call</Link>
             </Button>
           </div>
         </div>

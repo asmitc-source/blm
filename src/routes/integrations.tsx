@@ -55,7 +55,7 @@ function IntegrationsPage() {
         </p>
         <div className="mt-8">
           <Button asChild>
-            <Link to="/signup">Create workspace</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
         </div>
       </InnerPage>

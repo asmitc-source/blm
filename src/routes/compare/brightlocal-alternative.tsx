@@ -197,7 +197,7 @@ function BrightPage() {
 
         <div className="mt-8 flex gap-3">
           <Button asChild>
-            <Link to="/signup">Create workspace</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
           <Button asChild variant="secondary">
             <Link to="/blog/$slug" params={{ slug: "business-listing-management-for-agencies" }}>

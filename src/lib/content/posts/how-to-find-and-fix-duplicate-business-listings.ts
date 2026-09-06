@@ -29,7 +29,7 @@ In business listing management, you search like a customer and like a matcher. B
 
 **Inventory the IDs.** Google place / CID where you can, Apple place ids, Bing ids, Yelp biz urls. Two URLs that look like the same clinic often are not.
 
-For more than a handful of locations, doing this in a browser tab is how duplicates survive. [Create a workspace](/signup) for a snapshot, and the [product](/product) duplicate radar is the recurring version: near-matches on phone, place id, and name, queued as risk rather than a quarterly spreadsheet.
+For more than a handful of locations, doing this in a browser tab is how duplicates survive. [Start a free trial](/trial) for a snapshot, and the [product](/product) duplicate radar is the recurring version: near-matches on phone, place id, and name, queued as risk rather than a quarterly spreadsheet.
 
 Record every candidate in one list: publisher, URL or id, NAP as published, review count, claimed/unclaimed, and a gut match score. You cannot suppress what you have not named.
 

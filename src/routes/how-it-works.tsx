@@ -36,13 +36,13 @@ function HowPage() {
       <div className="page-wrap pb-20">
         <div className="cta-band rounded-3xl border border-line px-6 py-10 sm:px-10">
           <h2 className="font-display text-3xl font-semibold">Run it on your own footprint</h2>
-          <p className="mt-2 max-w-xl text-ink-soft">Create a workspace, or book a walkthrough if you already run a national set of pins.</p>
+          <p className="mt-2 max-w-xl text-ink-soft">Start a free trial, or book a call if you already run a national set of pins.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild>
-              <Link to="/signup">Create workspace</Link>
+              <Link to="/trial">Start free trial</Link>
             </Button>
             <Button asChild variant="secondary">
-              <Link to="/demo">Book a demo</Link>
+              <Link to="/book">Book a call</Link>
             </Button>
           </div>
         </div>

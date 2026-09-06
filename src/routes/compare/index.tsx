@@ -34,7 +34,7 @@ const ROWS = [
     job: "Way to try",
     yext: "Demo / sales-led",
     bl: "14-day self-serve trial",
-    blm: "Create a workspace",
+    blm: "Start free trial",
     note: "Yext states there is no standard free trial; evaluation runs through demos and references. BrightLocal offers a 14-day trial with no card. BLM opens a workspace with a work email. Early access still means no promised one-click publisher cutover on day one.",
   },
   {

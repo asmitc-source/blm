@@ -40,7 +40,7 @@ export const FOOTER = {
     { href: "/pricing", label: "Pricing" },
     { href: "/integrations", label: "Integrations" },
     { href: "/security", label: "Security" },
-    { href: "/demo", label: "Book a demo" },
+    { href: "/book", label: "Book a call" },
   ],
   resources: [
     { href: "/resources", label: "Resource hub" },
@@ -65,12 +65,12 @@ export const PRICING = [
     name: "Starter",
     price: "$49",
     cadence: "/ month",
-    blurb: "One location on the listing desk. Listed at $49/month when billing goes live. No card required.",
-    cta: "Create workspace",
-    href: "/signup",
+    blurb: "One location on the listing desk. Listed at $49/month when billing goes live. Start with a free trial.",
+    cta: "Start free trial",
+    href: "/trial",
     featured: false,
     features: [
-      "No credit card required",
+      "Free trial to start",
       "1 location in a workspace",
       "NAP, coverage, duplicate, and hours scores",
       `${COVERAGE} snapshot`,
@@ -83,11 +83,11 @@ export const PRICING = [
     price: "$149",
     cadence: "/ month",
     blurb: "The operating system for brands managing many storefronts. Listed at $149/month when billing goes live.",
-    cta: "Create workspace",
-    href: "/signup",
+    cta: "Book a call",
+    href: "/book",
     featured: true,
     features: [
-      "No credit card required",
+      "Book a call to scope Growth",
       "Up to 25 locations",
       COVERAGE,
       "Duplicate risk alerts",
@@ -102,8 +102,8 @@ export const PRICING = [
     price: "Custom",
     cadence: "",
     blurb: "Franchises, agencies, and national footprints with governance.",
-    cta: "Talk to sales",
-    href: "/demo",
+    cta: "Book a call",
+    href: "/book",
     featured: false,
     features: [
       "Unlimited locations",
@@ -286,7 +286,7 @@ export const FAQ = [
   },
   {
     q: "Do I need a credit card to try BLM?",
-    a: "No. Create a workspace with a work email. We are not charging cards yet. Starter is listed at $49/month and Growth at $149/month when billing goes live.",
+    a: "Start a free trial with a work email. We are not charging cards yet. Starter is listed at $49/month and Growth at $149/month when billing goes live.",
   },
   {
     q: "How is BLM different from editing Google Business Profile?",
@@ -310,11 +310,11 @@ export const FAQ = [
   },
   {
     q: "How much does BLM cost?",
-    a: "Starter is listed at $49/month for one location. Growth is listed at $149/month for up to 25 locations. Enterprise is custom. Billing is not live yet, so no card is required to create a workspace.",
+    a: "Starter is listed at $49/month for one location. Growth is listed at $149/month for up to 25 locations. Enterprise is custom. Billing is not live yet. Start a free trial or book a call.",
   },
   {
     q: "Can I start on Starter and upgrade?",
-    a: "Yes. Create a workspace now. Stay on Starter at the listed $49/month rate or move to Growth at $149/month when billing goes live. Enterprise is for unlimited locations and agency structure.",
+    a: "Yes. Start a free trial now. Stay on Starter at the listed $49/month rate or move to Growth at $149/month when billing goes live. Enterprise is for unlimited locations and agency structure.",
   },
   {
     q: "Is listing data used to train public models?",

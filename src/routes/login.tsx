@@ -83,8 +83,12 @@ function Login() {
         ) : null}
         <p className="mt-6 text-sm text-muted">
           New here?{" "}
-          <Link to="/signup" className="font-semibold text-ink">
-            Create workspace
+          <Link to="/trial" className="font-semibold text-ink">
+            Start free trial
+          </Link>
+          {" · "}
+          <Link to="/book" className="font-semibold text-ink">
+            Book a call
           </Link>
         </p>
       </div>

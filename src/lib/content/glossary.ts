@@ -33,5 +33,5 @@ export const GLOSSARY: GlossaryItem[] = [
   { term: "Suppression", def: "The process of asking a publisher to close or merge a duplicate so one listing remains canonical." },
   { term: "Local SEO", def: "Search work that targets geographic intent. Listings are the foundation; content and links sit on top." },
   { term: "Franchise listing ops", def: "The governance model where the brand owns canonical NAP while franchisees may edit hours and local attributes." },
-  { term: "Early access", def: "BLM's current seating: create a workspace to unlock Starter, with Growth and Enterprise for teams that need more locations." },
+  { term: "Early access", def: "BLM's current seating: start a free trial to unlock Starter, with Growth and Enterprise for teams that need more locations." },
 ];
