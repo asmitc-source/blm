@@ -83,22 +83,22 @@ export const cmsLogin = createServerFn({ method: "POST" })
     const authClient = (await supabaseAnon()) ?? (await supabaseAdmin());
     if (authClient) {
       const { data: auth, error } = await authClient.auth.signInWithPassword({ email, password: data.password });
-      if (!error && auth.user) {
+      if (!error && auth.user && auth.session?.access_token) {
         const admin = await upsertAdminFromAuth(auth.user.id, (auth.user.email ?? email).toLowerCase());
-        const token = newToken();
+        const token = auth.session.access_token;
         await createSession(admin.id, token);
         const sb = await supabaseAdmin();
         if (sb) {
-          await sb.from("cms_sessions").upsert({
-            id: crypto.randomUUID(),
-            admin_id: admin.id,
-            token,
-            expires_at: new Date(Date.now() + 14 * 86400000).toISOString(),
-          });
           await sb.from("cms_admins").upsert({
             id: admin.id,
             username: admin.username,
             password_hash: "supabase-auth",
+          });
+          await sb.from("cms_sessions").insert({
+            id: crypto.randomUUID(),
+            admin_id: admin.id,
+            token,
+            expires_at: new Date(Date.now() + 14 * 86400000).toISOString(),
           });
         }
         return { token, username: admin.username };

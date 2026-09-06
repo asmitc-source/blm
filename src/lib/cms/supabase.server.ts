@@ -2,9 +2,6 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { CmsArticle, CmsFaq, SiteCopy } from "./types";
 
 const FALLBACK_URL = "https://zchubgizclrdjlvgqzsi.supabase.co";
-function envSecret() {
-  return process.env.SUPABASE_SECRET_KEY || "";
-}
 
 function cleanUrl(value: string) {
   return value.trim().replace(/\/$/, "").replace(/\/rest\/v1\/?$/, "");
@@ -19,7 +16,11 @@ function envSecret() {
 }
 
 export function supabasePublishable() {
-  return process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || "";
+  return (
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    "sb_publishable__yhWiRcZAf4cH-ujwbJT-A_9GOwE45S"
+  );
 }
 
 export async function supabaseUrl() {
@@ -27,12 +28,12 @@ export async function supabaseUrl() {
 }
 
 export async function supabaseConfigured() {
-  return Boolean((await supabaseUrl()) && envSecret());
+  return Boolean(await supabaseUrl());
 }
 
 export async function supabaseAdmin(): Promise<SupabaseClient | null> {
   const url = await supabaseUrl();
-  const key = envSecret();
+  const key = envSecret() || supabasePublishable();
   if (!url || !key) return null;
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -97,7 +98,11 @@ export async function syncFaqs(page: string, items: CmsFaq[]) {
 export async function syncSiteCopy(copy: SiteCopy) {
   const sb = await supabaseAdmin();
   if (!sb) return;
-  await sb.from("cms_settings").upsert({ key: "site", value: JSON.stringify(copy), updated_at: new Date().toISOString() });
+  await sb.from("cms_settings").upsert({
+    key: "site",
+    value: JSON.stringify(copy),
+    updated_at: new Date().toISOString(),
+  });
 }
 
 export async function fetchPublishedFromSupabase(slug: string) {

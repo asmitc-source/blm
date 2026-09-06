@@ -152,23 +152,17 @@ export async function createSession(adminId: string, token: string, days = 14) {
 export async function sessionAdmin(token: string | null | undefined) {
   if (!token) return null;
   try {
-    const { supabaseAdmin } = await import("./supabase.server");
+    const { supabaseAnon, supabaseAdmin } = await import("./supabase.server");
+    const authClient = (await supabaseAnon()) ?? (await supabaseAdmin());
+    if (authClient && token.split(".").length === 3) {
+      const { data } = await authClient.auth.getUser(token);
+      if (data.user?.email) return { id: data.user.id, username: data.user.email };
+    }
     const sb = await supabaseAdmin();
     if (sb) {
-      const remote = await sb
-        .from("cms_sessions")
-        .select("admin_id, cms_admins(id, username)")
-        .eq("token", token)
-        .gt("expires_at", new Date().toISOString())
-        .limit(1)
-        .maybeSingle();
-      const joined = remote.data as
-        | { admin_id: string; cms_admins: { id: string; username: string } | { id: string; username: string }[] | null }
-        | null;
-      const admin = Array.isArray(joined?.cms_admins) ? joined?.cms_admins[0] : joined?.cms_admins;
-      if (admin?.username) return { id: admin.id, username: admin.username };
-      if (joined?.admin_id) {
-        const row = await sb.from("cms_admins").select("id, username").eq("id", joined.admin_id).maybeSingle();
+      const remote = await sb.from("cms_sessions").select("admin_id").eq("token", token).limit(1).maybeSingle();
+      if (remote.data?.admin_id) {
+        const row = await sb.from("cms_admins").select("id, username").eq("id", remote.data.admin_id).maybeSingle();
         if (row.data) return { id: String(row.data.id), username: String(row.data.username) };
       }
     }
