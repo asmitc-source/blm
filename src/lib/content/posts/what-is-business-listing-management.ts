@@ -1,12 +1,14 @@
-const markdown = `Business listing management is the ongoing process of creating, verifying, and synchronizing a company's name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.
+const markdown = `In the United States, business listing management is how multi-location brands, franchises, healthcare groups, and agencies keep storefronts findable when customers bounce between Google Maps, Apple Maps, Bing, voice assistants, and AI answers. It is not a one-time citation sprint. It is the operating system for local presence: one canonical record per location, pushed and re-checked until the public graph matches the door.
 
-In the United States, that practice is how multi-location brands, franchises, healthcare groups, and agencies keep storefronts findable when customers bounce between Google Maps, Apple Maps, Bing, voice assistants, and AI answers. It is not a one-time citation sprint. It is the operating system for local presence: one canonical record per location, pushed and re-checked until the public graph matches the door.
+This page is the short definition you can cite. It covers what the practice includes, why NAP still decides matching in 2026, how listings differ from citations, why multi-location teams outgrow spreadsheets, and the operating loop that keeps drift from becoming a customer problem.
 
-Start on the [BLM homepage](/) for the product view, use the [compare listing software](/compare) hub when you are shortlisting vendors, and check [pricing](/pricing) for listed Starter and Growth rates. If you want the long-form field guide for the same practice (inventory, governance, publisher order of operations), read the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide) on Local Listings Management. This article is the short definition you can cite, plus the NAP, citation, and multi-location mechanics US teams actually run.
+Start on the [BLM homepage](/) for the product view, use the [compare listing software](/compare) hub when you are shortlisting vendors, check [pricing](/pricing) for listed Starter and Growth rates, and see [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) when you need a buying scorecard. For the long-form field guide (inventory, governance, publisher order of operations), read the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide) on Local Listings Management.
 
-## What does business listing management actually include?
+## What does business listing management include?
 
-At the center is a **canonical record** per location: the approved name, address, phone (NAP), plus hours, primary and secondary categories, website URL, and a short set of attributes such as parking, accessibility, or service area. Business listing management is the system that publishes that record, checks what actually went live, and corrects drift.
+Business listing management includes creating, verifying, monitoring, and correcting the structured place data for every location across the publishers customers actually use.
+
+At the center is a **canonical record** per location: approved name, address, phone (NAP), hours, primary and secondary categories, website URL, and a short set of attributes such as parking, accessibility, or service area. The practice is the system that publishes that record, checks what went live, and corrects drift.
 
 That system usually covers four jobs:
 
@@ -21,9 +23,9 @@ Day-to-day Google execution (posts, Q&A, photo hygiene, verification recovery) o
 
 ## Why does NAP consistency still matter in 2026?
 
-NAP is name, address, and phone. Search engines and map platforms still use those three strings as the primary key for "is this the same place?" When they disagree, matching algorithms hesitate (duplicates or suppressed listings) and customers hesitate (old numbers, wrong suites, conflicting hours).
+NAP consistency still matters because search engines and map platforms use name, address, and phone as the primary key for "is this the same place?"
 
-The mismatches that hurt US brands are rarely dramatic. They look like:
+When those three strings disagree, matching algorithms hesitate (duplicates or suppressed listings) and customers hesitate (old numbers, wrong suites, conflicting hours). The mismatches that hurt US brands are rarely dramatic. They look like:
 
 - A tracking number on Yelp and the real local number on Google.
 - "Harbor Dental Portland" on Apple and "Harbor Dental LLC" on Bing.
@@ -38,19 +40,25 @@ If you want a baseline before you argue about whose spreadsheet is right, [start
 
 ## What is a citation, and how is it different from a listing?
 
-A **listing** is a structured profile on a publisher: a place page with NAP, hours, categories, photos, and often reviews. Google Business Profile is a listing. A Bing Places page is a listing. A Yelp page is a listing.
+A listing is a structured place profile you can claim and correct. A citation is any public mention of your NAP, structured or not.
 
-A **citation** is any public mention of your NAP, structured or not. That includes directories, aggregators, chamber pages, vendor "find a location" widgets, and unstructured mentions on blogs or news. Some citations are full listings. Some are just a name and city in a table.
+Google Business Profile is a listing. A Bing Places page is a listing. A Yelp page is a listing. Each carries NAP, hours, categories, photos, and often reviews.
 
-Local SEO still talks about citation building because publishers and aggregators feed each other. If an aggregator holds a stale suite line, you will meet that suite line on a platform you do not control. Cleaning Google alone does not clean the graph. See [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) on BLM, and the companion comparison on [Local Listings Management](https://locallistingsmanagement.co/google-business-profile-vs-business-listings).
+A citation includes directories, aggregators, chamber pages, vendor "find a location" widgets, and unstructured mentions on blogs or news. Some citations are full listings. Some are just a name and city in a table.
+
+Local SEO still talks about citation building because publishers and aggregators feed each other. If an aggregator holds a stale suite line, you will meet that suite line on a platform you do not control. Cleaning Google alone does not clean the graph.
+
+See [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) on BLM, and the companion comparison on [Local Listings Management](https://locallistingsmanagement.co/google-business-profile-vs-business-listings).
 
 Business listing management focuses on the structured layer (the listings you can verify, monitor, and correct), while treating the long tail as coverage you measure, not a vanity count of 200 directories.
 
 ## Why do multi-location US brands need a system, not a spreadsheet?
 
+Multi-location US brands need a listing system because volume, local exceptions, publisher lag, and growth-driven duplicates outrun any spreadsheet that only stores NAP.
+
 A single shop can survive on Google plus a few directories, updated when hours change. The math breaks when you cannot remember which location still uses a tracking number.
 
-Multi-location and franchise teams hit four structural problems:
+Four structural problems show up fast:
 
 - **Volume.** Twenty-five locations times ten publishers is 250 profiles. Nobody reviews 250 profiles by hand every month.
 - **Local exception.** Franchisees own weekend hours, temp closures, and sometimes the phone. Brand owns the name and category. Without a canonical record plus a workflow, both sides overwrite each other.
@@ -63,7 +71,7 @@ Agencies feel the same pressure with a different org chart. The work is identica
 
 ## How does listing management work in practice?
 
-Strip away vendor language and the operating rhythm is stable.
+In practice, business listing management is a six-step loop: decide the source of truth, inventory what is live, claim and verify, push the canonical record, re-scan what published, then monitor for drift.
 
 **1. Decide the source of truth.** One name string, one address format, one public phone per location. Call-tracking numbers belong in ads, not in the listing graph, unless you have a deliberate and documented exception.
 
@@ -81,9 +89,9 @@ Tools differ in coverage, duplicate matching, and whether marketing and franchis
 
 ## What happens when listings drift?
 
-Drift is the default. Staff update one publisher. A data partner overwrites another. A store closes on Sunday for a private event and only Google hears about it. A rebrand lands on the website and on GBP, then stalls.
+Listing drift is the default state: staff update one publisher, a data partner overwrites another, and customers meet the wrong hours, phone, or pin.
 
-Customers experience drift as wrong hours in the car, a disconnected tracking line, two pins for one clinic, or voice directions to a former suite. Internally, drift shows up as "local SEO is down" tickets that are actually data problems.
+A store closes on Sunday for a private event and only Google hears about it. A rebrand lands on the website and on GBP, then stalls. Customers experience that as wrong hours in the car, a disconnected tracking line, two pins for one clinic, or voice directions to a former suite. Internally, drift shows up as "local SEO is down" tickets that are actually data problems.
 
 Give the work a named owner. Brand owns canonical NAP and categories; stores own hours; an agency executes against an SLA. Shared logins with no system of record are how Google gets updated and Apple does not. The [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) is the stack that catches that before a customer does.
 
