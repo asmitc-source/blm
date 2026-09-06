@@ -328,59 +328,63 @@ export const exportSubscribersCsv = createServerFn({ method: "GET" })
     return { csv: lines.join("\n") + "\n", count: rows.length };
   });
 
+export async function loadInboxStats() {
+  const sql = await getSql();
+  let messagesTotal = 0;
+  let messagesNew = 0;
+  let subscribersActive = 0;
+  let subscribersTotal = 0;
+  let recentNew: ContactMessage[] = [];
+
+  try {
+    const tot = await sql<{ n: number }>`select count(*)::int as n from contact_submissions`;
+    messagesTotal = tot[0]?.n ?? 0;
+    const neu = await sql<{ n: number }>`
+      select count(*)::int as n from contact_submissions where coalesce(status, 'new') = ${"new"}
+    `;
+    messagesNew = neu[0]?.n ?? 0;
+    const recent = await sql`
+      select id, name, email, company, message, source,
+             coalesce(status, 'new') as status, created_at, replied_at, reply_note
+      from contact_submissions
+      where coalesce(status, 'new') = ${"new"}
+      order by created_at desc
+      limit 5
+    `;
+    recentNew = recent.map((r) => mapContact(r as Record<string, unknown>));
+  } catch {
+    try {
+      const tot = await sql<{ n: number }>`select count(*)::int as n from contact_submissions`;
+      messagesTotal = tot[0]?.n ?? 0;
+      messagesNew = messagesTotal;
+    } catch {
+      /* tables may not exist yet */
+    }
+  }
+
+  try {
+    const act = await sql<{ n: number }>`
+      select count(*)::int as n from newsletter_subscribers where status = ${"active"}
+    `;
+    subscribersActive = act[0]?.n ?? 0;
+    const all = await sql<{ n: number }>`select count(*)::int as n from newsletter_subscribers`;
+    subscribersTotal = all[0]?.n ?? 0;
+  } catch {
+    /* ignore */
+  }
+
+  return {
+    messagesTotal,
+    messagesNew,
+    subscribersActive,
+    subscribersTotal,
+    recentNew,
+  };
+}
+
 export const inboxStats = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const sql = await getSql();
-    let messagesTotal = 0;
-    let messagesNew = 0;
-    let subscribersActive = 0;
-    let subscribersTotal = 0;
-    let recentNew: ContactMessage[] = [];
-
-    try {
-      const tot = await sql<{ n: number }>`select count(*)::int as n from contact_submissions`;
-      messagesTotal = tot[0]?.n ?? 0;
-      const neu = await sql<{ n: number }>`
-        select count(*)::int as n from contact_submissions where coalesce(status, 'new') = ${"new"}
-      `;
-      messagesNew = neu[0]?.n ?? 0;
-      const recent = await sql`
-        select id, name, email, company, message, source,
-               coalesce(status, 'new') as status, created_at, replied_at, reply_note
-        from contact_submissions
-        where coalesce(status, 'new') = ${"new"}
-        order by created_at desc
-        limit 5
-      `;
-      recentNew = recent.map((r) => mapContact(r as Record<string, unknown>));
-    } catch {
-      try {
-        const tot = await sql<{ n: number }>`select count(*)::int as n from contact_submissions`;
-        messagesTotal = tot[0]?.n ?? 0;
-        messagesNew = messagesTotal;
-      } catch {
-        /* tables may not exist yet */
-      }
-    }
-
-    try {
-      const act = await sql<{ n: number }>`
-        select count(*)::int as n from newsletter_subscribers where status = ${"active"}
-      `;
-      subscribersActive = act[0]?.n ?? 0;
-      const all = await sql<{ n: number }>`select count(*)::int as n from newsletter_subscribers`;
-      subscribersTotal = all[0]?.n ?? 0;
-    } catch {
-      /* ignore */
-    }
-
-    return {
-      messagesTotal,
-      messagesNew,
-      subscribersActive,
-      subscribersTotal,
-      recentNew,
-    };
+    return loadInboxStats();
   });

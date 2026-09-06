@@ -1,19 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowUpRight, FileText, Inbox, PenLine, Settings2, Sparkles, Target, Upload } from "lucide-react";
+import { ArrowUpRight, FileText, Inbox, PenLine, Settings2, Sparkles, Upload } from "lucide-react";
 import { AdminShell } from "@/components/admin/shell";
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cmsBootstrap, cmsDashboard, cmsLibraryStatus, cmsLogin, cmsSeedLibrary } from "@/lib/cms/actions";
-import { inboxStats } from "@/lib/cms/inbox";
+import { cmsDeskHome, cmsLogin, cmsSeedLibrary } from "@/lib/cms/actions";
 import { setDeskToken } from "@/lib/cms/token";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/admin/")({
-  loader: () => cmsBootstrap(),
+  loader: () => cmsDeskHome(),
   head: () => pageHead({ title: "The desk", description: "BLM admin desk.", path: "/admin" }),
   component: AdminHome,
 });
@@ -27,30 +26,11 @@ function greeting() {
 
 function AdminHome() {
   const initial = Route.useLoaderData();
-  const [boot, setBoot] = useState(initial);
-  const [dash, setDash] = useState<Awaited<ReturnType<typeof cmsDashboard>> | null>(null);
-  const [inbox, setInbox] = useState<Awaited<ReturnType<typeof inboxStats>> | null>(null);
-  const [libraryStatus, setLibraryStatus] = useState<Awaited<ReturnType<typeof cmsLibraryStatus>> | null>(null);
+  const [boot, setBoot] = useState(initial.boot);
+  const [dash, setDash] = useState(initial.dash);
+  const [inbox, setInbox] = useState(initial.inbox);
+  const [libraryStatus, setLibraryStatus] = useState(initial.libraryStatus);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    void cmsBootstrap()
-      .then(setBoot)
-      .catch(() => undefined);
-  }, []);
-
-  useEffect(() => {
-    if (!boot?.admin) return;
-    void cmsDashboard()
-      .then(setDash)
-      .catch(() => setDash(null));
-    void inboxStats()
-      .then(setInbox)
-      .catch(() => setInbox(null));
-    void cmsLibraryStatus()
-      .then(setLibraryStatus)
-      .catch(() => setLibraryStatus(null));
-  }, [boot?.admin]);
 
   if (!boot?.admin) {
     return (
@@ -89,30 +69,23 @@ function AdminHome() {
         </Button>
       </div>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <StatTile label="Articles" value={stats?.articles ?? "-"} tone="a" />
-        <StatTile label="Live" value={stats?.published ?? "-"} tone="b" />
-        <StatTile label="Drafts" value={stats?.drafts ?? "-"} tone="c" />
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <StatTile label="Articles" value={stats?.articles} tone="a" />
+        <StatTile label="Live" value={stats?.published} tone="b" />
+        <StatTile label="Drafts" value={stats?.drafts} tone="c" />
         <StatTile
           label="Messages"
-          value={inbox?.messagesNew ?? "-"}
+          value={inbox?.messagesNew}
           tone="a"
           href="/admin/inbox"
           hint={inbox ? `${inbox.messagesTotal} total` : undefined}
         />
         <StatTile
           label="Subscribers"
-          value={inbox?.subscribersActive ?? "-"}
+          value={inbox?.subscribersActive}
           tone="d"
           href="/admin/inbox"
           hint={inbox ? `${inbox.subscribersTotal} total` : undefined}
-        />
-        <StatTile
-          label="Leads"
-          value={stats?.leads ?? "-"}
-          tone="b"
-          href="/admin/leads"
-          hint="All capture channels"
         />
       </div>
 
@@ -160,19 +133,19 @@ function AdminHome() {
           expected={libraryStatus.expected}
           onSeed={async () => {
             await cmsSeedLibrary();
-            const [next, status] = await Promise.all([cmsDashboard(), cmsLibraryStatus()]);
-            setDash(next);
-            setLibraryStatus(status);
+            const next = await cmsDeskHome();
+            setBoot(next.boot);
+            setDash(next.dash);
+            setInbox(next.inbox);
+            setLibraryStatus(next.libraryStatus);
           }}
         />
       ) : null}
 
-      {!dash ? (
-        <p className="mt-10 text-sm text-muted">Opening the desk…</p>
-      ) : (
-        <div className="mt-10 grid gap-6 lg:grid-cols-5">
-          <section className="lg:col-span-3">
-            <SectionHead title="In progress" hint="Drafts first. Then publish." />
+      <div className="mt-10 grid gap-6 lg:grid-cols-5">
+        <section className="lg:col-span-3">
+          <SectionHead title="In progress" hint="Drafts first. Then publish." />
+          {dash ? (
             <Stack
               items={(dash.drafts.length ? dash.drafts : dash.recent).map((a) => ({
                 id: a.id,
@@ -181,9 +154,13 @@ function AdminHome() {
                 status: a.status,
               }))}
             />
-          </section>
-          <section className="lg:col-span-2">
-            <SectionHead title="Live" hint="On the public site." />
+          ) : (
+            <StackSkeleton rows={4} />
+          )}
+        </section>
+        <section className="lg:col-span-2">
+          <SectionHead title="Live" hint="Homepage articles." />
+          {dash ? (
             <Stack
               items={dash.live.map((a) => ({
                 id: a.id,
@@ -192,36 +169,11 @@ function AdminHome() {
                 status: "published",
               }))}
             />
-            <div className="mt-8 mb-3 flex items-end justify-between gap-3">
-              <h2 className="font-display text-2xl font-semibold">Leads</h2>
-              <Link to="/admin/leads" className="text-xs font-semibold text-brand hover:underline">
-                Open leads
-              </Link>
-            </div>
-            {dash.leads.length ? (
-              <div className="grid gap-2">
-                {dash.leads.map((l) => (
-                  <Link
-                    key={l.id}
-                    to="/admin/leads"
-                    className="rounded-2xl bg-cream px-4 py-3 hairline transition-transform hover:-translate-y-0.5"
-                  >
-                    <p className="font-semibold text-ink">{l.name || l.email}</p>
-                    <p className="mt-0.5 text-xs text-muted">
-                      {l.kind}
-                      {l.company ? ` · ${l.company}` : ""} · {l.email}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="rounded-2xl bg-cream px-4 py-6 text-sm text-muted hairline">
-                No leads yet. Signups, logins, demos, and contact land here.
-              </p>
-            )}
-          </section>
-        </div>
-      )}
+          ) : (
+            <StackSkeleton rows={3} />
+          )}
+        </section>
+      </div>
     </AdminShell>
   );
 }
@@ -277,15 +229,20 @@ function StatTile({
   hint,
 }: {
   label: string;
-  value: string | number;
+  value: string | number | null | undefined;
   tone: "a" | "b" | "c" | "d" | "e" | "f";
   href?: string;
   hint?: string;
 }) {
+  const ready = value !== null && value !== undefined;
   const inner = (
     <>
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{label}</p>
-      <p className="mt-1 font-display text-3xl font-semibold tabular-nums">{value}</p>
+      {ready ? (
+        <p className="mt-1 font-display text-3xl font-semibold tabular-nums">{value}</p>
+      ) : (
+        <div className="mt-2 h-8 w-16 animate-pulse rounded-lg bg-sand/80" />
+      )}
       {hint ? <p className="mt-1 text-[11px] text-faint">{hint}</p> : null}
     </>
   );
@@ -344,9 +301,6 @@ function QuickCompose({ onWrite, onDoc }: { onWrite: (title: string) => void; on
         <Link className="inline-flex items-center gap-1 hover:text-ink" to="/admin/inbox">
           <Inbox className="size-3" /> Inbox & audience
         </Link>
-        <Link className="inline-flex items-center gap-1 hover:text-ink" to="/admin/leads">
-          <Target className="size-3" /> Leads
-        </Link>
         <a className="inline-flex items-center gap-1 hover:text-ink" href="/" target="_blank" rel="noreferrer">
           <ArrowUpRight className="size-3" /> View live site
         </a>
@@ -383,6 +337,16 @@ function Stack({ items }: { items: { id: string; title: string; meta: string; st
           </div>
           <span className={cn("desk-pill", a.status === "published" ? "is-live" : "is-draft")}>{a.status}</span>
         </Link>
+      ))}
+    </div>
+  );
+}
+
+function StackSkeleton({ rows }: { rows: number }) {
+  return (
+    <div className="grid gap-2">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="h-[4.5rem] animate-pulse rounded-2xl bg-cream hairline" />
       ))}
     </div>
   );

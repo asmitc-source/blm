@@ -128,15 +128,81 @@ export const cmsDashboard = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const { dashboardStats, listArticles, listLeads } = await import("./store");
-    const [stats, articles, leads] = await Promise.all([dashboardStats(), listArticles(), listLeads()]);
+    const { dashboardStats, homepageLiveArticles, listArticles } = await import("./store");
+    const [stats, articles] = await Promise.all([dashboardStats(), listArticles()]);
     return {
       stats,
       recent: articles.slice(0, 8),
       drafts: articles.filter((a) => a.status !== "published").slice(0, 6),
-      live: articles.filter((a) => a.status === "published").slice(0, 6),
-      leads: leads.slice(0, 8),
+      live: homepageLiveArticles(articles),
       admin: context.admin,
+    };
+  });
+
+/** One round-trip for the desk home: auth + metrics + lists, all parallel when signed in. */
+export const cmsDeskHome = createServerFn({ method: "GET" })
+  .middleware([deskMiddleware])
+  .handler(async ({ context }) => {
+    if (!context.admin) {
+      const { pingSupabase, supabaseConfigured, supabaseUrl } = await import("./supabase.server");
+      try {
+        if (!process.env.VERCEL) {
+          const { seedCmsIfEmpty } = await import("./store");
+          await seedCmsIfEmpty();
+        }
+      } catch {
+        /* seed is best-effort */
+      }
+      const configured = await supabaseConfigured().catch(() => false);
+      const ping = configured
+        ? await pingSupabase().catch(() => ({ ok: false as const, reason: "ping-failed" }))
+        : { ok: false as const, reason: "missing-url" };
+      return {
+        boot: {
+          hasAdmin: true,
+          admin: null,
+          supabase: {
+            configured,
+            url: configured ? await supabaseUrl().catch(() => "") : "",
+            ping,
+          },
+        },
+        dash: null,
+        inbox: null,
+        libraryStatus: null,
+      };
+    }
+
+    // Signed-in fast path: skip seed/ping waterfall; load desk data in parallel.
+    const { BLOG_POSTS } = await import("@/lib/content/blog");
+    const { dashboardStats, expectedLibrarySlugs, homepageLiveArticles, listArticles } = await import("./store");
+    const { loadInboxStats } = await import("./inbox");
+
+    const [stats, articles, inbox] = await Promise.all([dashboardStats(), listArticles(), loadInboxStats()]);
+
+    const have = new Set(articles.map((a) => a.slug));
+    const missing = BLOG_POSTS.filter((p) => !have.has(p.slug)).map((p) => p.slug);
+    const expected = expectedLibrarySlugs().length;
+    return {
+      boot: {
+        hasAdmin: true,
+        admin: context.admin,
+        supabase: { configured: true, url: "", ping: { ok: true as const } },
+      },
+      dash: {
+        stats,
+        recent: articles.slice(0, 8),
+        drafts: articles.filter((a) => a.status !== "published").slice(0, 6),
+        live: homepageLiveArticles(articles),
+        admin: context.admin,
+      },
+      inbox,
+      libraryStatus: {
+        total: articles.length,
+        expected,
+        missing,
+        complete: missing.length === 0,
+      },
     };
   });
 
