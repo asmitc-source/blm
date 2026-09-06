@@ -14,7 +14,7 @@
  *   - Off (`VITE_AUTH_ENABLED=false`): no real auth; `requireUserId` resolves a
  *     shared dev user when no database is configured (see `verify.server.ts`).
  *
- * NEVER import this from client code — it pulls in `pg` and server-only Better
+ * NEVER import this from client code - it pulls in `pg` and server-only Better
  * Auth internals. The client uses `@/lib/auth/client`; components read the user
  * via `@/lib/auth/use-current-user`; server functions get a verified id via
  * `@/lib/auth/middleware`.
@@ -74,7 +74,18 @@ const LOCAL_DEV_ORIGINS: string[] = [
   "http://localhost:8080",
   "http://127.0.0.1:8080",
   "http://[::1]:8080",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
 ];
+
+/** Production custom domains - always trusted even if BETTER_AUTH_URL drifts. */
+const PRODUCTION_ORIGINS: string[] = [
+  "https://businesslistingmanagement.com",
+  "https://www.businesslistingmanagement.com",
+  "https://businesslistingmanagement.co",
+  "https://www.businesslistingmanagement.co",
+];
+
 const vercelUrl = env("VERCEL_URL");
 const vercelOrigin = vercelUrl
   ? vercelUrl.startsWith("http")
@@ -89,10 +100,19 @@ const baseURL = explicitBaseURL ?? {
 };
 
 const trustedOrigins: string[] = [
+  ...PRODUCTION_ORIGINS,
   ...(explicitBaseURL ? [explicitBaseURL] : []),
   ...(vercelOrigin ? [vercelOrigin] : []),
   ...LOCAL_DEV_ORIGINS,
 ];
+
+// Deduplicate while preserving order (env may already equal a production host).
+const seenOrigins = new Set<string>();
+const uniqueTrustedOrigins = trustedOrigins.filter((origin) => {
+  if (seenOrigins.has(origin)) return false;
+  seenOrigins.add(origin);
+  return true;
+});
 
 const databaseUrl = env("DATABASE_URL");
 
@@ -102,7 +122,7 @@ const database = databaseUrl
   ? new Pool({ connectionString: databaseUrl })
   : { dialect: pgliteDialect(() => getPglite()), type: "postgres" as const };
 
-/** Session token cookie name — also read by the optional OAuth popup completion page. */
+/** Session token cookie name - also read by the optional OAuth popup completion page. */
 export const SESSION_TOKEN_COOKIE = "__Host-blm-auth.session_token";
 
 export const auth = betterAuth({
@@ -110,7 +130,7 @@ export const auth = betterAuth({
   secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
   database,
 
-  trustedOrigins,
+  trustedOrigins: uniqueTrustedOrigins,
 
   ...(googleConfigured
     ? {

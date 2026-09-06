@@ -17,16 +17,16 @@ export const Route = createFileRoute("/pricing")({
     pageHead({
       title: "Business listing management pricing",
       description:
-        "Business listing management pricing for BLM: Starter listed at $49/month for one location, Growth at $149/month for up to 25 locations, Enterprise custom. Billing is not live yet. No card required to create a workspace.",
+        "Business listing management pricing for BLM: Starter listed at $49/month for one location, Growth at $149/month for up to 25 locations, Enterprise custom. Start a free trial or book a call.",
       path: "/pricing",
     }),
   component: PricingPage,
 });
 
 const faqs = [
-  { q: "How do I start?", a: "Create a workspace. We capture the lead. Billing is not live yet, so no card is required. Listed rates are Starter $49/month and Growth $149/month when charging begins." },
+  { q: "How do I start?", a: "Start a free trial for Starter product access, or book a call for Growth and Enterprise. Billing is not live yet. Listed rates are Starter $49/month and Growth $149/month when charging begins." },
   { q: "What counts as a location?", a: "A unique storefront NAP: one canonical name, address, and phone. Service-area businesses count as one location per coverage area you publish." },
-  { q: "Is there a free plan?", a: "There is no billed free plan. Create a workspace without a card. Listed rates are Starter $49/month and Growth $149/month when billing goes live." },
+  { q: "Is there a free plan?", a: "There is no billed free plan. Start a free trial for product access. Listed rates are Starter $49/month and Growth $149/month when billing goes live." },
 ];
 
 const SCALES = [
@@ -57,7 +57,7 @@ function PricingPage() {
         lede={data.copy.pricingLede}
       >
         <p className="mb-6 max-w-3xl text-sm leading-relaxed text-ink-soft">
-          Business listing management cost on BLM is listed SaaS plus the labor to close alerts: Starter at $49/month for one location, Growth at $149/month for up to 25 locations, Enterprise custom. Billing is not live yet, so create a workspace without a card. For the planning model (DIY hours, agency retainers, drift), read{" "}
+          Business listing management cost on BLM is listed SaaS plus the labor to close alerts: Starter at $49/month for one location, Growth at $149/month for up to 25 locations, Enterprise custom. Billing is not live yet. Start a free trial or book a call. For the planning model (DIY hours, agency retainers, drift), read{" "}
           <Link
             to="/blog/$slug"
             params={{ slug: "business-listing-management-cost-2026" }}
@@ -123,10 +123,10 @@ function PricingPage() {
                   ))}
                 </ul>
                 <Button asChild className="mt-8" variant={picked === plan.id || plan.featured ? "primary" : "secondary"}>
-                  {plan.id === "enterprise" ? (
-                    <Link to="/demo">{plan.cta}</Link>
+                  {plan.id === "starter" ? (
+                    <Link to="/trial">{plan.cta}</Link>
                   ) : (
-                    <Link to="/signup">{plan.cta}</Link>
+                    <Link to="/book">{plan.cta}</Link>
                   )}
                 </Button>
               </article>

@@ -34,7 +34,7 @@ Those variants are enough to split reviews, suppress the map pack, and send voic
 
 Holiday hours and temporary closures are the other NAP-adjacent failure. Google might show Sunday 10-4 because a manager updated GBP from a phone. Apple still shows the printed hours from March. That is listing drift, and customers treat the wrong one as the brand's word.
 
-If you want a baseline before you argue about whose spreadsheet is right, [create a workspace](/signup). The listing auditor scores NAP, coverage, duplicates, and hours once you are signed in.
+If you want a baseline before you argue about whose spreadsheet is right, [start a free trial](/trial). The listing auditor scores NAP, coverage, duplicates, and hours once you are signed in.
 
 ## What is a citation, and how is it different from a listing?
 
@@ -99,7 +99,7 @@ Yes. SABs still have a canonical name, phone, and service area, and they still f
 
 ### How often should we audit listings?
 
-After any rebrand, move, acquisition, or hours policy change, audit immediately. In steady state, weekly automated checks beat a quarterly fire drill. [Create a workspace](/signup) if you do not yet have one.
+After any rebrand, move, acquisition, or hours policy change, audit immediately. In steady state, weekly automated checks beat a quarterly fire drill. [Start a free trial](/trial) if you do not yet have one.
 
 ### Is this only for huge franchises?
 

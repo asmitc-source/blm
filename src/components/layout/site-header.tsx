@@ -121,8 +121,13 @@ export function SiteHeader() {
               </Link>
             </Button>
             <Button asChild>
-              <Link to="/signup" onClick={() => setOpen(false)}>
-                Create workspace
+              <Link to="/trial" onClick={() => setOpen(false)}>
+                Start free trial
+              </Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link to="/book" onClick={() => setOpen(false)}>
+                Book a call
               </Link>
             </Button>
           </div>

@@ -27,7 +27,7 @@ Coverage in business listing management means live status you can inspect, not a
 - How do aggregators factor in, and will the long tail reintroduce old NAP?
 - Can I run my own locations before I buy?
 
-[Create a workspace](/signup) and run the listing auditor on a name and city. Starter unlocks after a 7-day trial. Growth and Enterprise are there if the score is worth keeping. Then read [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) so nobody on the buying committee equates "we have Google" with "we have listings."
+[Start a free trial](/trial) and run the listing auditor on a name and city. Starter unlocks after a 7-day trial. Growth and Enterprise are there if the score is worth keeping. Then read [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) so nobody on the buying committee equates "we have Google" with "we have listings."
 
 ## How should you judge duplicate handling?
 
@@ -82,7 +82,7 @@ Keep the POC ugly and short.
 - Change hours on one location and see which publishers the tool claims to update, then verify live.
 - Put a marketer and an ops person in the same workspace.
 
-BLM's path is intentionally unromantic: [create a workspace](/signup), run the auditor, then Growth or Enterprise when the score is part of the week. Use the same standard on every vendor.
+BLM's path is intentionally unromantic: [start a free trial](/trial), run the auditor, then Growth or Enterprise when the score is part of the week. Use the same standard on every vendor.
 
 ## FAQ
 
@@ -100,7 +100,7 @@ Cleanup is the asset: canonical NAP, claimed profiles, suppressed duplicates. To
 
 ### What is a reasonable first contract length?
 
-Annual makes sense once the workflow is proven. For a first buy, prefer monthly or a short commitment while you confirm Apple/Bing writes and duplicate queues. [Create a workspace](/signup) first so you are not negotiating a year blind. For how US teams sequence that purchase, see [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
+Annual makes sense once the workflow is proven. For a first buy, prefer monthly or a short commitment while you confirm Apple/Bing writes and duplicate queues. [Start a free trial](/trial) first so you are not negotiating a year blind. For how US teams sequence that purchase, see [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
 
 ## Sources
 

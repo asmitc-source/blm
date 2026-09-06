@@ -48,7 +48,7 @@ function AboutPage() {
             <ul className="mt-3 space-y-3 text-sm">
               <li>Independent brand. No parent logo in the hero.</li>
               <li>Category: business listing management for multi-location, franchise, agency, and local SEO teams.</li>
-              <li>Early access: create a workspace, then Growth and Enterprise as the footprint grows.</li>
+              <li>Early access: start a free trial, then Growth and Enterprise as the footprint grows.</li>
             </ul>
             <Button asChild className="mt-6">
               <Link to="/contact">Say hello</Link>

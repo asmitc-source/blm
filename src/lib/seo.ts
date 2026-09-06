@@ -86,7 +86,7 @@ export function softwareJsonLd() {
       "@type": "Offer",
       price: "149",
       priceCurrency: "USD",
-      description: "Growth plan for up to 25 locations. Create a workspace to get started.",
+      description: "Growth plan for up to 25 locations. Start a free trial or book a call.",
     },
   };
 }

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as BookRouteImport } from './routes/book'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DemoRouteImport } from './routes/demo'
@@ -27,6 +28,7 @@ import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TrialRouteImport } from './routes/trial'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminArticlesRouteImport } from './routes/admin/articles'
@@ -57,6 +59,11 @@ const AboutRoute = AboutRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookRoute = BookRouteImport.update({
+  id: '/book',
+  path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -132,6 +139,11 @@ const SignupRoute = SignupRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrialRoute = TrialRouteImport.update({
+  id: '/trial',
+  path: '/trial',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
@@ -223,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRoute
+  '/book': typeof BookRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/demo': typeof DemoRoute
@@ -238,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/trial': typeof TrialRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/inbox': typeof AdminInboxRoute
@@ -259,6 +273,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRoute
+  '/book': typeof BookRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/demo': typeof DemoRoute
@@ -274,6 +289,7 @@ export interface FileRoutesByTo {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/trial': typeof TrialRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/inbox': typeof AdminInboxRoute
@@ -296,6 +312,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRoute
+  '/book': typeof BookRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/demo': typeof DemoRoute
@@ -311,6 +328,7 @@ export interface FileRoutesById {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/trial': typeof TrialRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/inbox': typeof AdminInboxRoute
@@ -334,6 +352,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
+    | '/book'
     | '/contact'
     | '/cookies'
     | '/demo'
@@ -349,6 +368,7 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/trial'
     | '/unsubscribe'
     | '/admin/articles'
     | '/admin/inbox'
@@ -370,6 +390,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
+    | '/book'
     | '/contact'
     | '/cookies'
     | '/demo'
@@ -385,6 +406,7 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/trial'
     | '/unsubscribe'
     | '/admin/articles'
     | '/admin/inbox'
@@ -406,6 +428,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
+    | '/book'
     | '/contact'
     | '/cookies'
     | '/demo'
@@ -421,6 +444,7 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/trial'
     | '/unsubscribe'
     | '/admin/articles'
     | '/admin/inbox'
@@ -443,6 +467,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AppRoute: typeof AppRoute
+  BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   DemoRoute: typeof DemoRoute
@@ -458,6 +483,7 @@ export interface RootRouteChildren {
   SecurityRoute: typeof SecurityRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
+  TrialRoute: typeof TrialRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   AdminArticlesRoute: typeof AdminArticlesRoute
   AdminInboxRoute: typeof AdminInboxRoute
@@ -497,6 +523,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book': {
+      id: '/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof BookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -602,6 +635,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trial': {
+      id: '/trial'
+      path: '/trial'
+      fullPath: '/trial'
+      preLoaderRoute: typeof TrialRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/unsubscribe': {
@@ -723,6 +763,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AppRoute: AppRoute,
+  BookRoute: BookRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   DemoRoute: DemoRoute,
@@ -738,6 +779,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityRoute: SecurityRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
+  TrialRoute: TrialRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   AdminArticlesRoute: AdminArticlesRoute,
   AdminInboxRoute: AdminInboxRoute,

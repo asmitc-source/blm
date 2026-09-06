@@ -118,7 +118,7 @@ function MozLocalPage() {
             <tbody className="bg-cream">
               {[
                 ["Listing health score", "Data Health analytics inside the suite", "Core desk job"],
-                ["Way to try", "Self-serve plans on Moz pricing", "Create a workspace"],
+                ["Way to try", "Self-serve plans on Moz pricing", "Start free trial"],
                 ["Public list price", "Yes, per location (Lite / Preferred / Elite)", "Yes, listed rates"],
                 ["Duplicate handling", "Citation / data health workflows", "Core radar"],
                 ["Local Grid / map-pack ranks", "Yes (product feature)", "No"],
@@ -190,10 +190,10 @@ function MozLocalPage() {
 
         <div className="mt-8 flex gap-3">
           <Button asChild>
-            <Link to="/signup">Create workspace</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link to="/demo">Book a demo</Link>
+            <Link to="/book">Book a call</Link>
           </Button>
         </div>
       </InnerPage>

@@ -116,7 +116,7 @@ function YextPage() {
             <tbody className="bg-cream">
               {[
                 ["Listing health score", "Inside a broader suite", "Core desk job"],
-                ["Way to try", "Demo / sales-led (no standard free trial)", "Create a workspace"],
+                ["Way to try", "Demo / sales-led (no standard free trial)", "Start free trial"],
                 ["Public list price", "Custom solution pricing", "Yes, listed rates"],
                 ["Duplicate handling", "Verifier / enterprise workflows", "Core radar"],
                 ["Pages / search / ads", "Yes (platform modules)", "No. Listings only"],
@@ -197,10 +197,10 @@ function YextPage() {
 
         <div className="mt-8 flex gap-3">
           <Button asChild>
-            <Link to="/signup">Create workspace</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link to="/demo">Book a demo</Link>
+            <Link to="/book">Book a call</Link>
           </Button>
         </div>
       </InnerPage>

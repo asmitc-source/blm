@@ -117,7 +117,7 @@ function BirdeyePage() {
             <tbody className="bg-cream">
               {[
                 ["Listing health score", "Listing Score inside a broader suite", "Core desk job"],
-                ["Way to try", "Demo / get pricing form", "Create a workspace"],
+                ["Way to try", "Demo / get pricing form", "Start free trial"],
                 ["Public list price", "Location-band quote (no sticker menu)", "Yes, listed rates"],
                 ["Duplicate handling", "Duplicate suppression workflows", "Core radar"],
                 ["Reviews / CX / surveys", "Yes (platform modules)", "No. Listings only"],
@@ -199,10 +199,10 @@ function BirdeyePage() {
 
         <div className="mt-8 flex gap-3">
           <Button asChild>
-            <Link to="/signup">Create workspace</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link to="/demo">Book a demo</Link>
+            <Link to="/book">Book a call</Link>
           </Button>
         </div>
       </InnerPage>

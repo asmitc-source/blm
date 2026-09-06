@@ -118,7 +118,7 @@ function UberallPage() {
             <tbody className="bg-cream">
               {[
                 ["Listing health score", "Inside a multi-location marketing suite", "Core desk job"],
-                ["Way to try", "Demo / get started / request pricing", "Create a workspace"],
+                ["Way to try", "Demo / get started / request pricing", "Start free trial"],
                 ["Public list price", "Plan families; popular path requests pricing", "Yes, listed rates"],
                 ["Duplicate handling", "Duplicate suppression / profile protection", "Core radar"],
                 ["Reviews / social / local pages", "Yes (platform modules)", "No. Listings only"],
@@ -201,10 +201,10 @@ function UberallPage() {
 
         <div className="mt-8 flex gap-3">
           <Button asChild>
-            <Link to="/signup">Create workspace</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link to="/demo">Book a demo</Link>
+            <Link to="/book">Book a call</Link>
           </Button>
         </div>
       </InnerPage>

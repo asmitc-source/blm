@@ -501,8 +501,8 @@ function EmailGate({ result }: { result: AuditResult }) {
           <p className="text-sm text-ink-soft">Want the workspace that closes these gaps?</p>
         </div>
         <Button asChild>
-          <Link to="/signup">
-            Start workspace <ArrowRight className="size-4" />
+          <Link to="/trial">
+            Start free trial <ArrowRight className="size-4" />
           </Link>
         </Button>
       </div>
@@ -533,7 +533,7 @@ function EmailGate({ result }: { result: AuditResult }) {
           {state === "saving" ? "Sending…" : "Send report"}
         </Button>
         <Button asChild variant="secondary">
-          <Link to="/signup">Create workspace</Link>
+          <Link to="/trial">Start free trial</Link>
         </Button>
       </form>
       {error ? <p className="mt-2 text-sm text-coral">{error}</p> : null}

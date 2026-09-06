@@ -8,7 +8,7 @@ Onboarding for business listing management is where you either become the system
 
 **Week 0: access and canonical file.** Collect Google, Apple Business Connect, Bing Places, Facebook, and Yelp access. Get a location list with approved name, address, phone, hours, and primary category. If the client cannot produce a canonical NAP, you are not late to the work; you are at the beginning. Do not start submitting citations until that file exists.
 
-**Week 1: inventory.** Run every location against the graph. Score NAP, coverage, duplicates, and hours. [Create a workspace](/signup) to show the before state, then keep the after state in the same desk. Starter is enough to put one brand in before you negotiate Enterprise multi-account.
+**Week 1: inventory.** Run every location against the graph. Score NAP, coverage, duplicates, and hours. [Start a free trial](/trial) to show the before state, then keep the after state in the same desk. Starter is enough to put one brand in before you negotiate Enterprise multi-account.
 
 **Week 1-2: survivor decisions.** For each duplicate cluster, pick the surviving profile using review count and correctable NAP. Put the decision in writing. The playbook is [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings).
 
@@ -75,7 +75,7 @@ You also need it when Apple/Bing/directory status requires logging in as the cli
 
 Stay on spreadsheets when you have a handful of single-location clients and you actually look every month, or when you are still defining the product and would hide behind a dashboard.
 
-BLM's path is meant to be unromantic: [create a workspace](/signup) on a prospect, put the first brand on Starter or Growth, then move the book to Enterprise when multi-account and bulk corrections are the bottleneck. Compare that path to Yext-shaped contracts and BrightLocal-shaped report suites using [Yext alternative](/compare/yext-alternative) and [BrightLocal alternative](/compare/brightlocal-alternative) if a client is already in one of those worlds. For the category map your prospect may already have read, keep [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) in the deck.
+BLM's path is meant to be unromantic: [start a free trial](/trial) on a prospect, put the first brand on Starter or Growth, then move the book to Enterprise when multi-account and bulk corrections are the bottleneck. Compare that path to Yext-shaped contracts and BrightLocal-shaped report suites using [Yext alternative](/compare/yext-alternative) and [BrightLocal alternative](/compare/brightlocal-alternative) if a client is already in one of those worlds. For the category map your prospect may already have read, keep [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) in the deck.
 
 The product you sell the client is not a tool logo. It is onboarding, SLA, report, and a graph that stays true. Software is how you deliver that twice a month without burning the team. The [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide) is a useful shared language document when the client still thinks "listings" means "we paid for citations once."
 

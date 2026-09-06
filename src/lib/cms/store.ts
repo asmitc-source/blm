@@ -54,11 +54,11 @@ const defaultCopy = (): SiteCopy => ({
   home: {
     lede: "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one workspace.",
     trialLine:
-      "Create a workspace. No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
+      "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
   },
   pricingTitle: "Business listing management pricing: Starter $49. Growth $149.",
   pricingLede:
-    "Create a workspace of Starter or Growth. No card required. Listed prices apply when billing goes live.",
+    "Starter listed at $49/month, Growth at $149/month, Enterprise custom. Start a free trial on Starter, or book a call for Growth and Enterprise. Listed prices apply when billing goes live.",
   plans: PRICING.map((p) => ({
     id: p.id,
     name: p.name,

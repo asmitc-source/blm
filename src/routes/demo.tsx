@@ -1,53 +1,46 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
-import { InnerPage } from "@/components/layout/inner-page";
-import { LeadForm } from "@/components/lead-form";
-import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
-import { JsonLd } from "@/components/json-ld";
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/demo")({
   head: () =>
     pageHead({
-      title: "Book a demo",
+      title: "Book a call",
       description:
-        "Book a BLM demo for franchise, agency, or multi-location listing management. Early access for operators.",
+        "Book a BLM call for franchise, agency, or multi-location listing management. Calendar invite goes to contact@nakama.in.",
       path: "/demo",
     }),
-  component: DemoPage,
+  component: DemoRedirect,
 });
 
-function DemoPage() {
+function DemoRedirect() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    void navigate({ to: "/book", replace: true });
+  }, [navigate]);
+
   return (
     <SiteShell>
-      <JsonLd
-        data={breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Book a demo", path: "/demo" },
-        ])}
-      />
-      <InnerPage
-        eyebrow="Demo"
-        title="Thirty minutes on your actual footprint."
-        lede="Bring a few locations. We’ll show NAP drift, duplicates, and coverage, then how Growth and Enterprise keep the score from sliding."
-      >
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="rounded-2xl bg-cream p-6 hairline">
-            <LeadForm kind="demo" source="demo" submitLabel="Request a demo" showMessage />
+      <main className="hero-wash grid min-h-[calc(100svh-5rem)] place-items-center px-4 py-10">
+        <div className="w-full max-w-lg rounded-2xl bg-cream p-6 text-center shadow-[var(--shadow-soft)] hairline sm:p-8">
+          <Logo compact className="mx-auto" />
+          <h1 className="mt-6 font-display text-3xl font-semibold">Demo is now Book a call</h1>
+          <p className="mt-2 text-sm text-ink-soft">
+            Same walkthrough, clearer next step. Opening the Book a call page.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button asChild>
+              <Link to="/book">Book a call</Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link to="/trial">Start free trial</Link>
+            </Button>
           </div>
-          <ul className="space-y-3 text-sm text-ink-soft">
-            {[
-              "A listing health score on locations you name",
-              "How duplicates and NAP drift show up in the product",
-              "Coverage across Google, Apple, Bing, and the directory network",
-              "What Growth vs Enterprise looks like for your team",
-            ].map((item) => (
-              <li key={item} className="rounded-xl bg-paper px-4 py-3 hairline">
-                {item}
-              </li>
-            ))}
-          </ul>
         </div>
-      </InnerPage>
+      </main>
     </SiteShell>
   );
 }

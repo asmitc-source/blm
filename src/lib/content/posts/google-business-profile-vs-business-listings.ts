@@ -67,7 +67,7 @@ Business listing management at graph scale does not mean assigning a person to "
 - Cadence: weekly digest in steady state; daily during rebrand or rollout.
 - Owners: brand owns name and category; local owns hours; agency or listing desk owns publisher tickets. See [business listing management for agencies](/blog/business-listing-management-for-agencies) if that desk is external.
 
-[Create a workspace](/signup) to run the listing auditor against a real location. Cost context sits in [business listing management cost in 2026](/blog/business-listing-management-cost-2026): DIY time, retainers, Starter at $49/month after trial, Growth at $149/month, then Enterprise. The weekly meeting should look at the graph. If the only slide is a GBP insights screenshot, you are reporting a channel, not managing listings.
+[Start a free trial](/trial) to run the listing auditor against a real location. Cost context sits in [business listing management cost in 2026](/blog/business-listing-management-cost-2026): DIY time, retainers, Starter at $49/month after trial, Growth at $149/month, then Enterprise. The weekly meeting should look at the graph. If the only slide is a GBP insights screenshot, you are reporting a channel, not managing listings.
 
 ## FAQ
 
