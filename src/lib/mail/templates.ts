@@ -148,3 +148,43 @@ Unsubscribe: ${opts.unsubscribeUrl}
 `;
   return { subject, html, text };
 }
+
+
+export function contactReplyEmail(opts: {
+  toName: string;
+  subject: string;
+  body: string;
+  originalMessage: string;
+}): { subject: string; html: string; text: string } {
+  const hello = opts.toName.trim()
+    ? `Hi ${escapeHtml(opts.toName.trim())},`
+    : "Hi there,";
+  const helloText = opts.toName.trim() ? `Hi ${opts.toName.trim()},` : "Hi there,";
+  const bodyHtml = escapeHtml(opts.body)
+    .split(/\n+/)
+    .map((line) => `<p style="margin:0 0 14px;color:${ink}">${line}</p>`)
+    .join("\n");
+  const bodyText = opts.body.trim();
+  const original = escapeHtml(opts.originalMessage).slice(0, 2000);
+  const subject = opts.subject.trim();
+  const html = shell({
+    preheader: bodyText.slice(0, 120),
+    title: escapeHtml(subject),
+    bodyHtml: `<p style="margin:0 0 14px;color:${ink};font-size:16px">${hello}</p>
+      ${bodyHtml}
+      <p style="margin:24px 0 0;padding:14px 16px;background:${cream};border-left:3px solid ${accentBlue};border-radius:0 12px 12px 0;font-size:13px;color:${muted}">
+        <strong style="display:block;margin-bottom:6px;color:${soft}">Your message</strong>
+        ${original}
+      </p>`,
+    footerNote: `<p style="margin:0">This reply was sent from the BLM desk. You can respond to this email.</p>`,
+  });
+  const text = `${helloText}
+
+${bodyText}
+
+---
+Your message:
+${opts.originalMessage.slice(0, 2000)}
+`;
+  return { subject, html, text };
+}

@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { FileText, LayoutGrid, LogOut, PenLine, Settings2 } from "lucide-react";
+import { FileText, Inbox, LayoutGrid, LogOut, PenLine, Settings2 } from "lucide-react";
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { cmsLogout } from "@/lib/cms/actions";
@@ -10,6 +10,7 @@ const NAV = [
   { to: "/admin", label: "Desk", icon: LayoutGrid, exact: true },
   { to: "/admin/articles", label: "Articles", icon: FileText },
   { to: "/admin/write", label: "Write", icon: PenLine },
+  { to: "/admin/inbox", label: "Inbox", icon: Inbox },
   { to: "/admin/site", label: "Site", icon: Settings2 },
 ] as const;
 

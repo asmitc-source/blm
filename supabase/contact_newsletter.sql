@@ -18,3 +18,23 @@ create policy "anon update newsletter status"
   on newsletter_subscribers for update to anon, authenticated
   using (true)
   with check (status in ('active', 'unsubscribed'));
+
+-- Inbox columns (also in migrations/0006_inbox_status.sql). Safe to re-run.
+alter table contact_submissions
+  add column if not exists status text not null default 'new';
+alter table contact_submissions
+  add column if not exists replied_at timestamptz;
+alter table contact_submissions
+  add column if not exists reply_note text;
+
+do $$ begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'contact_submissions_status_check'
+  ) then
+    alter table contact_submissions
+      add constraint contact_submissions_status_check
+      check (status in ('new', 'read', 'closed'));
+  end if;
+end $$;
+
+create index if not exists contact_submissions_status_idx on contact_submissions (status);
