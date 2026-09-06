@@ -1,11 +1,16 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Calendar, Mail } from "lucide-react";
+import { Calendar, ExternalLink } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { InnerPage } from "@/components/layout/inner-page";
 import { LeadForm } from "@/components/lead-form";
 import { Button } from "@/components/ui/button";
-import { BOOK_CALL_EMAIL, googleCalendarBookUrl, mailtoBookUrl } from "@/lib/book-call";
+import {
+  BOOK_CALL_EMAIL,
+  BOOKING_SCHEDULE_URL,
+  googleCalendarBookUrl,
+  hasBookingSchedule,
+} from "@/lib/book-call";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 
@@ -22,8 +27,9 @@ export const Route = createFileRoute("/book")({
 
 function BookPage() {
   const [calendarOpened, setCalendarOpened] = useState(false);
-  const calendarUrl = useMemo(() => googleCalendarBookUrl(), []);
-  const mailUrl = useMemo(() => mailtoBookUrl(), []);
+  const scheduleReady = hasBookingSchedule();
+  const scheduleUrl = BOOKING_SCHEDULE_URL;
+  const templateUrl = useMemo(() => googleCalendarBookUrl(), []);
   const leadSource = useMemo(() => {
     if (typeof window === "undefined") return "book-a-call";
     try {
@@ -78,8 +84,8 @@ function BookPage() {
           <div className="rounded-2xl bg-cream p-6 hairline">
             <p className="text-sm font-semibold text-ink">Leave your details</p>
             <p className="mt-1 text-sm text-muted">
-              Tell us who you are and which locations matter. We record the lead, then you open a calendar invite for{" "}
-              {BOOK_CALL_EMAIL}.
+              Tell us who you are and which locations matter. We record the lead, then you pick a time on the calendar
+              with {BOOK_CALL_EMAIL}.
             </p>
             <div className="mt-5">
               <LeadForm
@@ -95,33 +101,66 @@ function BookPage() {
           </div>
           <div className="flex flex-col gap-4">
             <div className="rounded-2xl bg-cream p-6 hairline">
-              <p className="text-sm font-semibold text-ink">Open a calendar invite</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                Primary path opens Google Calendar with {BOOK_CALL_EMAIL} already on the invite. Prefer email? Use the
-                mailto fallback.
-              </p>
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <Button asChild size="lg">
-                  <a
-                    href={calendarUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setCalendarOpened(true)}
-                  >
-                    <Calendar className="size-4" />
-                    Open Google Calendar
-                  </a>
-                </Button>
-                <Button asChild size="lg" variant="secondary">
-                  <a href={mailUrl}>
-                    <Mail className="size-4" />
-                    Email {BOOK_CALL_EMAIL}
-                  </a>
-                </Button>
-              </div>
-              {calendarOpened ? (
-                <p className="mt-3 text-sm text-mint">Calendar opened in a new tab. Add the invite when ready.</p>
-              ) : null}
+              {scheduleReady ? (
+                <>
+                  <p className="text-sm font-semibold text-ink">Pick a date and time</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    Choose a slot on the live calendar below. Host: {BOOK_CALL_EMAIL}.
+                  </p>
+                  <div className="mt-5 overflow-hidden rounded-2xl bg-paper hairline">
+                    <iframe
+                      title="Book a call calendar"
+                      src={scheduleUrl}
+                      className="w-full border-0"
+                      style={{ minHeight: 680 }}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                  <div className="mt-5">
+                    <Button asChild size="lg">
+                      <a
+                        href={scheduleUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setCalendarOpened(true)}
+                      >
+                        <ExternalLink className="size-4" />
+                        Open calendar
+                      </a>
+                    </Button>
+                  </div>
+                  {calendarOpened ? (
+                    <p className="mt-3 text-sm text-mint">Calendar opened in a new tab.</p>
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  <p className="text-sm font-semibold text-ink">Booking calendar</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    The live booking calendar with dates and times loads from the appointment schedule URL once it is
+                    configured. Until then, open a calendar invite hosted by {BOOK_CALL_EMAIL}.
+                  </p>
+                  <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                    <Button asChild size="lg">
+                      <a
+                        href={templateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setCalendarOpened(true)}
+                      >
+                        <Calendar className="size-4" />
+                        Open calendar invite
+                      </a>
+                    </Button>
+                  </div>
+                  {calendarOpened ? (
+                    <p className="mt-3 text-sm text-mint">
+                      Calendar opened in a new tab. Add the invite when ready.
+                    </p>
+                  ) : null}
+                </>
+              )}
             </div>
             <div>
               <p className="text-sm font-semibold text-ink">What you get on the call</p>
