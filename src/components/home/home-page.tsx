@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
 import { BLOG_POSTS } from "@/lib/content/blog";
-import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, SITE, WHY } from "@/lib/site";
+import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, WHY } from "@/lib/site";
 import { faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +44,6 @@ export function HomePage({ copy }: { copy?: HomeCopy }) {
       <FaqSection />
       <Resources />
       <NewsletterSection />
-      <ContactCta />
       <FinalCta />
     </main>
     </CopyCtx.Provider>
@@ -432,35 +431,11 @@ function Resources() {
 }
 
 
-function ContactCta() {
-  return (
-    <section className="page-wrap pb-6" aria-labelledby="home-contact-cta-title">
-      <Reveal>
-        <div className="flex flex-col items-start justify-between gap-5 rounded-3xl border border-line bg-cream px-6 py-8 sm:flex-row sm:items-center sm:px-10">
-          <div className="max-w-xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Contact</p>
-            <h2 id="home-contact-cta-title" className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Tell us about your footprint.
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-              Sales and onboarding share {SITE.salesEmail}. Prefer a form? We will follow up at your work email.
-            </p>
-          </div>
-          <Button asChild size="lg" className="shrink-0">
-            <Link to="/contact">Contact us</Link>
-          </Button>
-        </div>
-      </Reveal>
-    </section>
-  );
-}
-
 function FinalCta() {
   return (
     <section className="page-wrap pb-20">
       <Reveal>
-        <div className="cta-band relative overflow-hidden rounded-3xl border border-line px-6 py-14 text-center sm:px-12">
-          <span className="live-bar absolute inset-x-0 top-0 h-0.5" aria-hidden="true" />
+        <div className="cta-band relative overflow-hidden rounded-3xl border-x border-b border-line px-6 py-14 text-center sm:px-12">
           <LogoMark className="pointer-events-none absolute -right-4 -top-4 size-28 opacity-80" />
           <h2 className="relative font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Replace spreadsheet listing ops with a presence your team can govern.

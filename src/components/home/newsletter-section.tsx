@@ -19,7 +19,6 @@ export function NewsletterSection() {
       await subscribeNewsletter({
         data: {
           email: String(data.get("email") ?? ""),
-          name: String(data.get("name") ?? ""),
           source: "homepage",
           website: String(data.get("website") ?? ""),
         },
@@ -66,19 +65,7 @@ export function NewsletterSection() {
                   </div>
                 ) : (
                   <form onSubmit={onSubmit} className="relative">
-                    <div className="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end">
-                      <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="home-news-name" className="min-h-4 leading-none">
-                          Name (optional)
-                        </Label>
-                        <Input
-                          id="home-news-name"
-                          name="name"
-                          autoComplete="name"
-                          placeholder="Alex"
-                          className="h-12"
-                        />
-                      </div>
+                    <div className="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
                       <div className="flex flex-col gap-1.5">
                         <Label htmlFor="home-news-email" className="min-h-4 leading-none">
                           Email
@@ -90,7 +77,7 @@ export function NewsletterSection() {
                           required
                           autoComplete="email"
                           placeholder="you@company.com"
-                          className="h-12"
+                          className="h-12 w-full"
                         />
                       </div>
                       <div className="flex flex-col gap-1.5">
