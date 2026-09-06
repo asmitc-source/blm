@@ -19,22 +19,39 @@ function fallbackCopy(): SiteCopy {
   };
 }
 
+type PublicSitePayload = {
+  copy: SiteCopy;
+  faqs: { q: string; a: string }[];
+  articles: CmsArticle[];
+};
+
+let publicSiteCache: { at: number; data: PublicSitePayload } | null = null;
+const PUBLIC_SITE_TTL_MS = 45_000;
+
 export const loadPublicSite = createServerFn({ method: "GET" }).handler(async () => {
+  const now = Date.now();
+  if (publicSiteCache && now - publicSiteCache.at < PUBLIC_SITE_TTL_MS) {
+    return publicSiteCache.data;
+  }
   try {
     const { seedCmsIfEmpty, getSiteCopy, listFaqs, listPublished } = await import("./store");
     await seedCmsIfEmpty();
     const [copy, faqs, articles] = await Promise.all([getSiteCopy(), listFaqs("home"), listPublished()]);
-    return {
+    const data: PublicSitePayload = {
       copy,
       faqs: faqs.map((f) => ({ q: f.question, a: f.answer })),
       articles,
     };
+    publicSiteCache = { at: now, data };
+    return data;
   } catch {
-    return {
+    const data: PublicSitePayload = {
       copy: fallbackCopy(),
       faqs: FAQ.map((f) => ({ q: f.q, a: f.a })),
       articles: [] as CmsArticle[],
     };
+    publicSiteCache = { at: now, data };
+    return data;
   }
 });
 

@@ -140,7 +140,8 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
+    /* Instant scroll restoration on soft navigations; in-page anchors use JS smooth. */
+    scroll-behavior: auto;
   }
 
   body {
@@ -235,11 +236,13 @@
 }
 
 .orb {
-  filter: blur(90px);
-  opacity: 0.52;
-  will-change: transform;
+  filter: blur(72px);
+  opacity: 0.42;
   border-radius: 50%;
   position: absolute;
+  contain: strict;
+  pointer-events: none;
+  transform: translateZ(0);
 }
 
 .orb-a {
@@ -405,7 +408,6 @@
   display: flex;
   width: max-content;
   animation: marquee 28s linear infinite;
-  will-change: transform;
 }
 
 .marquee-group {
