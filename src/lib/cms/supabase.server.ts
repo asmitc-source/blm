@@ -1,21 +1,29 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { getSetting } from "./store";
-import type { ArticleInput, CmsArticle } from "./store";
-import type { CmsFaq, SiteCopy } from "./types";
+import type { CmsArticle, CmsFaq, SiteCopy } from "./types";
+
+const FALLBACK_URL = "https://zchubgizclrdjlvgqzsi.supabase.co";
+function envSecret() {
+  return process.env.SUPABASE_SECRET_KEY || "";
+}
+
+function cleanUrl(value: string) {
+  return value.trim().replace(/\/$/, "").replace(/\/rest\/v1\/?$/, "");
+}
 
 function envUrl() {
-  return (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
+  return cleanUrl(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || FALLBACK_URL);
 }
 
 function envSecret() {
   return process.env.SUPABASE_SECRET_KEY || "";
 }
 
+export function supabasePublishable() {
+  return process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || "";
+}
+
 export async function supabaseUrl() {
-  const fromEnv = envUrl();
-  if (fromEnv) return fromEnv;
-  const stored = await getSetting("supabase_url");
-  return stored.replace(/\/$/, "");
+  return envUrl() || FALLBACK_URL;
 }
 
 export async function supabaseConfigured() {
@@ -25,6 +33,15 @@ export async function supabaseConfigured() {
 export async function supabaseAdmin(): Promise<SupabaseClient | null> {
   const url = await supabaseUrl();
   const key = envSecret();
+  if (!url || !key) return null;
+  return createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+export async function supabaseAnon(): Promise<SupabaseClient | null> {
+  const url = await supabaseUrl();
+  const key = supabasePublishable();
   if (!url || !key) return null;
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -89,5 +106,3 @@ export async function fetchPublishedFromSupabase(slug: string) {
   const { data } = await sb.from("cms_articles").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
   return data;
 }
-
-export type { ArticleInput };

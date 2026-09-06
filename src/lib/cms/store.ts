@@ -111,9 +111,17 @@ export async function upsertAdminFromAuth(id: string, username: string) {
   const rows = await sql<{ id: string; username: string }>`
     select id, username from cms_admins where id = ${id} or username = ${username} limit 1
   `;
-  if (rows[0]) return rows[0];
-  await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${"supabase-auth"})`;
-  return { id, username };
+  if (!rows[0]) {
+    await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${"supabase-auth"})`;
+  }
+  try {
+    const { supabaseAdmin } = await import("./supabase.server");
+    const sb = await supabaseAdmin();
+    await sb?.from("cms_admins").upsert({ id: rows[0]?.id ?? id, username, password_hash: "supabase-auth" });
+  } catch {
+    /* local is enough for preview */
+  }
+  return rows[0] ?? { id, username };
 }
 
 export async function createAdmin(username: string, password: string) {
@@ -143,6 +151,30 @@ export async function createSession(adminId: string, token: string, days = 14) {
 
 export async function sessionAdmin(token: string | null | undefined) {
   if (!token) return null;
+  try {
+    const { supabaseAdmin } = await import("./supabase.server");
+    const sb = await supabaseAdmin();
+    if (sb) {
+      const remote = await sb
+        .from("cms_sessions")
+        .select("admin_id, cms_admins(id, username)")
+        .eq("token", token)
+        .gt("expires_at", new Date().toISOString())
+        .limit(1)
+        .maybeSingle();
+      const joined = remote.data as
+        | { admin_id: string; cms_admins: { id: string; username: string } | { id: string; username: string }[] | null }
+        | null;
+      const admin = Array.isArray(joined?.cms_admins) ? joined?.cms_admins[0] : joined?.cms_admins;
+      if (admin?.username) return { id: admin.id, username: admin.username };
+      if (joined?.admin_id) {
+        const row = await sb.from("cms_admins").select("id, username").eq("id", joined.admin_id).maybeSingle();
+        if (row.data) return { id: String(row.data.id), username: String(row.data.username) };
+      }
+    }
+  } catch {
+    /* fall through to local */
+  }
   const sql = await getSql();
   const rows = await sql<{ id: string; username: string }>`
     select a.id, a.username

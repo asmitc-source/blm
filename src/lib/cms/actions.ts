@@ -79,14 +79,28 @@ export const cmsLogin = createServerFn({ method: "POST" })
     const { seedCmsIfEmpty, findAdminByUsername, createSession, upsertAdminFromAuth } = await import("./store");
     await seedCmsIfEmpty();
     const email = data.username.includes("@") ? data.username : data.username;
-    const { supabaseAdmin } = await import("./supabase.server");
-    const sb = await supabaseAdmin();
-    if (sb) {
-      const { data: auth, error } = await sb.auth.signInWithPassword({ email, password: data.password });
+    const { supabaseAdmin, supabaseAnon } = await import("./supabase.server");
+    const authClient = (await supabaseAnon()) ?? (await supabaseAdmin());
+    if (authClient) {
+      const { data: auth, error } = await authClient.auth.signInWithPassword({ email, password: data.password });
       if (!error && auth.user) {
         const admin = await upsertAdminFromAuth(auth.user.id, (auth.user.email ?? email).toLowerCase());
         const token = newToken();
         await createSession(admin.id, token);
+        const sb = await supabaseAdmin();
+        if (sb) {
+          await sb.from("cms_sessions").upsert({
+            id: crypto.randomUUID(),
+            admin_id: admin.id,
+            token,
+            expires_at: new Date(Date.now() + 14 * 86400000).toISOString(),
+          });
+          await sb.from("cms_admins").upsert({
+            id: admin.id,
+            username: admin.username,
+            password_hash: "supabase-auth",
+          });
+        }
         return { token, username: admin.username };
       }
     }
