@@ -624,6 +624,57 @@
   color: var(--brand);
 }
 
+.blog-card {
+  cursor: pointer;
+  transition:
+    transform 180ms var(--ease-out-soft),
+    box-shadow 180ms var(--ease-out-soft),
+    background-color 180ms var(--ease-out-soft);
+}
+
+.blog-card::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0;
+  background: linear-gradient(to bottom, var(--tile-a), var(--tile-b), var(--tile-c), var(--tile-d));
+  transition: width 180ms var(--ease-out-soft);
+}
+
+.blog-card:hover,
+.blog-card:focus-visible {
+  transform: translateY(-2px);
+  background-color: color-mix(in oklab, var(--cream) 78%, var(--sand));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--tile-c) 32%, var(--line-strong)),
+    0 0 28px color-mix(in oklab, var(--tile-a) 16%, transparent),
+    0 12px 28px color-mix(in oklab, var(--tile-d) 10%, transparent),
+    var(--elev-soft);
+  outline: none;
+}
+
+.blog-card:hover::before,
+.blog-card:focus-visible::before {
+  width: 4px;
+}
+
+.blog-card-title {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1.5px;
+  transition:
+    color 180ms var(--ease-out-soft),
+    text-decoration-color 180ms var(--ease-out-soft);
+}
+
+.blog-card:hover .blog-card-title,
+.blog-card:focus-visible .blog-card-title {
+  color: color-mix(in oklab, var(--ink) 72%, var(--tile-c));
+  text-decoration-color: color-mix(in oklab, var(--tile-a) 55%, var(--tile-b));
+}
+
 .proof-stage {
   background-color: var(--cream);
   background-image:
