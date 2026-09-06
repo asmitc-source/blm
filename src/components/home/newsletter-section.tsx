@@ -61,7 +61,7 @@ export function NewsletterSection() {
                 {status === "done" ? (
                   <div className="rounded-2xl bg-mint-soft px-5 py-6 text-ink">
                     <p className="font-display text-xl font-semibold">You are subscribed.</p>
-                    <p className="mt-1 text-sm text-ink-soft">Your welcome email is on the way. Check your inbox (and spam folder just in case).</p>
+                    <p className="mt-1 text-sm text-ink-soft">Keep an eye on your inbox for updates.</p>
                   </div>
                 ) : (
                   <form onSubmit={onSubmit} className="relative">
