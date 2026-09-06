@@ -1299,7 +1299,7 @@
 }
 
 
-/* Newsletter card — animated pastel border on full perimeter */
+/* Newsletter card — pastel perimeter border; spin only while hovered */
 @keyframes newsletter-border-spin {
   to {
     transform: rotate(360deg);
@@ -1309,25 +1309,6 @@
 .newsletter-card {
   position: relative;
   isolation: isolate;
-}
-
-.newsletter-card-glow {
-  position: absolute;
-  inset: -3px;
-  border-radius: 1.6rem;
-  background: conic-gradient(
-    from 0deg,
-    color-mix(in oklab, var(--tile-a) 70%, transparent),
-    color-mix(in oklab, var(--tile-b) 70%, transparent),
-    color-mix(in oklab, var(--tile-c) 70%, transparent),
-    color-mix(in oklab, var(--tile-d) 70%, transparent),
-    color-mix(in oklab, var(--tile-a) 70%, transparent)
-  );
-  filter: blur(16px);
-  opacity: 0.4;
-  z-index: 0;
-  pointer-events: none;
-  animation: newsletter-border-spin 10s linear infinite;
 }
 
 .newsletter-card-border {
@@ -1350,8 +1331,11 @@
     var(--tile-d),
     var(--tile-a)
   );
-  animation: newsletter-border-spin 8s linear infinite;
   pointer-events: none;
+}
+
+.newsletter-card:hover .newsletter-card-spin {
+  animation: newsletter-border-spin 8s linear infinite;
 }
 
 .newsletter-card-inner {
@@ -1361,13 +1345,8 @@
   overflow: hidden;
 }
 
-.dark .newsletter-card-glow {
-  opacity: 0.5;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .newsletter-card-glow,
-  .newsletter-card-spin {
+  .newsletter-card:hover .newsletter-card-spin {
     animation: none;
   }
 
