@@ -43,11 +43,18 @@ export function shareMeta(opts: { title: string; description: string; path?: str
   ];
 }
 
-export function pageHead(opts: { title: string; description: string; path?: string }) {
+export function pageHead(opts: {
+  title: string;
+  description: string;
+  path?: string;
+  /** Optional robots directive, e.g. "noindex, follow" for auth/conversion shells. */
+  robots?: string;
+}) {
   return {
     meta: [
       { title: pageTitle(opts.title) },
       { name: "description", content: opts.description },
+      ...(opts.robots ? [{ name: "robots", content: opts.robots }] : []),
       ...shareMeta(opts),
     ],
     links: [

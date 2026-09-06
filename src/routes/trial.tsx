@@ -17,6 +17,7 @@ export const Route = createFileRoute("/trial")({
       description:
         "Create a free BLM account and start your free trial for multi-location listing management. Unify NAP, close duplicates, and keep publishers in lockstep.",
       path: "/trial",
+      robots: "noindex, follow",
     }),
   component: TrialSignup,
 });

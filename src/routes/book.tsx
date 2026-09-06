@@ -14,7 +14,7 @@ export const Route = createFileRoute("/book")({
     pageHead({
       title: "Book a call",
       description:
-        "Book a call with BLM about franchise, agency, or multi-location listing management. Calendar invite goes to contact@nakama.in.",
+        "Book a 30-minute BLM call for franchise, agency, or multi-location listing management. See NAP drift, duplicates, and coverage on your real footprint.",
       path: "/book",
     }),
   component: BookPage,
@@ -49,13 +49,14 @@ function BookPage() {
       <InnerPage
         eyebrow="Book a call"
         title="Thirty minutes on your actual footprint."
-        lede="Share a few locations. We will walk NAP drift, duplicates, and coverage, then how Starter, Growth, and Enterprise fit your team. The invite goes to contact@nakama.in."
+        lede="Share a few locations. We walk NAP drift, duplicates, and publisher coverage on your real multi-location footprint, then map Starter, Growth, and Enterprise to your team. The calendar invite goes to contact@nakama.in."
       >
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="rounded-2xl bg-cream p-6 hairline">
             <p className="text-sm font-semibold text-ink">Leave your details</p>
             <p className="mt-1 text-sm text-muted">
-              We record the lead, then you can open a calendar invite for {BOOK_CALL_EMAIL}.
+              Tell us who you are and which locations matter. We record the lead, then you open a calendar invite for{" "}
+              {BOOK_CALL_EMAIL}.
             </p>
             <div className="mt-5">
               <LeadForm
@@ -99,18 +100,21 @@ function BookPage() {
                 <p className="mt-3 text-sm text-mint">Calendar opened in a new tab. Add the invite when ready.</p>
               ) : null}
             </div>
-            <ul className="space-y-3 text-sm text-ink-soft">
-              {[
-                "A listing health score on locations you name",
-                "How duplicates and NAP drift show up in the product",
-                "Coverage across Google, Apple, Bing, and the directory network",
-                "What Starter, Growth, and Enterprise look like for your team",
-              ].map((item) => (
-                <li key={item} className="rounded-xl bg-paper px-4 py-3 hairline">
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <div>
+              <p className="text-sm font-semibold text-ink">What you get on the call</p>
+              <ul className="mt-3 space-y-3 text-sm text-ink-soft">
+                {[
+                  "A listing health score on locations you name",
+                  "How duplicates and NAP drift show up in the product",
+                  "Coverage across Google, Apple, Bing, and the directory network",
+                  "What Starter, Growth, and Enterprise look like for your team",
+                ].map((item) => (
+                  <li key={item} className="rounded-xl bg-paper px-4 py-3 hairline">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <p className="text-sm text-muted">
               Ready to try the product yourself?{" "}
               <Link to="/trial" className="font-semibold text-ink">
