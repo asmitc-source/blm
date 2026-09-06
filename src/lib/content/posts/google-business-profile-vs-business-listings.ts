@@ -1,10 +1,10 @@
 const markdown = `Google Business Profile is one listing. Business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when US customers still search and navigate on platforms Google does not control.
 
-If your local program is "we keep Google tidy," this piece is the argument for treating listings as a graph. For the category definition, start with [what is business listing management?](/blog/what-is-business-listing-management). For a second editorial take on the same fork (GBP versus the wider listings layer), read [Google Business Profile vs business listings](https://locallistingsmanagement.co/google-business-profile-vs-business-listings) on Local Listings Management.
+If your local program is "we keep Google tidy," this piece is the argument for treating listings as a graph. Start on the [BLM homepage](/), read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) when shortlisting tools, and check [pricing](/pricing) for listed rates. For a second editorial take on the same fork (GBP versus the wider listings layer), read [Google Business Profile vs business listings](https://locallistingsmanagement.co/google-business-profile-vs-business-listings) on Local Listings Management.
 
 ## What is Google Business Profile actually responsible for?
 
-GBP is Google's place page: the Knowledge Panel / Maps listing that carries your name, address, phone, hours, categories, attributes, photos, posts, and reviews inside Google Search and Google Maps. It is the most important single listing for most consumer businesses in the United States because Google is still where a large share of "near me" intent starts.
+Google Business Profile (GBP) is Google's place page: the Knowledge Panel / Maps listing that carries your name, address, phone, hours, categories, attributes, photos, posts, and reviews inside Google Search and Google Maps. It is the most important single listing for most consumer businesses in the United States because Google is still where a large share of "near me" intent starts.
 
 What GBP does well:
 
@@ -26,7 +26,7 @@ A practical test: change Sunday hours on Google only. Look the store up in Apple
 
 ## What is the business listing graph?
 
-Think of each US location as a node with many published copies. Google holds one copy. Apple Business Connect / Apple Maps holds another. Bing Places, Facebook, Yelp, Tripadvisor, and a stack of aggregators hold more. Some copies are authoritative (you claimed them). Some are inferred. Some are forks (a former agency, a previous owner, a well-meaning manager).
+Business listing management treats each US location as a node with many published copies. Google holds one copy. Apple Business Connect / Apple Maps holds another. Bing Places, Facebook, Yelp, Tripadvisor, and a stack of aggregators hold more. Some copies are authoritative (you claimed them). Some are inferred. Some are forks (a former agency, a previous owner, a well-meaning manager).
 
 Those copies feed each other. Aggregators syndicate into directories and navigation. Map products reconcile, slowly and imperfectly, using NAP as the key. When NAP matches, the graph converges. When it does not, you get two pins, split reviews, and "updated" hours that only exist on one island.
 
@@ -52,7 +52,7 @@ None of this means you must manually garden 80 directories. It means you measure
 
 ## When is Google-only a reasonable choice?
 
-Google-only can be enough when you have one location, a category that is overwhelmingly Google-discovered, and no Apple/Bing presence worth claiming yet; when you are in the first two weeks of an emergency (wrong hours on the map pack) and GBP is the fire; or when you have zero owner access anywhere else and need a beachhead.
+Google-only business listing management can be enough when you have one location, a category that is overwhelmingly Google-discovered, and no Apple/Bing presence worth claiming yet; when you are in the first two weeks of an emergency (wrong hours on the map pack) and GBP is the fire; or when you have zero owner access anywhere else and need a beachhead.
 
 Google-only is a bad steady state when you have multiple locations or franchisees, call tracking that has leaked onto other publishers, a rebrand/move/acquisition in recent memory, a non-trivial share of customers on iOS navigation, or duplicates already live. Google-only cleanup will not collapse Apple or Yelp forks. Use [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings).
 
@@ -60,7 +60,7 @@ A useful rule: GBP is the priority surface; it is not the system of record. The 
 
 ## How should teams monitor the whole graph without drowning?
 
-Do not assign a person to "check all directories." Assign a score and a queue.
+Business listing management at graph scale does not mean assigning a person to "check all directories." Assign a score and a queue.
 
 - Score NAP, coverage, duplicates, and hours per location.
 - Alert on change, not on existence.

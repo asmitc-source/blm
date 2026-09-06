@@ -1,14 +1,14 @@
 const markdown = `In 2026, business listing management cost is software plus labor: Starter at $49/month for one location after a 7-day trial, Growth at $149/month for up to 25 locations, Enterprise custom, plus the hidden cost of NAP drift when nobody watches Apple, Bing, and the directory network.
 
-Listed rates also live on the [pricing](/pricing) page. For the category definition, see [what is business listing management?](/blog/what-is-business-listing-management). For vendor jobs, use [compare listing software](/compare).
+Listed rates also live on the [pricing](/pricing) page. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, and use [compare listing software](/compare) when you are shortlisting vendors.
 
 US operators still under-budget the second half of that sentence. Public SaaS for a focused listing desk is knowable. DIY hours, agency retainers, and missed visits from wrong phones are the lines that surprise finance. This breakdown is a planning model, not a rate card and not a promise that every market prices the same.
 
-If you are still deciding whether to buy software, hire an agency, or stay on a spreadsheet, pair this article with [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and the category definition in [what is business listing management?](/blog/what-is-business-listing-management).
+If you are still deciding whether to buy software, hire an agency, or stay on a spreadsheet, pair this article with [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and the buying checklist in [best business listing management software in 2026](/blog/best-business-listing-management-software-2026).
 
 ## What does DIY listing management actually cost in time?
 
-DIY means a staff member owns Google, Apple, Bing, and a handful of directories without a dedicated platform. The cash cost is a salary slice. The real cost is cycle time and missed drift.
+DIY business listing management means a staff member owns Google, Apple, Bing, and a handful of directories without a dedicated platform. The cash cost is a salary slice. The real cost is cycle time and missed drift.
 
 A realistic monthly load for someone who already has another job:
 
@@ -42,7 +42,7 @@ When you compare an agency retainer to software, do not treat them as substitute
 
 ## What does listing software cost: Starter vs Growth vs Enterprise?
 
-Vendor list prices in this category span three worlds: cheap rank-and-citation tools, mid-market listing desks, and enterprise knowledge-graph contracts.
+Business listing management software pricing in 2026 spans three worlds: cheap rank-and-citation tools, mid-market listing desks, and enterprise knowledge-graph contracts.
 
 **Enterprise platforms (Yext and peers).** Listings are often a six-figure annual conversation once location count, publishers, and services stack. That can be the right buy for a national footprint with legal and brand governance. It is the wrong buy if you needed a health score last Tuesday. A longer evaluation lives in [best business listing management software in 2026](/blog/best-business-listing-management-software-2026), the [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) roundup on Local Listings Management, and the [Yext alternative](/compare/yext-alternative) page.
 
@@ -60,7 +60,7 @@ Software wins when it removes login hopping and surfaces drift. It does not win 
 
 ## What is the hidden cost of listing drift?
 
-Drift is the cost that never gets its own GL code. It shows up as:
+Listing drift is the hidden cost of weak business listing management: it never gets its own GL code. It shows up as:
 
 - Missed calls and visits from wrong phones, hours, or pins.
 - Split reviews when duplicates divide social proof.

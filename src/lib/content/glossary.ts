@@ -1,16 +1,31 @@
-export const GLOSSARY = [
-  { term: "Business listing management", def: "The ongoing process of creating, verifying, and synchronizing a company’s name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate." },
+export type GlossaryItem = {
+  term: string;
+  def: string;
+  links?: ReadonlyArray<{ label: string; to: string; slug?: string }>;
+};
+
+export const GLOSSARY: GlossaryItem[] = [
+  {
+    term: "Business listing management",
+    def: "The ongoing process of creating, verifying, and synchronizing a company's name, address, phone (NAP), hours, and categories across search engines, maps, and online directories so every location stays accurate. In practice it covers Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, and the directory network: one canonical record per location, pushed and re-checked until the public graph matches the door.",
+    links: [
+      { label: "Full definition", to: "/blog/$slug", slug: "what-is-business-listing-management" },
+      { label: "Homepage", to: "/" },
+      { label: "Compare software", to: "/compare" },
+      { label: "Pricing", to: "/pricing" },
+    ],
+  },
   { term: "NAP", def: "Name, Address, Phone: the core identity of a location. Inconsistent NAP is the most common reason aggregators fork a second listing." },
-  { term: "Citation", def: "A mention of a business’s NAP on another site, whether a map publisher, directory, or unstructured page." },
-  { term: "Google Business Profile (GBP)", def: "Google’s listing product for maps and search. Necessary for local visibility, not sufficient on its own." },
-  { term: "Apple Business Connect", def: "Apple’s portal for managing how a business appears in Maps, Wallet, and related Apple surfaces." },
-  { term: "Bing Places", def: "Microsoft’s business listing product, still used in Bing search, Windows, and some in-car systems." },
+  { term: "Citation", def: "A mention of a business's NAP on another site, whether a map publisher, directory, or unstructured page." },
+  { term: "Google Business Profile (GBP)", def: "Google's listing product for maps and search. Necessary for local visibility, not sufficient on its own." },
+  { term: "Apple Business Connect", def: "Apple's portal for managing how a business appears in Maps, Wallet, and related Apple surfaces." },
+  { term: "Bing Places", def: "Microsoft's business listing product, still used in Bing search, Windows, and some in-car systems." },
   { term: "Duplicate listing", def: "A second public profile for the same storefront. Duplicates split reviews, photos, and map-pack eligibility." },
   { term: "Directory coverage", def: "How many relevant publishers currently hold a complete, matching listing for a location." },
   { term: "Service-area business (SAB)", def: "A business that hides a street address and shows a coverage area instead. Still needs consistent NAP and categories." },
   { term: "Primary category", def: "The single best category a publisher uses to classify the location. Mismatched primaries confuse both ranking and customer expectations." },
   { term: "Aggregator", def: "A data provider that syndicates NAP to many directories. Drift at the aggregator layer fans out everywhere." },
-  { term: "Health score", def: "BLM’s 0-100 summary of NAP consistency, coverage, duplicate risk, and hours/category gaps." },
+  { term: "Health score", def: "BLM's 0-100 summary of NAP consistency, coverage, duplicate risk, and hours/category gaps." },
   { term: "Map pack", def: "The local 3-pack (or similar) of map results in search. Listing issues are a frequent suppression cause." },
   { term: "Storefront vs brand page", def: "A location listing versus a brand-level entity. Mixing them is a common duplicate source." },
   { term: "Tracking number", def: "A call-analytics number used in ads or landing pages. If it leaks onto map listings, NAP splits." },
@@ -18,5 +33,5 @@ export const GLOSSARY = [
   { term: "Suppression", def: "The process of asking a publisher to close or merge a duplicate so one listing remains canonical." },
   { term: "Local SEO", def: "Search work that targets geographic intent. Listings are the foundation; content and links sit on top." },
   { term: "Franchise listing ops", def: "The governance model where the brand owns canonical NAP while franchisees may edit hours and local attributes." },
-  { term: "Early access", def: "BLM’s current seating: create a workspace to unlock Starter, with Growth and Enterprise for teams that need more locations." },
-] as const;
+  { term: "Early access", def: "BLM's current seating: create a workspace to unlock Starter, with Growth and Enterprise for teams that need more locations." },
+];

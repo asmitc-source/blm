@@ -26,7 +26,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "business-listing-management-cost-2026",
     title: "Business listing management cost in 2026",
     description:
-      "What teams actually pay for listing management in 2026: Starter after you create a workspace, per-location SaaS, enterprise platforms, and the hidden cost of DIY citations.",
+      "Business listing management cost in 2026: Starter listed at $49/month, Growth at $149/month for up to 25 locations, Enterprise custom, plus DIY hours, agency retainers, and the hidden cost of NAP drift.",
     date: "2026-04-02",
     author: "Asmit Choudhary",
     minutes: 8,
@@ -38,7 +38,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "best-business-listing-management-software-2026",
     title: "Best business listing management software in 2026",
     description:
-      "How to evaluate listing management software in 2026: coverage, duplicates, workflow, agency needs, and where BLM fits versus Yext and BrightLocal.",
+      "Best business listing management software in 2026 is judged by jobs, not logo walls: canonical NAP, Google/Apple/Bing coverage, duplicate workflow, shared workspace, and public pricing. How BLM, Yext, and BrightLocal differ.",
     date: "2026-05-18",
     author: "Asmit Choudhary",
     minutes: 11,
@@ -50,7 +50,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "google-business-profile-vs-business-listings",
     title: "Google Business Profile vs. business listings",
     description:
-      "GBP is one listing. Business listings are the whole citation graph. Why managing only Google leaves Apple, Bing, and directories out of date.",
+      "Google Business Profile vs business listings: GBP is one listing inside business listing management. The full graph includes Apple Maps, Bing Places, directories, and aggregators. Why Google-only is not enough.",
     date: "2026-02-20",
     author: "Asmit Choudhary",
     minutes: 8,

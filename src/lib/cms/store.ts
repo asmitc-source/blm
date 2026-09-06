@@ -56,7 +56,7 @@ const defaultCopy = (): SiteCopy => ({
     trialLine:
       "Create a workspace. No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
   },
-  pricingTitle: "Starter $49. Growth $149. Billing not live yet.",
+  pricingTitle: "Business listing management pricing: Starter $49. Growth $149.",
   pricingLede:
     "Create a workspace of Starter or Growth. No card required. Listed prices apply when billing goes live.",
   plans: PRICING.map((p) => ({

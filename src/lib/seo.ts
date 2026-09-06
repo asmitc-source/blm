@@ -160,3 +160,18 @@ export function definedTermJsonLd(opts: {
     inDefinedTermSet: `${SITE.domain}/glossary`,
   };
 }
+
+export function definedTermSetJsonLd(opts: {
+  name: string;
+  description: string;
+  url: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+  };
+}
+

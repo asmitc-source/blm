@@ -17,7 +17,7 @@ export const Route = createFileRoute("/pricing")({
     pageHead({
       title: "Business listing management pricing",
       description:
-        "Business listing management cost for BLM: Starter listed at $49/month, Growth at $149/month, Enterprise custom. Billing is not live yet. No card required to create a workspace.",
+        "Business listing management pricing for BLM: Starter listed at $49/month for one location, Growth at $149/month for up to 25 locations, Enterprise custom. Billing is not live yet. No card required to create a workspace.",
       path: "/pricing",
     }),
   component: PricingPage,
@@ -31,7 +31,7 @@ const faqs = [
 
 const SCALES = [
   { id: "starter", label: "1 location" },
-  { id: "growth", label: "2–25" },
+  { id: "growth", label: "2-25" },
   { id: "enterprise", label: "26+" },
 ] as const;
 
@@ -56,6 +56,33 @@ function PricingPage() {
         title={data.copy.pricingTitle}
         lede={data.copy.pricingLede}
       >
+        <p className="mb-6 max-w-3xl text-sm leading-relaxed text-ink-soft">
+          Business listing management cost on BLM is listed SaaS plus the labor to close alerts: Starter at $49/month for one location, Growth at $149/month for up to 25 locations, Enterprise custom. Billing is not live yet, so create a workspace without a card. For the planning model (DIY hours, agency retainers, drift), read{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "business-listing-management-cost-2026" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            business listing management cost in 2026
+          </Link>
+          . New to the category? Start with{" "}
+          <Link
+            to="/blog/$slug"
+            params={{ slug: "what-is-business-listing-management" }}
+            className="font-medium text-ink underline-offset-2 hover:underline"
+          >
+            what is business listing management
+          </Link>
+          , the{" "}
+          <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+            homepage
+          </Link>
+          , or{" "}
+          <Link to="/compare" className="font-medium text-ink underline-offset-2 hover:underline">
+            compare listing software
+          </Link>
+          .
+        </p>
         <div className="mb-8 flex flex-wrap items-center gap-2">
           <p className="mr-2 text-sm font-semibold text-ink-soft">How many storefronts?</p>
           {SCALES.map((s) => (
