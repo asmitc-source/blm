@@ -17,7 +17,7 @@ export function defaultShareImage(origin = publicOrigin()) {
 }
 
 export function pageTitle(title: string) {
-  if (title === SITE.name) return `${SITE.name} · ${SITE.legalName}`;
+  if (title === SITE.name) return `${SITE.legalName} · ${SITE.name}`;
   return `${title} · ${SITE.name}`;
 }
 
@@ -67,7 +67,7 @@ export function orgJsonLd() {
     email: SITE.email,
     description: SITE.description,
     founder: { "@type": "Person", name: SITE.author },
-    logo: defaultShareImage(),
+    logo: `${SITE.domain}/icon-512.png`,
     image: defaultShareImage(),
   };
 }
@@ -76,7 +76,8 @@ export function softwareJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: `${SITE.name} · ${SITE.legalName}`,
+    name: SITE.legalName,
+    alternateName: SITE.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     url: SITE.domain,
