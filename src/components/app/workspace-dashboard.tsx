@@ -1,11 +1,14 @@
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   AlertTriangle,
+  ArrowRight,
   Bell,
   Check,
   Clock3,
   Copy,
   Fingerprint,
+  Lock,
   MapPin,
   Plus,
   Radar,
@@ -21,7 +24,6 @@ import { Label } from "@/components/ui/label";
 import type { WorkspaceRow } from "@/lib/leads";
 import { cn } from "@/lib/utils";
 
-
 const TOOLKIT_SECTIONS: {
   id: WorkspaceSection;
   label: string;
@@ -32,21 +34,21 @@ const TOOLKIT_SECTIONS: {
   {
     id: "locations",
     label: "Locations",
-    blurb: "Add and manage storefronts",
+    blurb: "Add storefronts for the audit",
     icon: MapPin,
     tone: "text-brand bg-brand-soft",
   },
   {
     id: "nap",
     label: "NAP fingerprint",
-    blurb: "Canonical name, address, phone",
+    blurb: "See name / address / phone gaps",
     icon: Fingerprint,
     tone: "text-sky bg-sky-soft",
   },
   {
     id: "coverage",
-    label: "Coverage snapshot",
-    blurb: "Google, Apple, Bing, directories",
+    label: "Coverage gaps",
+    blurb: "Missing and stale publishers",
     icon: Radar,
     tone: "text-lavender bg-lavender-soft",
   },
@@ -60,18 +62,51 @@ const TOOLKIT_SECTIONS: {
   {
     id: "hours",
     label: "Hours & alerts",
-    blurb: "Hours editor and change feed",
+    blurb: "Local hours + drift signals",
     icon: Clock3,
     tone: "text-butter bg-butter-soft",
   },
   {
     id: "auditor",
-    label: "Listing health",
-    blurb: "Run the listing auditor",
+    label: "Listing auditor",
+    blurb: "Run the full health scan",
     icon: ShieldCheck,
     tone: "text-mint bg-mint-soft",
   },
 ];
+
+const AFTER_TRIAL_UNLOCKS = [
+  {
+    title: "Publisher sync & multi-directory push",
+    detail: "Push canonical NAP and hours to Google, Apple, Bing, and directories in one pass.",
+    ceiling: "Coverage 95%+",
+  },
+  {
+    title: "Duplicate suppressions",
+    detail: "Close suite variants, DBA forks, and near-matches before reviews split.",
+    ceiling: "0 open duplicates",
+  },
+  {
+    title: "Hours & category lock",
+    detail: "Propagate Mon–Sun windows so Apple and Bing stop advertising stale hours.",
+    ceiling: "Hours synced",
+  },
+  {
+    title: "Weekly health digest",
+    detail: "A scored inbox brief on drift, missing pins, and what changed since last week.",
+    ceiling: "Always watching",
+  },
+  {
+    title: "Multi-location desk",
+    detail: "Grow past the trial’s one storefront — up to 25 on Growth, unlimited on Enterprise.",
+    ceiling: "25+ locations",
+  },
+  {
+    title: "Bulk corrections workflow",
+    detail: "Queue and clear listing fixes across the footprint without tab-hopping publishers.",
+    ceiling: "Ops, not tickets",
+  },
+] as const;
 
 export type WorkspaceLocation = {
   id: string;
@@ -83,7 +118,7 @@ export type WorkspaceLocation = {
   sun: string;
 };
 
-type PublisherStatus = "synced" | "missing" | "stale";
+type PublisherStatus = "present" | "missing" | "stale";
 
 type PublisherRow = {
   name: string;
@@ -126,14 +161,14 @@ function seedPublishers(hasLocation: boolean): PublisherRow[] {
     ];
   }
   return [
-    { name: "Google Business Profile", group: "Maps", status: "synced" },
+    { name: "Google Business Profile", group: "Maps", status: "present" },
     { name: "Apple Maps", group: "Maps", status: "stale" },
     { name: "Bing Places", group: "Maps", status: "missing" },
-    { name: "Apple Business Connect", group: "Maps", status: "synced" },
+    { name: "Apple Business Connect", group: "Maps", status: "present" },
     { name: "Yelp", group: "Directories", status: "stale" },
-    { name: "Facebook", group: "Directories", status: "synced" },
+    { name: "Facebook", group: "Directories", status: "present" },
     { name: "Tripadvisor", group: "Directories", status: "missing" },
-    { name: "BBB", group: "Directories", status: "synced" },
+    { name: "BBB", group: "Directories", status: "present" },
   ];
 }
 
@@ -162,8 +197,8 @@ function seedAlerts(loc: WorkspaceLocation | null): AlertItem[] {
     return [
       {
         id: "a0",
-        title: "Add a location to unlock alerts",
-        detail: "Hours drift, NAP mismatches, and takedown risk appear here.",
+        title: "Add a location to surface gaps",
+        detail: "Hours drift, NAP mismatches, and missing pins appear here once a storefront exists.",
         tone: "sky",
       },
     ];
@@ -183,16 +218,16 @@ function seedAlerts(loc: WorkspaceLocation | null): AlertItem[] {
     },
     {
       id: "a3",
-      title: "NAP fingerprint ready",
-      detail: "Canonical name, address, and phone are set for sync.",
-      tone: "mint",
+      title: "Yelp NAP punctuation drift",
+      detail: "Suite formatting differs from the canonical fingerprint.",
+      tone: "coral",
     },
   ];
 }
 
 function coverageScore(rows: PublisherRow[]) {
   if (rows.every((r) => r.status === "missing")) return 0;
-  const weights = { synced: 1, stale: 0.55, missing: 0 } as const;
+  const weights = { present: 1, stale: 0.55, missing: 0 } as const;
   const sum = rows.reduce((acc, r) => acc + weights[r.status], 0);
   return Math.round((sum / rows.length) * 100);
 }
@@ -206,14 +241,28 @@ function napScore(loc: WorkspaceLocation | null) {
   return Math.min(100, score);
 }
 
+function healthScore(args: {
+  hasLocation: boolean;
+  nap: number;
+  cov: number;
+  dupCount: number;
+  alertCount: number;
+}) {
+  if (!args.hasLocation) return 0;
+  const dupPenalty = Math.min(30, args.dupCount * 12);
+  const alertPenalty = Math.min(18, args.alertCount * 6);
+  const raw = args.nap * 0.28 + args.cov * 0.52 + (100 - dupPenalty) * 0.12 + (100 - alertPenalty) * 0.08;
+  return Math.max(12, Math.min(96, Math.round(raw)));
+}
+
 const STATUS_CHIP: Record<PublisherStatus, string> = {
-  synced: "bg-mint-soft text-mint",
+  present: "bg-mint-soft text-mint",
   stale: "bg-butter-soft text-butter",
   missing: "bg-coral-soft text-coral",
 };
 
 const STATUS_LABEL: Record<PublisherStatus, string> = {
-  synced: "Synced",
+  present: "Present",
   stale: "Stale",
   missing: "Missing",
 };
@@ -246,6 +295,14 @@ export function WorkspaceDashboard({
   const alerts = useMemo(() => seedAlerts(primary), [primary]);
   const cov = coverageScore(publishers);
   const nap = napScore(primary);
+  const openAlertCount = alerts.filter((a) => a.id !== "a0").length;
+  const health = healthScore({
+    hasLocation: Boolean(primary),
+    nap,
+    cov,
+    dupCount: duplicates.length,
+    alertCount: openAlertCount,
+  });
   const firstName = displayName?.trim().split(/\s+/)[0];
   const company = workspace?.company?.trim() || null;
   const planLabel =
@@ -254,7 +311,21 @@ export function WorkspaceDashboard({
       : workspace?.plan === "enterprise"
         ? "Enterprise"
         : "Starter trial";
-  const openAlertCount = alerts.filter((a) => a.id !== "a0").length;
+  const isTrial = workspace?.plan !== "growth" && workspace?.plan !== "enterprise";
+  const missingCount = publishers.filter((p) => p.status === "missing").length;
+  const staleCount = publishers.filter((p) => p.status === "stale").length;
+  const gapLines = primary
+    ? [
+        nap < 100 ? `NAP fingerprint at ${nap}% — fields ready, publishers not aligned yet.` : null,
+        cov < 90 ? `Coverage ${cov}% — ${missingCount} missing, ${staleCount} stale.` : null,
+        duplicates.length
+          ? `${duplicates.length} duplicate near-matches still open.`
+          : null,
+        openAlertCount
+          ? `${openAlertCount} hours / listing alerts need a paid push to close.`
+          : null,
+      ].filter(Boolean) as string[]
+    : ["Add a location to run the audit and see what paid sync would close."];
 
   function addLocation(e: FormEvent) {
     e.preventDefault();
@@ -290,15 +361,15 @@ export function WorkspaceDashboard({
       <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-            Listing desk
+            Trial audit desk
           </p>
           <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
             Welcome{firstName ? `, ${firstName}` : ""}.
           </h1>
           <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
             {company
-              ? `${company} · keep every storefront accurate across Google, Apple, Bing, and directories.`
-              : "Keep every storefront accurate across Google, Apple, Bing, and directories."}
+              ? `${company} · see what’s broken now, and the ceilings Growth unlocks after trial.`
+              : "See what’s broken now — and exactly what we’d fix if you continue after trial."}
           </p>
         </div>
         <span className="inline-flex h-8 shrink-0 items-center rounded-full bg-brand-soft px-3 text-xs font-semibold text-brand">
@@ -311,42 +382,92 @@ export function WorkspaceDashboard({
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          icon={<MapPin className="size-4" />}
-          tone="text-brand bg-brand-soft"
-          label="Locations"
-          value={String(locations.length || Number(workspace?.locations_count) || 0)}
-          hint="Storefronts in this workspace"
+          icon={<ShieldCheck className="size-4" />}
+          tone="text-mint bg-mint-soft"
+          label="Health score"
+          value={primary ? String(health) : "—"}
+          hint={primary ? "Composite of NAP, coverage, duplicates" : "Add a location to score"}
         />
         <MetricCard
           icon={<Radar className="size-4" />}
           tone="text-sky bg-sky-soft"
-          label="Coverage score"
+          label="Coverage"
           value={primary ? `${cov}%` : "—"}
-          hint="Publisher sync health"
+          hint={primary ? `Ceiling after trial → 95%+` : "Publisher presence audit"}
         />
         <MetricCard
           icon={<Copy className="size-4" />}
           tone="text-coral bg-coral-soft"
           label="Duplicates"
           value={primary ? String(duplicates.length) : "—"}
-          hint="Near-match risks"
+          hint={primary ? "Would close with paid suppressions" : "Near-match risks"}
         />
         <MetricCard
           icon={<Bell className="size-4" />}
           tone="text-butter bg-butter-soft"
-          label="Open alerts"
+          label="Open gaps"
           value={String(openAlertCount)}
-          hint="Hours, NAP, coverage"
+          hint="Hours, NAP, missing pins"
         />
       </div>
 
       {section === "overview" ? (
         <>
+          <section className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-2xl bg-cream p-5 hairline sm:p-6">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                    What’s broken
+                  </p>
+                  <h2 className="mt-1.5 font-display text-2xl font-semibold tracking-tight">
+                    Gap summary
+                  </h2>
+                </div>
+                {primary ? (
+                  <div className="text-right">
+                    <p className="font-display text-3xl font-semibold tabular-nums tracking-tight">
+                      {health}
+                    </p>
+                    <p className="text-xs text-muted">health · paid ceiling 95+</p>
+                  </div>
+                ) : null}
+              </div>
+              <ul className="mt-5 space-y-2.5">
+                {gapLines.map((line) => (
+                  <li
+                    key={line}
+                    className="flex items-start gap-2.5 rounded-xl bg-paper px-3.5 py-3 hairline"
+                  >
+                    <AlertTriangle className="mt-0.5 size-4 shrink-0 text-coral" />
+                    <span className="text-sm leading-snug text-ink-soft">{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <GapChip label="NAP" value={primary ? `${nap}%` : "—"} tone="text-sky" />
+                <GapChip label="Coverage" value={primary ? `${cov}%` : "—"} tone="text-lavender" />
+                <GapChip
+                  label="Duplicates"
+                  value={primary ? String(duplicates.length) : "—"}
+                  tone="text-coral"
+                />
+                <GapChip
+                  label="Hours alerts"
+                  value={String(openAlertCount)}
+                  tone="text-butter"
+                />
+              </div>
+            </div>
+
+            <AfterTrialPanel isTrial={Boolean(isTrial)} />
+          </section>
+
           <section className="space-y-4">
             <SectionTitle
-              eyebrow="Starter toolkit"
-              title="Operate listing health from one desk"
-              copy="Open a module to manage locations, fingerprint NAP, check coverage, close duplicates, edit hours, or run the auditor."
+              eyebrow="Audit toolkit"
+              title="Find the gaps — fix comes after trial"
+              copy="Local controls stay live: add a location, edit hours, run the auditor. Publisher sync, suppressions, and multi-directory push unlock when you continue."
             />
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {TOOLKIT_SECTIONS.map((tool) => (
@@ -397,43 +518,116 @@ export function WorkspaceDashboard({
       ) : null}
 
       {section === "locations" ? (
-        <LocationsPanel
-          locations={locations}
-          draft={draft}
-          formError={formError}
-          onDraftChange={setDraft}
-          onSubmit={addLocation}
-        />
+        <>
+          <LocationsPanel
+            locations={locations}
+            draft={draft}
+            formError={formError}
+            onDraftChange={setDraft}
+            onSubmit={addLocation}
+          />
+          <FixAfterTrialCard
+            eyebrow="Locations"
+            title="What we’d unlock after trial"
+            wouldDo="Move past the trial’s single storefront. Growth scopes up to 25 locations; Enterprise covers franchise and agency footprints."
+            ceiling="1 location → 25+ on Growth"
+            bullets={[
+              "Shared desk for marketing + SEO across every pin",
+              "Bulk corrections instead of one-off publisher logins",
+              "Weekly digest across the whole footprint",
+            ]}
+          />
+        </>
       ) : null}
 
       {section === "nap" ? (
-        <NapPanel location={primary} score={nap} onAdd={() => onSectionChange("locations")} />
+        <>
+          <NapPanel location={primary} score={nap} onAdd={() => onSectionChange("locations")} />
+          {primary ? (
+            <FixAfterTrialCard
+              eyebrow="NAP"
+              title="What we’d fix after trial"
+              wouldDo="Diff every publisher against this canonical name, address, and phone — then push the fingerprint so Google, Apple, Bing, and directories stop drifting."
+              ceiling={`NAP ${nap}% → 100% locked`}
+              bullets={[
+                "Rewrite suite / DBA / punctuation forks to one string",
+                "Replace tracking numbers that split call attribution",
+                "Keep the fingerprint as the source of truth for sync",
+              ]}
+            />
+          ) : null}
+        </>
       ) : null}
 
       {section === "coverage" ? (
-        <CoveragePanel
-          publishers={publishers}
-          score={cov}
-          hasLocation={Boolean(primary)}
-          onAdd={() => onSectionChange("locations")}
-        />
+        <>
+          <CoveragePanel
+            publishers={publishers}
+            score={cov}
+            hasLocation={Boolean(primary)}
+            onAdd={() => onSectionChange("locations")}
+          />
+          {primary ? (
+            <FixAfterTrialCard
+              eyebrow="Coverage"
+              title="What we’d fix after trial"
+              wouldDo="Create missing listings, refresh stale ones, and push the workspace record across maps and directories — no live publisher push during trial."
+              ceiling={`Coverage ${cov}% → 95%+`}
+              bullets={[
+                `Open ${missingCount} missing publishers (e.g. Bing, Tripadvisor)`,
+                `Refresh ${staleCount} stale pins (Apple Maps, Yelp)`,
+                "Multi-directory push from one desk after you continue",
+              ]}
+            />
+          ) : null}
+        </>
       ) : null}
 
       {section === "duplicates" ? (
-        <DuplicatesPanel
-          risks={duplicates}
-          hasLocation={Boolean(primary)}
-          onAdd={() => onSectionChange("locations")}
-        />
+        <>
+          <DuplicatesPanel
+            risks={duplicates}
+            hasLocation={Boolean(primary)}
+            onAdd={() => onSectionChange("locations")}
+          />
+          {primary ? (
+            <FixAfterTrialCard
+              eyebrow="Duplicates"
+              title="What we’d fix after trial"
+              wouldDo="Suppress and merge near-matches so reviews, photos, and rankings stop splitting across forks."
+              ceiling={`${duplicates.length} open → closed`}
+              bullets={[
+                "Queue suite-variant and LLC/DBA suppressions",
+                "Keep the winning pin; retire the shadow listings",
+                "Alert when a new near-match appears after sync",
+              ]}
+            />
+          ) : null}
+        </>
       ) : null}
 
       {section === "hours" ? (
-        <HoursPanel
-          locations={locations}
-          alerts={alerts}
-          onUpdateHours={updateHours}
-          onAdd={() => onSectionChange("locations")}
-        />
+        <>
+          <HoursPanel
+            locations={locations}
+            alerts={alerts}
+            onUpdateHours={updateHours}
+            onAdd={() => onSectionChange("locations")}
+          />
+          {primary ? (
+            <FixAfterTrialCard
+              eyebrow="Hours"
+              title="What we’d fix after trial"
+              wouldDo="Take the hours you edit here and propagate them to Google, Apple, and Bing so Saturday/Sunday stop advertising the wrong window."
+              ceiling="Local hours → synced across maps"
+              bullets={[
+                "Close Apple Maps Saturday drift automatically",
+                "Lock holiday and temporary closures when you need them",
+                "Feed hours changes into the weekly digest",
+              ]}
+            />
+          ) : null}
+        </>
       ) : null}
 
       {section === "auditor" ? (
@@ -441,12 +635,132 @@ export function WorkspaceDashboard({
           <SectionTitle
             eyebrow="Listing health"
             title="Auditor"
-            copy="Scan a business name and city for coverage gaps, mismatches, and duplicate risk."
+            copy="Run the scan to see coverage gaps, mismatches, and duplicate risk. After results, we show what we’d fix once trial ends — not a live publisher push."
           />
-          <ListingAuditor compact />
+          <ListingAuditor compact workspace />
         </section>
       ) : null}
     </div>
+  );
+}
+
+function GapChip({ label, value, tone }: { label: string; value: string; tone: string }) {
+  return (
+    <div className="rounded-xl bg-paper px-3 py-2.5 hairline">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">{label}</p>
+      <p className={cn("mt-1 font-display text-lg font-semibold tabular-nums", tone)}>{value}</p>
+    </div>
+  );
+}
+
+function AfterTrialPanel({ isTrial }: { isTrial: boolean }) {
+  return (
+    <div className="rounded-2xl bg-cream p-5 hairline sm:p-6">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+            After trial
+          </p>
+          <h2 className="mt-1.5 font-display text-2xl font-semibold tracking-tight">
+            Ceilings you’d unlock
+          </h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">
+            {isTrial
+              ? "Trial shows the gaps. Paid Growth turns on the fixes that close them."
+              : "Paid features that raise the operating ceiling."}
+          </p>
+        </div>
+        <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-ink text-cream">
+          <Lock className="size-4" />
+        </span>
+      </div>
+      <ul className="mt-5 space-y-2.5">
+        {AFTER_TRIAL_UNLOCKS.map((item) => (
+          <li
+            key={item.title}
+            className="grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-xl bg-paper px-3.5 py-3 hairline"
+          >
+            <span className="mt-0.5 inline-flex size-6 items-center justify-center rounded-full bg-sand text-ink-soft">
+              <Lock className="size-3" />
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-ink">{item.title}</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-muted">{item.detail}</p>
+            </div>
+            <span className="shrink-0 rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-brand">
+              {item.ceiling}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <Button asChild className="w-full sm:w-auto">
+          <Link to="/book">
+            Unlock with Growth <ArrowRight className="size-4" />
+          </Link>
+        </Button>
+        <Button asChild variant="secondary" className="w-full sm:w-auto">
+          <Link to="/pricing">See Growth</Link>
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function FixAfterTrialCard({
+  eyebrow,
+  title,
+  wouldDo,
+  ceiling,
+  bullets,
+}: {
+  eyebrow: string;
+  title: string;
+  wouldDo: string;
+  ceiling: string;
+  bullets: string[];
+}) {
+  return (
+    <section className="rounded-2xl bg-cream p-5 hairline sm:p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex size-8 items-center justify-center rounded-xl bg-ink text-cream">
+              <Lock className="size-3.5" />
+            </span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+                {eyebrow} · Fix after trial
+              </p>
+              <h3 className="mt-0.5 font-display text-xl font-semibold tracking-tight">{title}</h3>
+            </div>
+          </div>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">{wouldDo}</p>
+          <ul className="mt-3 space-y-1.5">
+            {bullets.map((b) => (
+              <li key={b} className="flex items-start gap-2 text-sm text-ink-soft">
+                <Check className="mt-0.5 size-3.5 shrink-0 text-mint" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="shrink-0 rounded-2xl bg-brand-soft px-4 py-3 text-center sm:min-w-[10.5rem]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">Ceiling</p>
+          <p className="mt-1 text-sm font-semibold leading-snug text-ink">{ceiling}</p>
+        </div>
+      </div>
+      <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <Button asChild size="sm">
+          <Link to="/book">
+            Unlock with Growth <ArrowRight className="size-3.5" />
+          </Link>
+        </Button>
+        <Button asChild size="sm" variant="ghost">
+          <Link to="/pricing">See Growth plans</Link>
+        </Button>
+      </div>
+    </section>
   );
 }
 
@@ -516,13 +830,13 @@ function LocationsPanel({
         <SectionTitle
           eyebrow="Get started"
           title="Add your first location"
-          copy="Starter includes one location. Enter name, address, and phone to unlock coverage and duplicate radar."
+          copy="Starter trial includes one location for the audit. Enter name, address, and phone to seed coverage and duplicate radar."
         />
       ) : (
         <SectionTitle
           eyebrow="Storefronts"
           title="Locations"
-          copy="Add the places you manage. Each location becomes the canonical record for NAP, hours, and coverage."
+          copy="Add the place you manage. It becomes the canonical record for NAP, hours, and the audit — live publisher sync stays locked until after trial."
         />
       )}
 
@@ -611,7 +925,7 @@ function NapPanel({
       <SectionTitle
         eyebrow="Consistency"
         title="NAP fingerprint"
-        copy="Canonical name, address, and phone are the source of truth every publisher is diffed against."
+        copy="Canonical name, address, and phone are the source of truth every publisher would be diffed against after trial."
       />
       {!location ? (
         <EmptyState
@@ -632,7 +946,7 @@ function NapPanel({
             </p>
             <p className="mt-2 text-sm text-ink-soft">
               {score >= 90
-                ? "Canonical NAP looks complete."
+                ? "Canonical NAP looks complete — ready for a paid push."
                 : "Fill missing fields to raise the fingerprint."}
             </p>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-sand">
@@ -699,7 +1013,7 @@ function CoveragePanel({
       <SectionTitle
         eyebrow="Publishers"
         title="Coverage snapshot"
-        copy="See which networks have the location, which are stale, and which never received it."
+        copy="Audit-only view of which networks have the location, which are stale, and which never received it. Live sync stays locked during trial."
       />
       {!hasLocation ? (
         <EmptyState
@@ -717,9 +1031,10 @@ function CoveragePanel({
                 Coverage score
               </p>
               <p className="mt-1 font-display text-3xl font-semibold tabular-nums">{score}%</p>
+              <p className="mt-1 text-xs text-muted">Paid ceiling → 95%+</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              {(["synced", "stale", "missing"] as PublisherStatus[]).map((s) => (
+              {(["present", "stale", "missing"] as PublisherStatus[]).map((s) => (
                 <span
                   key={s}
                   className={cn("rounded-full px-2.5 py-1 text-xs font-semibold", STATUS_CHIP[s])}
@@ -769,7 +1084,7 @@ function DuplicatesPanel({
       <SectionTitle
         eyebrow="Near-matches"
         title="Duplicate radar"
-        copy="Phone, place, and name forks surface here with a confidence score before reviews split."
+        copy="Phone, place, and name forks surface here with a confidence score. Suppressions unlock after trial — no live takedown during the audit."
       />
       {!hasLocation ? (
         <EmptyState
@@ -798,13 +1113,14 @@ function DuplicatesPanel({
                   {risk.match} · {risk.publisher}
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-coral-soft px-2.5 py-1 text-xs font-semibold tabular-nums text-coral">
                   {risk.confidence}% match
                 </span>
-                <Button type="button" size="sm" variant="secondary">
-                  Review
-                </Button>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-sand px-2.5 py-1 text-xs font-semibold text-ink-soft">
+                  <Lock className="size-3" />
+                  Fix after trial
+                </span>
               </div>
             </li>
           ))}
@@ -831,7 +1147,7 @@ function HoursPanel({
       <SectionTitle
         eyebrow="Operations"
         title="Hours & alerts"
-        copy="Keep weekly hours governed and watch for drift before publishers fork a second pin."
+        copy="Edit weekly hours locally for the audit. Propagating them to Google, Apple, and Bing is a paid unlock after trial."
       />
       {!loc ? (
         <EmptyState
@@ -845,6 +1161,7 @@ function HoursPanel({
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="rounded-2xl bg-cream p-5 hairline sm:p-6">
             <p className="text-sm font-semibold">{loc.name} hours</p>
+            <p className="mt-1 text-xs text-muted">Local workspace only — not pushed to publishers yet.</p>
             <div className="mt-4 grid gap-3">
               <HourField
                 label="Mon – Fri"
@@ -934,6 +1251,7 @@ function MiniCoverage({
         </button>
       </div>
       <p className="mt-3 font-display text-3xl font-semibold tabular-nums">{score}%</p>
+      <p className="mt-1 text-xs text-muted">After trial ceiling → 95%+</p>
       <div className="mt-4 flex flex-wrap gap-2">
         {publishers.slice(0, 6).map((p) => (
           <span
@@ -961,7 +1279,7 @@ function MiniAlerts({
   return (
     <div className="rounded-2xl bg-cream p-5 hairline sm:p-6">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold">Open alerts</p>
+        <p className="text-sm font-semibold">Open gaps</p>
         <button
           type="button"
           onClick={onOpen}

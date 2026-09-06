@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Lock, MapPin, Sparkles } from "lucide-react";
 import {
   runListingAudit,
   SCAN_STEPS,
@@ -59,7 +59,7 @@ const STATUS_TONE: Record<string, DirectoryTone> = {
   duplicate: "lavender",
 };
 
-export function ListingAuditor({ compact = false }: { compact?: boolean }) {
+export function ListingAuditor({ compact = false, workspace = false }: { compact?: boolean; workspace?: boolean }) {
   const [query, setQuery] = useState("");
   const [city, setCity] = useState("");
   const [phase, setPhase] = useState<"idle" | "scan" | "result">("idle");
@@ -204,7 +204,7 @@ export function ListingAuditor({ compact = false }: { compact?: boolean }) {
           {phase === "idle" ? <IdlePreview /> : null}
           {phase === "scan" ? <ScanPanel step={step} /> : null}
           {phase === "result" && result ? (
-            <ResultPanel result={result} displayScore={displayScore} />
+            <ResultPanel result={result} displayScore={displayScore} workspace={workspace} />
           ) : null}
         </div>
       </div>
@@ -271,9 +271,11 @@ function ScanPanel({ step }: { step: number }) {
 function ResultPanel({
   result,
   displayScore,
+  workspace = false,
 }: {
   result: AuditResult;
   displayScore: number;
+  workspace?: boolean;
 }) {
   const tone = scoreTone(result.score);
   const showBurst = result.score >= 85;
@@ -314,7 +316,7 @@ function ResultPanel({
         </ul>
       </div>
 
-      <EmailGate result={result} />
+      {workspace ? <WorkspaceFixStrip result={result} /> : <EmailGate result={result} />}
     </div>
   );
 }
@@ -461,6 +463,77 @@ function SeverityPill({ severity }: { severity: "high" | "medium" | "low" }) {
     <span className={cn("mt-0.5 inline-flex h-6 shrink-0 items-center rounded-full px-2 text-[11px] font-semibold uppercase tracking-wide", map[severity])}>
       {severity}
     </span>
+  );
+}
+
+function WorkspaceFixStrip({ result }: { result: AuditResult }) {
+  const fixes = [
+    {
+      label: "NAP push",
+      detail: `Lock the ${result.displayName} fingerprint across drifted publishers.`,
+      ceiling: `${result.nap}% → 100%`,
+    },
+    {
+      label: "Coverage fill",
+      detail: "Create missing pins and refresh stale ones on maps + directories.",
+      ceiling: `${result.coverage}% → 95%+`,
+    },
+    {
+      label: "Duplicate suppressions",
+      detail: "Close near-matches before reviews and rankings split.",
+      ceiling: `Risk ${result.duplicateRisk} → low`,
+    },
+    {
+      label: "Hours sync",
+      detail: "Propagate weekly hours so Apple and Bing stop advertising drift.",
+      ceiling: `${result.hours}% → synced`,
+    },
+  ];
+
+  return (
+    <div className="rounded-2xl bg-cream px-4 py-4 hairline sm:px-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex size-8 items-center justify-center rounded-xl bg-ink text-cream">
+              <Lock className="size-3.5" />
+            </span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+                After trial
+              </p>
+              <p className="font-semibold text-ink">Here&apos;s what we&apos;d fix if you continue</p>
+            </div>
+          </div>
+          <p className="mt-2 max-w-2xl text-sm text-ink-soft">
+            Trial keeps the scan. Publisher sync, suppressions, and multi-directory push unlock with Growth — no live fix from this desk yet.
+          </p>
+        </div>
+        <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+          <Button asChild size="sm">
+            <Link to="/book">
+              Unlock with Growth <ArrowRight className="size-3.5" />
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="ghost">
+            <Link to="/pricing">See Growth</Link>
+          </Button>
+        </div>
+      </div>
+      <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+        {fixes.map((fix) => (
+          <li key={fix.label} className="rounded-xl bg-paper px-3.5 py-3 hairline">
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-sm font-semibold text-ink">{fix.label}</p>
+              <span className="shrink-0 rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-brand">
+                {fix.ceiling}
+              </span>
+            </div>
+            <p className="mt-1 text-xs leading-relaxed text-muted">{fix.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

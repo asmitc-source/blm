@@ -22,7 +22,7 @@ export type WorkspaceSection =
 const NAV: { id: WorkspaceSection; label: string; icon: typeof LayoutGrid }[] = [
   { id: "overview", label: "Overview", icon: LayoutGrid },
   { id: "locations", label: "Locations", icon: MapPin },
-  { id: "coverage", label: "Coverage", icon: Radar },
+  { id: "coverage", label: "Gaps", icon: Radar },
   { id: "duplicates", label: "Duplicates", icon: Copy },
   { id: "auditor", label: "Auditor", icon: ShieldCheck },
 ];
@@ -51,7 +51,9 @@ export function WorkspaceShell({
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Workspace sections">
             {NAV.map((item) => {
-              const on = section === item.id;
+              const on =
+                section === item.id ||
+                (item.id === "coverage" && (section === "nap" || section === "hours"));
               return (
                 <button
                   key={item.id}
@@ -80,7 +82,9 @@ export function WorkspaceShell({
         aria-label="Workspace sections mobile"
       >
         {NAV.map((item) => {
-          const on = section === item.id;
+          const on =
+            section === item.id ||
+            (item.id === "coverage" && (section === "nap" || section === "hours"));
           return (
             <button
               key={item.id}
