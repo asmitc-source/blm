@@ -128,9 +128,12 @@ function Hero() {
             </div>
           </div>
 
-          <div className="relative hidden justify-self-end sm:block" aria-hidden="true">
-            <div className="about-hero-tiles">
-              <LogoMark animateTiles className="size-36 drop-shadow-sm lg:size-44" />
+          <div className="relative hidden justify-self-end overflow-visible sm:block" aria-hidden="true">
+            <div className="about-hero-tiles size-36 lg:size-44">
+              <span className="about-hero-tile about-hero-tile-a" />
+              <span className="about-hero-tile about-hero-tile-b" />
+              <span className="about-hero-tile about-hero-tile-c" />
+              <span className="about-hero-tile about-hero-tile-d" />
             </div>
           </div>
         </div>
