@@ -86,8 +86,10 @@ export function Workflow({ showHeader = true }: { showHeader?: boolean }) {
                     stepRefs.current[i] = el;
                   }}
                   className={cn(
-                    "workflow-step w-full rounded-2xl border border-line bg-cream p-5 text-left transition-[box-shadow] duration-300 sm:p-6",
-                    active === i ? "is-on" : "",
+                    "workflow-step relative w-full overflow-visible rounded-2xl p-5 text-left transition-[box-shadow,background,border-color] duration-300 sm:p-6",
+                    active === i
+                      ? "workflow-step-on border-2 border-transparent"
+                      : "border border-line bg-cream",
                   )}
                 >
                   <div className="flex items-start gap-4">

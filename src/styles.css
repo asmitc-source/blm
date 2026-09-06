@@ -986,26 +986,18 @@
   overflow: visible;
 }
 
-.workflow-step::before {
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  right: 0;
-  left: auto;
-  width: 0;
-  border-radius: 0 1rem 1rem 0;
-  background: linear-gradient(to bottom, var(--tile-a), var(--tile-b), var(--tile-c), var(--tile-d));
-  box-shadow: none;
-  transition:
-    width 180ms var(--ease-out-soft),
-    box-shadow 180ms var(--ease-out-soft);
-}
-
-.workflow-step.is-on::before {
-  width: 4px;
-  box-shadow:
-    8px 0 22px color-mix(in oklab, var(--tile-c) 55%, transparent),
-    4px 0 14px color-mix(in oklab, var(--tile-b) 45%, transparent);
+.workflow-step-on {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--cream), var(--cream)) padding-box,
+    linear-gradient(
+      180deg,
+      var(--tile-a),
+      var(--tile-b) 36%,
+      var(--tile-c) 68%,
+      var(--tile-d)
+    ) border-box;
+  box-shadow: -16px 0 32px -12px color-mix(in oklab, var(--tile-c) 50%, transparent);
 }
 
 .desk-metric {
