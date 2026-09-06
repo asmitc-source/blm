@@ -23,6 +23,7 @@ export const Route = createRootRoute({
       { title: `${SITE.name} · ${SITE.legalName}` },
       { name: "description", content: SITE.description },
       { name: "theme-color", content: "#f4f1ea" },
+      { name: "google-site-verification", content: "SANgNulrO0igNLnWomn54tf-G9uZr7EsL01oN56JWwo" },
       ...shareMeta({ title: SITE.name, description: SITE.description, path: "/" }),
     ],
     links: [
