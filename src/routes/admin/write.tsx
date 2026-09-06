@@ -183,23 +183,72 @@ function WritePage() {
             placeholder="The first sentence a human or a model should quote."
           />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="slug">Slug</Label>
-            <Input id="slug" value={form.slug} onChange={(e) => patch({ slug: e.target.value })} className="mt-1.5" placeholder="auto from title" />
+        <div className="rounded-3xl bg-cream p-5 hairline sm:p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Where it publishes</p>
+          <p className="mt-1 text-sm text-ink-soft">
+            Pick the public section and article type. This maps to the live site routes.
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="kind">Section / destination</Label>
+              <select
+                id="kind"
+                value={form.kind}
+                onChange={(e) => patch({ kind: e.target.value })}
+                className="mt-1.5 h-11 w-full rounded-xl border border-line bg-paper px-3.5 text-[15px]"
+              >
+                <option value="article">Blog ( /blog )</option>
+                <option value="resource">Resources ( /resources )</option>
+                <option value="comparison">Compare ( /compare )</option>
+              </select>
+              <p className="mt-1.5 text-xs text-muted">
+                {form.kind === "comparison"
+                  ? "Type: comparison. Lists on Compare and uses /compare/{slug}."
+                  : form.kind === "resource"
+                    ? "Type: resource. Surfaces on Resources and /blog/{slug}."
+                    : "Type: article. Publishes to /blog/{slug}."}
+              </p>
+            </div>
+            <div>
+              <Label htmlFor="slug">Slug</Label>
+              <Input
+                id="slug"
+                value={form.slug}
+                onChange={(e) => patch({ slug: e.target.value })}
+                className="mt-1.5"
+                placeholder="auto from title"
+              />
+              <p className="mt-1.5 text-xs text-muted">
+                Live path:{" "}
+                <span className="font-semibold text-ink">
+                  {form.kind === "comparison" ? "/compare/" : "/blog/"}
+                  {form.slug || "your-slug"}
+                </span>
+              </p>
+            </div>
           </div>
-          <div>
-            <Label htmlFor="kind">Section</Label>
-            <select
-              id="kind"
-              value={form.kind}
-              onChange={(e) => patch({ kind: e.target.value })}
-              className="mt-1.5 h-11 w-full rounded-xl border border-line bg-cream px-3.5 text-[15px]"
-            >
-              <option value="article">Blog / resources</option>
-              <option value="comparison">Compare</option>
-              <option value="resource">Resource hub</option>
-            </select>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {(
+              [
+                { id: "article", label: "Blog article", hint: "/blog" },
+                { id: "resource", label: "Resource", hint: "/resources" },
+                { id: "comparison", label: "Compare guide", hint: "/compare" },
+              ] as const
+            ).map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => patch({ kind: opt.id })}
+                className={
+                  form.kind === opt.id
+                    ? "rounded-full bg-ink px-3.5 py-1.5 text-sm font-semibold text-cream"
+                    : "rounded-full bg-paper px-3.5 py-1.5 text-sm font-semibold text-ink-soft hairline hover:text-ink"
+                }
+              >
+                {opt.label}
+                <span className="ml-1 text-[11px] opacity-70">{opt.hint}</span>
+              </button>
+            ))}
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
@@ -232,7 +281,11 @@ function WritePage() {
           </Button>
           {form.slug ? (
             <Button asChild variant="ghost">
-              <a href={`/blog/${form.slug}`} target="_blank" rel="noreferrer">
+              <a
+                href={form.kind === "comparison" ? `/compare/${form.slug}` : `/blog/${form.slug}`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 View live
               </a>
             </Button>

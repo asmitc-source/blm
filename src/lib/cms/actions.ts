@@ -148,6 +148,20 @@ export const cmsSeedLibrary = createServerFn({ method: "POST" })
     return seedLibrary();
   });
 
+export const cmsLibraryStatus = createServerFn({ method: "GET" })
+  .middleware([deskMiddleware])
+  .handler(async ({ context }) => {
+    requireAdmin(context.admin);
+    const { listArticles, missingLibrarySlugs, expectedLibrarySlugs } = await import("./store");
+    const [articles, missing] = await Promise.all([listArticles(), missingLibrarySlugs()]);
+    return {
+      total: articles.length,
+      expected: expectedLibrarySlugs().length,
+      missing,
+      complete: missing.length === 0,
+    };
+  });
+
 export const cmsListArticles = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {

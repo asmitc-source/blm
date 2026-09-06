@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { authClient, authEnabled, oauthEnabled } from "@/lib/auth/client";
+import { recordAuthLead } from "@/lib/leads";
 import { Logo } from "@/components/logo";
 import { SocialButtons } from "@/components/auth/social-buttons";
 import { Button } from "@/components/ui/button";
@@ -28,8 +29,9 @@ function Login() {
     const data = new FormData(e.currentTarget);
     setSaving(true);
     setError("");
+    const email = String(data.get("email") ?? "");
     const { error: err } = await authClient.signIn.email({
-      email: String(data.get("email") ?? ""),
+      email,
       password: String(data.get("password") ?? ""),
       callbackURL: "/app",
     });
@@ -37,6 +39,13 @@ function Login() {
     if (err) {
       setError(err.message ?? "Could not log in.");
       return;
+    }
+    try {
+      await recordAuthLead({
+        data: { kind: "login", email, source: "login-email" },
+      });
+    } catch {
+      /* capture is best-effort; do not block sign-in */
     }
     window.location.href = "/app";
   }
@@ -69,7 +78,7 @@ function Login() {
               or
               <span className="h-px flex-1 bg-line" />
             </div>
-            <SocialButtons />
+            <SocialButtons intent="login" />
           </>
         ) : null}
         <p className="mt-6 text-sm text-muted">

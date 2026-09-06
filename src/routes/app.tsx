@@ -3,7 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bell, Copy, MapPin, Radar } from "lucide-react";
 import { RedirectToSignIn, UserButton } from "@/lib/auth/gates";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
-import { ensureTrialWorkspace, type WorkspaceRow } from "@/lib/leads";
+import { ensureTrialWorkspace, recordAuthLead, type WorkspaceRow } from "@/lib/leads";
+import { takeAuthIntent } from "@/components/auth/social-buttons";
 import { Logo } from "@/components/logo";
 import { ListingAuditor } from "@/components/auditor/listing-auditor";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,20 @@ function AppWorkspace() {
   useEffect(() => {
     if (!user) return;
     void ensureTrialWorkspace().then((row) => setWorkspace(row));
+
+    // Capture Google/social auth intent stashed before OAuth redirect.
+    const intent = takeAuthIntent();
+    const email = user.primaryEmail;
+    if (intent && email) {
+      void recordAuthLead({
+        data: {
+          kind: intent,
+          email,
+          name: user.displayName ?? undefined,
+          source: intent === "signup" ? "google-signup" : "google-login",
+        },
+      }).catch(() => undefined);
+    }
   }, [user]);
 
   if (!user) {

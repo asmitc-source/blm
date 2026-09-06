@@ -160,7 +160,7 @@ function Signup() {
               or
               <span className="h-px flex-1 bg-line" />
             </div>
-            <SocialButtons />
+            <SocialButtons intent="signup" />
           </>
         ) : null}
         <p className="mt-6 text-sm text-muted">

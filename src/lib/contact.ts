@@ -73,5 +73,36 @@ export const submitContact = createServerFn({ method: "POST" })
         ${data.source ?? "contact"}
       )
     `;
+
+    // Mirror into leads so The desk Leads hub has a complete CRM-ish feed.
+    try {
+      const recent = await sql<{ id: string }>`
+        select id from leads
+        where email = ${data.email}
+          and kind = 'contact'
+          and message = ${data.message}
+          and created_at > now() - interval '5 minutes'
+        limit 1
+      `;
+      if (!recent[0]) {
+        const leadId = crypto.randomUUID();
+        const note = `source:${data.source ?? "contact-page"} · ${data.message}`;
+        await sql`
+          insert into leads (id, kind, name, email, company, locations, message)
+          values (
+            ${leadId},
+            ${"contact"},
+            ${data.name},
+            ${data.email},
+            ${data.company ?? null},
+            ${null},
+            ${note}
+          )
+        `;
+      }
+    } catch {
+      /* leads mirror is best-effort; contact row already saved */
+    }
+
     return { ok: true as const, id };
   });

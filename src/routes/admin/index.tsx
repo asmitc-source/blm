@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowUpRight, FileText, Inbox, PenLine, Settings2, Sparkles, Upload } from "lucide-react";
+import { ArrowUpRight, FileText, Inbox, PenLine, Settings2, Sparkles, Target, Upload } from "lucide-react";
 import { AdminShell } from "@/components/admin/shell";
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cmsBootstrap, cmsDashboard, cmsLogin, cmsSeedLibrary } from "@/lib/cms/actions";
+import { cmsBootstrap, cmsDashboard, cmsLibraryStatus, cmsLogin, cmsSeedLibrary } from "@/lib/cms/actions";
 import { inboxStats } from "@/lib/cms/inbox";
 import { setDeskToken } from "@/lib/cms/token";
 import { pageHead } from "@/lib/seo";
@@ -30,6 +30,7 @@ function AdminHome() {
   const [boot, setBoot] = useState(initial);
   const [dash, setDash] = useState<Awaited<ReturnType<typeof cmsDashboard>> | null>(null);
   const [inbox, setInbox] = useState<Awaited<ReturnType<typeof inboxStats>> | null>(null);
+  const [libraryStatus, setLibraryStatus] = useState<Awaited<ReturnType<typeof cmsLibraryStatus>> | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +47,9 @@ function AdminHome() {
     void inboxStats()
       .then(setInbox)
       .catch(() => setInbox(null));
+    void cmsLibraryStatus()
+      .then(setLibraryStatus)
+      .catch(() => setLibraryStatus(null));
   }, [boot?.admin]);
 
   if (!boot?.admin) {
@@ -103,7 +107,13 @@ function AdminHome() {
           href="/admin/inbox"
           hint={inbox ? `${inbox.subscribersTotal} total` : undefined}
         />
-        <StatTile label="Leads" value={stats?.leads ?? "-"} tone="b" />
+        <StatTile
+          label="Leads"
+          value={stats?.leads ?? "-"}
+          tone="b"
+          href="/admin/leads"
+          hint="All capture channels"
+        />
       </div>
 
       {inbox?.recentNew?.length ? (
@@ -144,16 +154,21 @@ function AdminHome() {
         onDoc={() => void navigate({ to: "/admin/write", search: { import: "1" } })}
       />
 
-      {!dash ? (
-        <p className="mt-10 text-sm text-muted">Opening the desk…</p>
-      ) : stats?.articles === 0 ? (
-        <EmptyLibrary
+      {libraryStatus && !libraryStatus.complete ? (
+        <MissingLibrary
+          missing={libraryStatus.missing.length}
+          expected={libraryStatus.expected}
           onSeed={async () => {
             await cmsSeedLibrary();
-            const next = await cmsDashboard();
+            const [next, status] = await Promise.all([cmsDashboard(), cmsLibraryStatus()]);
             setDash(next);
+            setLibraryStatus(status);
           }}
         />
+      ) : null}
+
+      {!dash ? (
+        <p className="mt-10 text-sm text-muted">Opening the desk…</p>
       ) : (
         <div className="mt-10 grid gap-6 lg:grid-cols-5">
           <section className="lg:col-span-3">
@@ -177,21 +192,32 @@ function AdminHome() {
                 status: "published",
               }))}
             />
-            <SectionHead title="Leads" hint="Trials and contact." className="mt-8" />
+            <div className="mt-8 mb-3 flex items-end justify-between gap-3">
+              <h2 className="font-display text-2xl font-semibold">Leads</h2>
+              <Link to="/admin/leads" className="text-xs font-semibold text-brand hover:underline">
+                Open leads
+              </Link>
+            </div>
             {dash.leads.length ? (
               <div className="grid gap-2">
                 {dash.leads.map((l) => (
-                  <div key={l.id} className="rounded-2xl bg-cream px-4 py-3 hairline">
+                  <Link
+                    key={l.id}
+                    to="/admin/leads"
+                    className="rounded-2xl bg-cream px-4 py-3 hairline transition-transform hover:-translate-y-0.5"
+                  >
                     <p className="font-semibold text-ink">{l.name || l.email}</p>
                     <p className="mt-0.5 text-xs text-muted">
                       {l.kind}
                       {l.company ? ` · ${l.company}` : ""} · {l.email}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
-              <p className="rounded-2xl bg-cream px-4 py-6 text-sm text-muted hairline">No leads yet. Create workspace captures them.</p>
+              <p className="rounded-2xl bg-cream px-4 py-6 text-sm text-muted hairline">
+                No leads yet. Signups, logins, demos, and contact land here.
+              </p>
             )}
           </section>
         </div>
@@ -318,6 +344,9 @@ function QuickCompose({ onWrite, onDoc }: { onWrite: (title: string) => void; on
         <Link className="inline-flex items-center gap-1 hover:text-ink" to="/admin/inbox">
           <Inbox className="size-3" /> Inbox & audience
         </Link>
+        <Link className="inline-flex items-center gap-1 hover:text-ink" to="/admin/leads">
+          <Target className="size-3" /> Leads
+        </Link>
         <a className="inline-flex items-center gap-1 hover:text-ink" href="/" target="_blank" rel="noreferrer">
           <ArrowUpRight className="size-3" /> View live site
         </a>
@@ -359,15 +388,26 @@ function Stack({ items }: { items: { id: string; title: string; meta: string; st
   );
 }
 
-function EmptyLibrary({ onSeed }: { onSeed: () => Promise<void> }) {
+function MissingLibrary({
+  missing,
+  expected,
+  onSeed,
+}: {
+  missing: number;
+  expected: number;
+  onSeed: () => Promise<void>;
+}) {
   const [busy, setBusy] = useState(false);
   return (
-    <div className="mt-10 rounded-3xl bg-cream p-8 text-center hairline">
-      <p className="font-display text-2xl font-semibold">The library is empty</p>
-      <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
-        Load the six existing BLM articles into the desk, or start from a blank page.
+    <div className="mt-8 rounded-3xl bg-cream p-6 hairline sm:p-8">
+      <p className="font-display text-2xl font-semibold">
+        {missing === expected ? "The library is empty" : "Load existing articles"}
       </p>
-      <div className="mt-5 flex flex-wrap justify-center gap-2">
+      <p className="mt-2 max-w-xl text-sm text-ink-soft">
+        {missing} of {expected} live blog posts are missing from The desk. Import them from the polished
+        site content (same source as /blog) without wiping anything already here.
+      </p>
+      <div className="mt-5 flex flex-wrap gap-2">
         <Button
           disabled={busy}
           onClick={() => {
@@ -375,10 +415,10 @@ function EmptyLibrary({ onSeed }: { onSeed: () => Promise<void> }) {
             void onSeed().finally(() => setBusy(false));
           }}
         >
-          {busy ? "Loading…" : "Load starter library"}
+          {busy ? "Loading…" : "Load existing articles"}
         </Button>
         <Button asChild variant="secondary">
-          <Link to="/admin/write">Write the first one</Link>
+          <Link to="/admin/write">Write a new one</Link>
         </Button>
       </div>
     </div>
