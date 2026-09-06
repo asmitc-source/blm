@@ -4,6 +4,26 @@
       "source": "/features",
       "destination": "/product",
       "permanent": true
+    },
+    {
+      "source": "/what-is",
+      "destination": "/blog/what-is-business-listing-management",
+      "permanent": true
+    },
+    {
+      "source": "/cost",
+      "destination": "/blog/business-listing-management-cost-2026",
+      "permanent": true
+    },
+    {
+      "source": "/best-software",
+      "destination": "/blog/best-business-listing-management-software-2026",
+      "permanent": true
+    },
+    {
+      "source": "/best",
+      "destination": "/blog/best-business-listing-management-software-2026",
+      "permanent": true
     }
   ]
 }
