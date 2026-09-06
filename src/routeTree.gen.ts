@@ -35,7 +35,10 @@ import { Route as AdminWriteRouteImport } from './routes/admin/write'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as CompareIndexRouteImport } from './routes/compare/index'
+import { Route as CompareBirdeyeAlternativeRouteImport } from './routes/compare/birdeye-alternative'
 import { Route as CompareBrightlocalAlternativeRouteImport } from './routes/compare/brightlocal-alternative'
+import { Route as CompareMozLocalAlternativeRouteImport } from './routes/compare/moz-local-alternative'
+import { Route as CompareUberallAlternativeRouteImport } from './routes/compare/uberall-alternative'
 import { Route as CompareYextAlternativeRouteImport } from './routes/compare/yext-alternative'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
@@ -169,10 +172,28 @@ const CompareIndexRoute = CompareIndexRouteImport.update({
   path: '/compare/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompareBirdeyeAlternativeRoute =
+  CompareBirdeyeAlternativeRouteImport.update({
+    id: '/compare/birdeye-alternative',
+    path: '/compare/birdeye-alternative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CompareBrightlocalAlternativeRoute =
   CompareBrightlocalAlternativeRouteImport.update({
     id: '/compare/brightlocal-alternative',
     path: '/compare/brightlocal-alternative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CompareMozLocalAlternativeRoute =
+  CompareMozLocalAlternativeRouteImport.update({
+    id: '/compare/moz-local-alternative',
+    path: '/compare/moz-local-alternative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CompareUberallAlternativeRoute =
+  CompareUberallAlternativeRouteImport.update({
+    id: '/compare/uberall-alternative',
+    path: '/compare/uberall-alternative',
     getParentRoute: () => rootRouteImport,
   } as any)
 const CompareYextAlternativeRoute = CompareYextAlternativeRouteImport.update({
@@ -210,7 +231,10 @@ export interface FileRoutesByFullPath {
   '/admin/site': typeof AdminSiteRoute
   '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/compare/birdeye-alternative': typeof CompareBirdeyeAlternativeRoute
   '/compare/brightlocal-alternative': typeof CompareBrightlocalAlternativeRoute
+  '/compare/moz-local-alternative': typeof CompareMozLocalAlternativeRoute
+  '/compare/uberall-alternative': typeof CompareUberallAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -241,7 +265,10 @@ export interface FileRoutesByTo {
   '/admin/site': typeof AdminSiteRoute
   '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/compare/birdeye-alternative': typeof CompareBirdeyeAlternativeRoute
   '/compare/brightlocal-alternative': typeof CompareBrightlocalAlternativeRoute
+  '/compare/moz-local-alternative': typeof CompareMozLocalAlternativeRoute
+  '/compare/uberall-alternative': typeof CompareUberallAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -273,7 +300,10 @@ export interface FileRoutesById {
   '/admin/site': typeof AdminSiteRoute
   '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/compare/birdeye-alternative': typeof CompareBirdeyeAlternativeRoute
   '/compare/brightlocal-alternative': typeof CompareBrightlocalAlternativeRoute
+  '/compare/moz-local-alternative': typeof CompareMozLocalAlternativeRoute
+  '/compare/uberall-alternative': typeof CompareUberallAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -306,7 +336,10 @@ export interface FileRouteTypes {
     | '/admin/site'
     | '/admin/write'
     | '/blog/$slug'
+    | '/compare/birdeye-alternative'
     | '/compare/brightlocal-alternative'
+    | '/compare/moz-local-alternative'
+    | '/compare/uberall-alternative'
     | '/compare/yext-alternative'
     | '/admin/'
     | '/blog/'
@@ -337,7 +370,10 @@ export interface FileRouteTypes {
     | '/admin/site'
     | '/admin/write'
     | '/blog/$slug'
+    | '/compare/birdeye-alternative'
     | '/compare/brightlocal-alternative'
+    | '/compare/moz-local-alternative'
+    | '/compare/uberall-alternative'
     | '/compare/yext-alternative'
     | '/admin'
     | '/blog'
@@ -368,7 +404,10 @@ export interface FileRouteTypes {
     | '/admin/site'
     | '/admin/write'
     | '/blog/$slug'
+    | '/compare/birdeye-alternative'
     | '/compare/brightlocal-alternative'
+    | '/compare/moz-local-alternative'
+    | '/compare/uberall-alternative'
     | '/compare/yext-alternative'
     | '/admin/'
     | '/blog/'
@@ -400,7 +439,10 @@ export interface RootRouteChildren {
   AdminSiteRoute: typeof AdminSiteRoute
   AdminWriteRoute: typeof AdminWriteRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  CompareBirdeyeAlternativeRoute: typeof CompareBirdeyeAlternativeRoute
   CompareBrightlocalAlternativeRoute: typeof CompareBrightlocalAlternativeRoute
+  CompareMozLocalAlternativeRoute: typeof CompareMozLocalAlternativeRoute
+  CompareUberallAlternativeRoute: typeof CompareUberallAlternativeRoute
   CompareYextAlternativeRoute: typeof CompareYextAlternativeRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -592,11 +634,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compare/birdeye-alternative': {
+      id: '/compare/birdeye-alternative'
+      path: '/compare/birdeye-alternative'
+      fullPath: '/compare/birdeye-alternative'
+      preLoaderRoute: typeof CompareBirdeyeAlternativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare/brightlocal-alternative': {
       id: '/compare/brightlocal-alternative'
       path: '/compare/brightlocal-alternative'
       fullPath: '/compare/brightlocal-alternative'
       preLoaderRoute: typeof CompareBrightlocalAlternativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare/moz-local-alternative': {
+      id: '/compare/moz-local-alternative'
+      path: '/compare/moz-local-alternative'
+      fullPath: '/compare/moz-local-alternative'
+      preLoaderRoute: typeof CompareMozLocalAlternativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare/uberall-alternative': {
+      id: '/compare/uberall-alternative'
+      path: '/compare/uberall-alternative'
+      fullPath: '/compare/uberall-alternative'
+      preLoaderRoute: typeof CompareUberallAlternativeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare/yext-alternative': {
@@ -640,7 +703,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSiteRoute: AdminSiteRoute,
   AdminWriteRoute: AdminWriteRoute,
   BlogSlugRoute: BlogSlugRoute,
+  CompareBirdeyeAlternativeRoute: CompareBirdeyeAlternativeRoute,
   CompareBrightlocalAlternativeRoute: CompareBrightlocalAlternativeRoute,
+  CompareMozLocalAlternativeRoute: CompareMozLocalAlternativeRoute,
+  CompareUberallAlternativeRoute: CompareUberallAlternativeRoute,
   CompareYextAlternativeRoute: CompareYextAlternativeRoute,
   AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,

@@ -24,6 +24,15 @@ export const NAV = [
   { href: "/resources", label: "Resources" },
 ] as const;
 
+export const COMPARE_LINKS = [
+  { href: "/compare", label: "Compare listing software" },
+  { href: "/compare/yext-alternative", label: "Yext alternative" },
+  { href: "/compare/brightlocal-alternative", label: "BrightLocal alternative" },
+  { href: "/compare/moz-local-alternative", label: "Moz Local alternative" },
+  { href: "/compare/uberall-alternative", label: "Uberall alternative" },
+  { href: "/compare/birdeye-alternative", label: "Birdeye alternative" },
+] as const;
+
 export const FOOTER = {
   product: [
     { href: "/product", label: "Platform" },
@@ -38,11 +47,7 @@ export const FOOTER = {
     { href: "/blog", label: "Blog" },
     { href: "/glossary", label: "Glossary" },
   ],
-  compare: [
-    { href: "/compare", label: "Compare listing software" },
-    { href: "/compare/yext-alternative", label: "Yext alternative" },
-    { href: "/compare/brightlocal-alternative", label: "BrightLocal alternative" },
-  ],
+  compare: COMPARE_LINKS,
   company: [
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
