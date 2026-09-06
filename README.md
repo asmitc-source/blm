@@ -13,7 +13,6 @@
 **Keep every location accurate across Google, Apple, Bing, and the directory network, from one workspace.**
 
 Live demo:
-- [https://blm-pied.vercel.app/](https://blm-pied.vercel.app/)
 - [https://businesslistingmanagement.co](https://businesslistingmanagement.co)
 
 ---
