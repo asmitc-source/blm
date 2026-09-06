@@ -90,10 +90,6 @@ function Hero() {
               <a href="#how-it-works">See how it works</a>
             </Button>
           </div>
-          <p className="animate-fade-up mt-4 text-sm text-muted" style={{ animationDelay: "220ms" }}>
-            {copy?.trialLine ??
-              "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live."}
-          </p>
           <Link
             to="/book"
             className="animate-fade-up mt-3 inline-flex items-center gap-1 text-sm font-semibold text-ink-soft transition-colors hover:text-ink"

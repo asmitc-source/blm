@@ -53,8 +53,7 @@ function asArticle(row: Record<string, unknown>): CmsArticle {
 const defaultCopy = (): SiteCopy => ({
   home: {
     lede: "Business listing management without the spreadsheet: unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one BLM workspace.",
-    trialLine:
-      "Start a free trial for product access, or book a call if you already manage a national footprint. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
+    trialLine: "",
   },
   pricingTitle: "Business listing management pricing: Starter $49. Growth $149.",
   pricingLede:
