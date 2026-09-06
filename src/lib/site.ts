@@ -22,7 +22,6 @@ export const NAV = [
   { href: "/compare", label: "Compare" },
   { href: "/blog", label: "Blog" },
   { href: "/resources", label: "Resources" },
-  { href: "/contact", label: "Contact" },
 ] as const;
 
 export const FOOTER = {

@@ -28,13 +28,10 @@ export function SiteHeader() {
 
   return (
     <header className={cn("glass-bar sticky top-0 z-40", scrolled && "is-scrolled")}>
-      <div className="chrome-pad relative flex h-16 items-center justify-between sm:h-[4.25rem]">
-        <Logo className="relative z-10 shrink-0" />
-        <nav
-          className="pointer-events-none absolute inset-0 hidden items-center justify-center xl:flex"
-          aria-label="Primary"
-        >
-          <div className="pointer-events-auto flex items-center gap-1">
+      <div className="chrome-pad grid h-16 grid-cols-[1fr_auto] items-center sm:h-[4.25rem] xl:grid-cols-[1fr_auto_1fr]">
+        <Logo className="justify-self-start" />
+        <nav className="hidden items-center justify-center xl:flex" aria-label="Primary">
+          <div className="flex items-center gap-1">
             {NAV.map((item) => {
               const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
@@ -49,7 +46,7 @@ export function SiteHeader() {
             })}
           </div>
         </nav>
-        <div className="relative z-10 flex shrink-0 items-center gap-1.5 sm:gap-2">
+        <div className="flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-2">
           <ThemeToggle />
           <div className="hidden sm:block">
             <AuthSlot />
