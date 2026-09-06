@@ -50,9 +50,10 @@ export function pageHead(opts: { title: string; description: string; path?: stri
       { name: "description", content: opts.description },
       ...shareMeta(opts),
     ],
-    links: opts.path
-      ? [{ rel: "canonical", href: `${SITE.domain}${opts.path}` }]
-      : [],
+    links: [
+      { rel: "image_src", href: defaultShareImage() },
+      ...(opts.path ? [{ rel: "canonical", href: `${SITE.domain}${opts.path}` }] : []),
+    ],
   };
 }
 
