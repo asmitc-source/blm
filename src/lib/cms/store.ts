@@ -504,41 +504,39 @@ export async function setSetting(key: string, value: string) {
 export async function dashboardStats() {
   const sb = await sbAdmin();
   if (sb) {
-    const articles = await sb.from("cms_articles").select("id", { count: "exact", head: true });
-    const live = await sb.from("cms_articles").select("id", { count: "exact", head: true }).eq("status", "published");
-    const drafts = await sb.from("cms_articles").select("id", { count: "exact", head: true }).eq("status", "draft");
-    let leads = 0;
-    try {
-      const l = await sb.from("leads").select("id", { count: "exact", head: true });
-      leads = l.count ?? 0;
-    } catch {
-      leads = 0;
-    }
+    const [articles, live, drafts, leadsRes] = await Promise.all([
+      sb.from("cms_articles").select("id", { count: "exact", head: true }),
+      sb.from("cms_articles").select("id", { count: "exact", head: true }).eq("status", "published"),
+      sb.from("cms_articles").select("id", { count: "exact", head: true }).eq("status", "draft"),
+      Promise.resolve(sb.from("leads").select("id", { count: "exact", head: true })).catch(() => ({ count: 0 as number | null })),
+    ]);
     return {
       articles: articles.count ?? 0,
       published: live.count ?? 0,
       drafts: drafts.count ?? 0,
-      leads,
+      leads: leadsRes.count ?? 0,
     };
   }
   const sql = await localSql();
   if (!sql) return { articles: 0, published: 0, drafts: 0, leads: 0 };
-  const arts = await sql<{ n: number }>`select count(*)::int as n from cms_articles`;
-  const live = await sql<{ n: number }>`select count(*)::int as n from cms_articles where status = ${"published"}`;
-  const drafts = await sql<{ n: number }>`select count(*)::int as n from cms_articles where status = ${"draft"}`;
-  let leads = 0;
-  try {
-    const l = await sql<{ n: number }>`select count(*)::int as n from leads`;
-    leads = l[0]?.n ?? 0;
-  } catch {
-    leads = 0;
-  }
+  const [arts, live, drafts, leadsRows] = await Promise.all([
+    sql<{ n: number }>`select count(*)::int as n from cms_articles`,
+    sql<{ n: number }>`select count(*)::int as n from cms_articles where status = ${"published"}`,
+    sql<{ n: number }>`select count(*)::int as n from cms_articles where status = ${"draft"}`,
+    Promise.resolve(sql<{ n: number }>`select count(*)::int as n from leads`).catch(() => [{ n: 0 }] as { n: number }[]),
+  ]);
   return {
     articles: arts[0]?.n ?? 0,
     published: live[0]?.n ?? 0,
     drafts: drafts[0]?.n ?? 0,
-    leads,
+    leads: leadsRows[0]?.n ?? 0,
   };
+}
+
+/** Homepage Live set: the six BLOG_POSTS shown on the marketing home, in that order. */
+export function homepageLiveArticles(articles: Awaited<ReturnType<typeof listArticles>>) {
+  const bySlug = new Map(articles.filter((a) => a.status === "published").map((a) => [a.slug, a]));
+  return BLOG_POSTS.map((p) => bySlug.get(p.slug)).filter((a): a is NonNullable<typeof a> => Boolean(a));
 }
 
 export async function listLeads() {
