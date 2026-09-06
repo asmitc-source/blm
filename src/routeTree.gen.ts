@@ -27,6 +27,10 @@ import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminArticlesRouteImport } from './routes/admin/articles'
+import { Route as AdminSiteRouteImport } from './routes/admin/site'
+import { Route as AdminWriteRouteImport } from './routes/admin/write'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as CompareIndexRouteImport } from './routes/compare/index'
@@ -124,6 +128,26 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminArticlesRoute = AdminArticlesRouteImport.update({
+  id: '/admin/articles',
+  path: '/admin/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSiteRoute = AdminSiteRouteImport.update({
+  id: '/admin/site',
+  path: '/admin/site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminWriteRoute = AdminWriteRouteImport.update({
+  id: '/admin/write',
+  path: '/admin/write',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -175,9 +199,13 @@ export interface FileRoutesByFullPath {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/admin/articles': typeof AdminArticlesRoute
+  '/admin/site': typeof AdminSiteRoute
+  '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/compare/brightlocal-alternative': typeof CompareBrightlocalAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/compare/': typeof CompareIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -201,9 +229,13 @@ export interface FileRoutesByTo {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/admin/articles': typeof AdminArticlesRoute
+  '/admin/site': typeof AdminSiteRoute
+  '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/compare/brightlocal-alternative': typeof CompareBrightlocalAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/compare': typeof CompareIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -228,9 +260,13 @@ export interface FileRoutesById {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/admin/articles': typeof AdminArticlesRoute
+  '/admin/site': typeof AdminSiteRoute
+  '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/compare/brightlocal-alternative': typeof CompareBrightlocalAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/compare/': typeof CompareIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -256,9 +292,13 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/admin/articles'
+    | '/admin/site'
+    | '/admin/write'
     | '/blog/$slug'
     | '/compare/brightlocal-alternative'
     | '/compare/yext-alternative'
+    | '/admin/'
     | '/blog/'
     | '/compare/'
     | '/api/auth/$'
@@ -282,9 +322,13 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/admin/articles'
+    | '/admin/site'
+    | '/admin/write'
     | '/blog/$slug'
     | '/compare/brightlocal-alternative'
     | '/compare/yext-alternative'
+    | '/admin'
     | '/blog'
     | '/compare'
     | '/api/auth/$'
@@ -308,9 +352,13 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/admin/articles'
+    | '/admin/site'
+    | '/admin/write'
     | '/blog/$slug'
     | '/compare/brightlocal-alternative'
     | '/compare/yext-alternative'
+    | '/admin/'
     | '/blog/'
     | '/compare/'
     | '/api/auth/$'
@@ -335,9 +383,13 @@ export interface RootRouteChildren {
   SecurityRoute: typeof SecurityRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
+  AdminArticlesRoute: typeof AdminArticlesRoute
+  AdminSiteRoute: typeof AdminSiteRoute
+  AdminWriteRoute: typeof AdminWriteRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CompareBrightlocalAlternativeRoute: typeof CompareBrightlocalAlternativeRoute
   CompareYextAlternativeRoute: typeof CompareYextAlternativeRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CompareIndexRoute: typeof CompareIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -471,6 +523,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/articles': {
+      id: '/admin/articles'
+      path: '/admin/articles'
+      fullPath: '/admin/articles'
+      preLoaderRoute: typeof AdminArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/site': {
+      id: '/admin/site'
+      path: '/admin/site'
+      fullPath: '/admin/site'
+      preLoaderRoute: typeof AdminSiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/write': {
+      id: '/admin/write'
+      path: '/admin/write'
+      fullPath: '/admin/write'
+      preLoaderRoute: typeof AdminWriteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -535,9 +615,13 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityRoute: SecurityRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
+  AdminArticlesRoute: AdminArticlesRoute,
+  AdminSiteRoute: AdminSiteRoute,
+  AdminWriteRoute: AdminWriteRoute,
   BlogSlugRoute: BlogSlugRoute,
   CompareBrightlocalAlternativeRoute: CompareBrightlocalAlternativeRoute,
   CompareYextAlternativeRoute: CompareYextAlternativeRoute,
+  AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CompareIndexRoute: CompareIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
