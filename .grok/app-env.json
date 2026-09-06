@@ -1,7 +1,0 @@
-{
-  "deploy": {
-    "database": true
-  },
-  "VITE_SUPABASE_URL": "https://zchubgizclrdjlvgqzsi.supabase.co",
-  "VITE_SUPABASE_PUBLISHABLE_KEY": "sb_publishable__yhWiRcZAf4cH-ujwbJT-A_9GOwE45S"
-}
