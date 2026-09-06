@@ -16,7 +16,7 @@ export const Route = createFileRoute("/compare/")({
     pageHead({
       title: "Compare listing software",
       description:
-        "Compare BLM with Yext and BrightLocal by job, with equal-weakness notes and dated vendor sources. Independent guides for US teams choosing business listing management software.",
+        "Compare BLM with Yext, BrightLocal, Moz Local, Uberall, and Birdeye by job, with equal-weakness notes and dated vendor sources. Independent guides for US teams choosing business listing management software.",
       path: "/compare",
     }),
   component: CompareHub,
@@ -102,7 +102,7 @@ function CompareHub() {
         compact
         eyebrow="Compare"
         title="Listing platforms, compared by job, not a logo wall."
-        lede="Click a job. See what Yext, BrightLocal, and BLM each do well, and where each is weaker. This is an independent US buying desk, not a scored win-rate chart."
+        lede="Click a job. See what Yext, BrightLocal, and BLM each do well, and where each is weaker. Deep guides also cover Moz Local, Uberall, and Birdeye. This is an independent US buying desk, not a scored win-rate chart."
       >
         <div className="overflow-x-auto rounded-3xl hairline">
           <table className="w-full min-w-[40rem] text-left text-sm">
@@ -212,23 +212,26 @@ function CompareHub() {
             [
               {
                 to: "/compare/moz-local-alternative" as const,
+                eyebrow: "Local SEO suite",
                 title: "Moz Local alternative",
-                copy: "Coming soon stub: Moz Local vs a listings-only desk.",
+                copy: "When Local Grid and reviews are more than you need, and listing health is the actual job. Includes where Moz Local still wins.",
               },
               {
                 to: "/compare/uberall-alternative" as const,
+                eyebrow: "Multi-location marketing",
                 title: "Uberall alternative",
-                copy: "Coming soon stub: location marketing suites vs listing hygiene.",
+                copy: "When a full location-marketing suite outgrows a listings-only RFP. Includes where Uberall still wins on 150-plus publishers.",
               },
               {
                 to: "/compare/birdeye-alternative" as const,
+                eyebrow: "Reputation and CX",
                 title: "Birdeye alternative",
-                copy: "Coming soon stub: reputation suites vs NAP and coverage ops.",
+                copy: "When reviews, surveys, and agentic marketing are separate from NAP and coverage ops. Includes where Birdeye still wins.",
               },
             ] as const
           ).map((item) => (
             <Link key={item.to} to={item.to} className="rounded-2xl bg-cream px-5 py-4 hairline">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Coming soon</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{item.eyebrow}</p>
               <h3 className="mt-1 font-display text-lg font-semibold text-ink">{item.title}</h3>
               <p className="mt-1 text-sm text-muted">{item.copy}</p>
             </Link>
@@ -310,6 +313,36 @@ function CompareHub() {
               >
                 BrightLocal local SEO tools (rank tracking, citation audit, listings manage path, annual prices from
                 $31/mo)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://moz.com/products/local/pricing"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                Moz Local pricing (Lite / Preferred / Elite per location, Enterprise custom for 50-plus locations)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://uberall.com/en-us/products/listings"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                Uberall Listings (150-plus directories, duplicate suppression, profile protection)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://birdeye.com/listings/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-ink underline-offset-2 hover:underline"
+              >
+                Birdeye Listings (Listings AI Agents, Listing Score, 100-plus sites)
               </a>
             </li>
             <li>
