@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowUpRight, FileText, PenLine, Settings2, Sparkles, Upload } from "lucide-react";
+import { ArrowUpRight, FileText, Inbox, PenLine, Settings2, Sparkles, Upload } from "lucide-react";
 import { AdminShell } from "@/components/admin/shell";
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cmsBootstrap, cmsDashboard, cmsLogin, cmsSeedLibrary } from "@/lib/cms/actions";
+import { inboxStats } from "@/lib/cms/inbox";
 import { setDeskToken } from "@/lib/cms/token";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ function AdminHome() {
   const initial = Route.useLoaderData();
   const [boot, setBoot] = useState(initial);
   const [dash, setDash] = useState<Awaited<ReturnType<typeof cmsDashboard>> | null>(null);
+  const [inbox, setInbox] = useState<Awaited<ReturnType<typeof inboxStats>> | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +43,9 @@ function AdminHome() {
     void cmsDashboard()
       .then(setDash)
       .catch(() => setDash(null));
+    void inboxStats()
+      .then(setInbox)
+      .catch(() => setInbox(null));
   }, [boot?.admin]);
 
   if (!boot?.admin) {
@@ -80,12 +85,59 @@ function AdminHome() {
         </Button>
       </div>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatTile label="Articles" value={stats?.articles ?? "—"} tone="a" />
-        <StatTile label="Live" value={stats?.published ?? "—"} tone="b" />
-        <StatTile label="Drafts" value={stats?.drafts ?? "—"} tone="c" />
-        <StatTile label="Leads" value={stats?.leads ?? "—"} tone="d" />
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <StatTile label="Articles" value={stats?.articles ?? "-"} tone="a" />
+        <StatTile label="Live" value={stats?.published ?? "-"} tone="b" />
+        <StatTile label="Drafts" value={stats?.drafts ?? "-"} tone="c" />
+        <StatTile
+          label="Messages"
+          value={inbox?.messagesNew ?? "-"}
+          tone="a"
+          href="/admin/inbox"
+          hint={inbox ? `${inbox.messagesTotal} total` : undefined}
+        />
+        <StatTile
+          label="Subscribers"
+          value={inbox?.subscribersActive ?? "-"}
+          tone="d"
+          href="/admin/inbox"
+          hint={inbox ? `${inbox.subscribersTotal} total` : undefined}
+        />
+        <StatTile label="Leads" value={stats?.leads ?? "-"} tone="b" />
       </div>
+
+      {inbox?.recentNew?.length ? (
+        <div className="mt-6 rounded-3xl bg-cream p-5 hairline sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Inbox className="size-4 text-brand" />
+              <p className="text-sm font-semibold">New messages</p>
+            </div>
+            <Link to="/admin/inbox" className="text-xs font-semibold text-brand hover:underline">
+              Open inbox
+            </Link>
+          </div>
+          <div className="mt-4 grid gap-2">
+            {inbox.recentNew.map((m) => (
+              <Link
+                key={m.id}
+                to="/admin/inbox"
+                className="flex items-start justify-between gap-3 rounded-2xl bg-paper/50 px-4 py-3 hairline transition-transform hover:-translate-y-0.5"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-ink">{m.name}</p>
+                  <p className="mt-0.5 truncate text-xs text-muted">
+                    {m.email}
+                    {m.company ? ` · ${m.company}` : ""}
+                  </p>
+                  <p className="mt-1 line-clamp-1 text-sm text-ink-soft">{m.message}</p>
+                </div>
+                <span className="desk-pill is-new shrink-0">new</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <QuickCompose
         onWrite={(title) => void navigate({ to: "/admin/write", search: { title } })}
@@ -191,13 +243,35 @@ function AuthForm({ onDone }: { onDone: (id: string, password: string) => Promis
   );
 }
 
-function StatTile({ label, value, tone }: { label: string; value: string | number; tone: "a" | "b" | "c" | "d" }) {
-  return (
-    <div className={cn("desk-stat rounded-2xl px-4 py-4 hairline", `desk-stat-${tone}`)}>
+function StatTile({
+  label,
+  value,
+  tone,
+  href,
+  hint,
+}: {
+  label: string;
+  value: string | number;
+  tone: "a" | "b" | "c" | "d" | "e" | "f";
+  href?: string;
+  hint?: string;
+}) {
+  const inner = (
+    <>
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{label}</p>
       <p className="mt-1 font-display text-3xl font-semibold tabular-nums">{value}</p>
-    </div>
+      {hint ? <p className="mt-1 text-[11px] text-faint">{hint}</p> : null}
+    </>
   );
+  const className = cn("desk-stat rounded-2xl px-4 py-4 hairline", `desk-stat-${tone}`);
+  if (href) {
+    return (
+      <Link to={href} className={cn(className, "transition-transform hover:-translate-y-0.5")}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={className}>{inner}</div>;
 }
 
 function QuickCompose({ onWrite, onDoc }: { onWrite: (title: string) => void; onDoc: () => void }) {
@@ -240,6 +314,9 @@ function QuickCompose({ onWrite, onDoc }: { onWrite: (title: string) => void; on
         </Link>
         <Link className="inline-flex items-center gap-1 hover:text-ink" to="/admin/articles">
           <FileText className="size-3" /> All articles
+        </Link>
+        <Link className="inline-flex items-center gap-1 hover:text-ink" to="/admin/inbox">
+          <Inbox className="size-3" /> Inbox & audience
         </Link>
         <a className="inline-flex items-center gap-1 hover:text-ink" href="/" target="_blank" rel="noreferrer">
           <ArrowUpRight className="size-3" /> View live site

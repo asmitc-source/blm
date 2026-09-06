@@ -1173,6 +1173,24 @@
   background: var(--sand);
   color: var(--ink-soft);
 }
+.desk-pill.is-new {
+  background: color-mix(in oklab, var(--tile-a) 28%, var(--cream));
+  color: var(--ink);
+}
+.desk-pill.is-read {
+  background: color-mix(in oklab, var(--tile-b) 24%, var(--cream));
+  color: var(--ink);
+}
+.desk-pill.is-closed {
+  background: color-mix(in oklab, var(--tile-c) 22%, var(--cream));
+  color: var(--ink);
+}
+.desk-stat-e {
+  box-shadow: inset 4px 0 0 var(--sky);
+}
+.desk-stat-f {
+  box-shadow: inset 4px 0 0 var(--brand);
+}
 
 .admin-desk {
   background:
