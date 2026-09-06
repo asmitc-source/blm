@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { SITE } from "@/lib/site";
 import { deskMiddleware } from "./middleware";
-import { verifyPassword, newToken } from "./crypto";
+import { newToken } from "./crypto";
 import { cleanArticleHtml, extractTitleFromHtml, googleDocExportUrl, googleDocId } from "./gdoc";
 import { estimateMinutes, slugify } from "./convert";
 import type { ArticleKind, ArticleStatus, SiteCopy } from "./types";
@@ -25,7 +25,7 @@ export const cmsBootstrap = createServerFn({ method: "GET" })
     const configured = await supabaseConfigured();
     const ping = configured ? await pingSupabase() : { ok: false as const, reason: "missing-url" };
     return {
-      hasAdmin: seed.hasAdmin,
+      hasAdmin: true,
       admin: context.admin ?? null,
       supabase: {
         configured,
@@ -35,7 +35,7 @@ export const cmsBootstrap = createServerFn({ method: "GET" })
     };
     } catch (e) {
       return {
-        hasAdmin: false,
+        hasAdmin: true,
         admin: null,
         supabase: { configured: false, url: "", ping: { ok: false as const, reason: e instanceof Error ? e.message : "error" } },
       };
@@ -70,14 +70,33 @@ export const cmsSetup = createServerFn({ method: "POST" })
 export const cmsLogin = createServerFn({ method: "POST" })
   .validator((d: unknown) => {
     const o = (d ?? {}) as Record<string, unknown>;
-    return { username: str(o.username).trim().toLowerCase(), password: str(o.password) };
+    const username = str(o.username).trim().toLowerCase();
+    const password = str(o.password);
+    if (!username || !password) throw new Error("Enter your id and password.");
+    return { username, password };
   })
   .handler(async ({ data }) => {
-    const { seedCmsIfEmpty, findAdminByUsername, createSession } = await import("./store");
+    const { seedCmsIfEmpty, findAdminByUsername, createSession, upsertAdminFromAuth } = await import("./store");
     await seedCmsIfEmpty();
-    const admin = await findAdminByUsername(data.username);
-    if (!admin || !(await verifyPassword(data.password, admin.password_hash))) {
-      throw new Error("Wrong username or password.");
+    const email = data.username.includes("@") ? data.username : data.username;
+    const { supabaseAdmin } = await import("./supabase.server");
+    const sb = await supabaseAdmin();
+    if (sb) {
+      const { data: auth, error } = await sb.auth.signInWithPassword({ email, password: data.password });
+      if (!error && auth.user) {
+        const admin = await upsertAdminFromAuth(auth.user.id, (auth.user.email ?? email).toLowerCase());
+        const token = newToken();
+        await createSession(admin.id, token);
+        return { token, username: admin.username };
+      }
+    }
+    const admin = await findAdminByUsername(email);
+    if (!admin || admin.password_hash === "supabase-auth") {
+      throw new Error("Wrong id or password.");
+    }
+    const { verifyPassword } = await import("./crypto");
+    if (!(await verifyPassword(data.password, admin.password_hash))) {
+      throw new Error("Wrong id or password.");
     }
     const token = newToken();
     await createSession(admin.id, token);

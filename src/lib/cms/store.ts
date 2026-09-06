@@ -106,6 +106,16 @@ export async function seedCmsIfEmpty() {
   return { hasAdmin: Boolean(admins[0]?.n) };
 }
 
+export async function upsertAdminFromAuth(id: string, username: string) {
+  const sql = await getSql();
+  const rows = await sql<{ id: string; username: string }>`
+    select id, username from cms_admins where id = ${id} or username = ${username} limit 1
+  `;
+  if (rows[0]) return rows[0];
+  await sql`insert into cms_admins (id, username, password_hash) values (${id}, ${username}, ${"supabase-auth"})`;
+  return { id, username };
+}
+
 export async function createAdmin(username: string, password: string) {
   const sql = await getSql();
   const id = crypto.randomUUID();

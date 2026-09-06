@@ -3,11 +3,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, PenLine, Settings2, Sparkles } from "lucide-react";
 import { AdminShell } from "@/components/admin/shell";
 import { LogoMark } from "@/components/logo";
-import { SqlCopy } from "@/components/admin/sql-copy";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cmsBootstrap, cmsDashboard, cmsLogin, cmsSetup } from "@/lib/cms/actions";
+import { cmsBootstrap, cmsDashboard, cmsLogin } from "@/lib/cms/actions";
 import { setDeskToken } from "@/lib/cms/token";
 import { pageHead } from "@/lib/seo";
 
@@ -21,12 +20,9 @@ function AdminHome() {
   const initial = Route.useLoaderData();
   const [boot, setBoot] = useState(initial);
   const [dash, setDash] = useState<Awaited<ReturnType<typeof cmsDashboard>> | null>(null);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    void cmsBootstrap()
-      .then(setBoot)
-      .catch((e: Error) => setError(e.message));
+    void cmsBootstrap().then(setBoot).catch(() => undefined);
   }, []);
 
   useEffect(() => {
@@ -36,49 +32,21 @@ function AdminHome() {
       .catch(() => setDash(null));
   }, [boot?.admin]);
 
-  if (!boot) {
+  if (!boot?.admin) {
     return (
-      <GateFrame>
-        <p className="text-sm text-muted">{error || "Opening the desk…"}</p>
-      </GateFrame>
-    );
-  }
-
-  if (!boot.hasAdmin) {
-    return (
-      <GateFrame>
-        <h1 className="mt-5 font-display text-3xl font-semibold">Claim the desk</h1>
-        <p className="mt-2 text-sm text-ink-soft">
-          First login. This username and password are the only way into /admin. Store them somewhere you will not lose.
-        </p>
-        <div className="mt-5">
-          <SqlCopy />
+      <main className="admin-desk grid min-h-svh place-items-center px-4 py-10">
+        <div className="w-full max-w-sm rounded-3xl bg-cream p-7 shadow-[var(--shadow-soft)] hairline sm:p-8">
+          <LogoMark className="size-10" />
+          <h1 className="mt-5 font-display text-3xl font-semibold">Log in</h1>
+          <AuthForm
+            onDone={async (id, password) => {
+              const res = await cmsLogin({ data: { username: id, password } });
+              setDeskToken(res.token);
+              window.location.reload();
+            }}
+          />
         </div>
-        <AuthForm
-          setup
-          onDone={async (username, password, supabaseUrl) => {
-            const res = await cmsSetup({ data: { username, password, supabaseUrl } });
-            setDeskToken(res.token);
-            window.location.reload();
-          }}
-        />
-      </GateFrame>
-    );
-  }
-
-  if (!boot.admin) {
-    return (
-      <GateFrame>
-        <h1 className="mt-5 font-display text-3xl font-semibold">Open the desk</h1>
-        <p className="mt-2 text-sm text-ink-soft">Restricted. Username and password only.</p>
-        <AuthForm
-          onDone={async (username, password) => {
-            const res = await cmsLogin({ data: { username, password } });
-            setDeskToken(res.token);
-            window.location.reload();
-          }}
-        />
-      </GateFrame>
+      </main>
     );
   }
 
@@ -127,27 +95,9 @@ function AdminHome() {
   );
 }
 
-function GateFrame({ children }: { children: React.ReactNode }) {
-  return (
-    <main className="admin-desk grid min-h-svh place-items-center px-4 py-10">
-      <div className="w-full max-w-md rounded-3xl bg-cream p-7 shadow-[var(--shadow-soft)] hairline sm:p-8">
-        <LogoMark className="size-10" />
-        {children}
-      </div>
-    </main>
-  );
-}
-
-function AuthForm({
-  setup,
-  onDone,
-}: {
-  setup?: boolean;
-  onDone: (username: string, password: string, supabaseUrl: string) => Promise<void>;
-}) {
-  const [username, setUsername] = useState("");
+function AuthForm({ onDone }: { onDone: (id: string, password: string) => Promise<void> }) {
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [supabaseUrl, setSupabaseUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -158,45 +108,38 @@ function AuthForm({
         e.preventDefault();
         setSaving(true);
         setError("");
-        void onDone(username, password, supabaseUrl).catch((err: Error) => {
+        void onDone(id, password).catch((err: Error) => {
           setError(err.message);
           setSaving(false);
         });
       }}
     >
       <div>
-        <Label htmlFor="desk-user">Username</Label>
-        <Input id="desk-user" autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} required className="mt-1.5" />
+        <Label htmlFor="desk-id">ID</Label>
+        <Input
+          id="desk-id"
+          autoComplete="username"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          required
+          className="mt-1.5"
+        />
       </div>
       <div>
         <Label htmlFor="desk-pass">Password</Label>
         <Input
           id="desk-pass"
           type="password"
-          autoComplete={setup ? "new-password" : "current-password"}
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength={setup ? 8 : 1}
           className="mt-1.5"
         />
       </div>
-      {setup ? (
-        <div>
-          <Label htmlFor="desk-url">Supabase project URL</Label>
-          <Input
-            id="desk-url"
-            placeholder="https://xxxx.supabase.co"
-            value={supabaseUrl}
-            onChange={(e) => setSupabaseUrl(e.target.value)}
-            className="mt-1.5"
-          />
-          <p className="mt-1.5 text-xs text-muted">From the Supabase project settings. Keys are already on the server.</p>
-        </div>
-      ) : null}
       {error ? <p className="text-sm text-coral">{error}</p> : null}
       <Button type="submit" disabled={saving}>
-        {saving ? "Opening…" : setup ? "Create desk login" : "Enter"}
+        {saving ? "Opening…" : "Enter"}
       </Button>
     </form>
   );
