@@ -686,33 +686,34 @@
 
 .glass-bar {
   isolation: isolate;
-  background: color-mix(in oklab, var(--paper) 88%, transparent);
-  backdrop-filter: blur(16px) saturate(1.35);
-  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  background: var(--paper);
+  background-color: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.5),
-    0 1px 0 color-mix(in oklab, var(--line) 70%, transparent);
+    inset 0 1px 0 rgb(255 255 255 / 0.45),
+    0 1px 0 var(--line);
 }
 
 .glass-bar.is-scrolled {
-  background: color-mix(in oklab, var(--paper) 97%, var(--cream));
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  background: var(--paper);
+  background-color: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.58),
     0 1px 0 var(--line),
     0 10px 28px rgb(18 21 28 / 0.08);
 }
 
-.dark .glass-bar {
-  background: color-mix(in oklab, var(--paper) 90%, rgb(8 9 14 / 0.35));
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.12),
-    0 1px 0 var(--line);
-}
-
+.dark .glass-bar,
 .dark .glass-bar.is-scrolled {
-  background: color-mix(in oklab, var(--paper) 96%, var(--cream));
+  background: var(--paper);
+  background-color: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 1px 0 var(--line);
 }
 
 .glass-nav {
@@ -1061,7 +1062,6 @@
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass-bar,
   .glass-clear,
   .glass-chip,
   .glass-icon,

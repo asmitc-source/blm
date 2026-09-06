@@ -6,6 +6,7 @@ import { ThemeProvider, themeBootScript } from "@/components/theme";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { SITE } from "@/lib/site";
+import { shareMeta } from "@/lib/seo";
 import { NotFound } from "@/components/not-found";
 
 const fetchSessionUser = createServerFn({ method: "GET" }).handler(async () => {
@@ -23,6 +24,7 @@ export const Route = createRootRoute({
       { title: `${SITE.name} · ${SITE.legalName}` },
       { name: "description", content: SITE.description },
       { name: "theme-color", content: "#f4f1ea" },
+      ...shareMeta({ title: SITE.name, description: SITE.description, path: "/" }),
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

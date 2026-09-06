@@ -1,8 +1,33 @@
 import { SITE } from "@/lib/site";
 
+function publicOrigin() {
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercel) return `https://${String(vercel).replace(/^https?:\/\//, "")}`;
+  return SITE.domain;
+}
+
 export function pageTitle(title: string) {
   if (title === SITE.name) return `${SITE.name} · ${SITE.legalName}`;
   return `${title} · ${SITE.name}`;
+}
+
+export function shareMeta(opts: { title: string; description: string; path?: string }) {
+  const origin = publicOrigin();
+  const url = opts.path ? `${origin}${opts.path}` : origin;
+  const image = `${origin}/og.jpg`;
+  const title = pageTitle(opts.title);
+  return [
+    { property: "og:type", content: "website" },
+    { property: "og:site_name", content: SITE.legalName },
+    { property: "og:title", content: title },
+    { property: "og:description", content: opts.description },
+    { property: "og:image", content: image },
+    { property: "og:url", content: url },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: opts.description },
+    { name: "twitter:image", content: image },
+  ];
 }
 
 export function pageHead(opts: { title: string; description: string; path?: string }) {
@@ -10,6 +35,7 @@ export function pageHead(opts: { title: string; description: string; path?: stri
     meta: [
       { title: pageTitle(opts.title) },
       { name: "description", content: opts.description },
+      ...shareMeta(opts),
     ],
     links: opts.path
       ? [{ rel: "canonical", href: `${SITE.domain}${opts.path}` }]
