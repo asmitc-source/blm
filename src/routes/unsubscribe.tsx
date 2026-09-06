@@ -53,8 +53,8 @@ function UnsubscribePage() {
           {!token && !email ? (
             <p className="mt-3 text-sm text-ink-soft">
               Open the unsubscribe link from a BLM email, or contact{" "}
-              <a className="font-semibold text-ink" href="mailto:hello@businesslistingmanagement.co">
-                hello@businesslistingmanagement.co
+              <a className="font-semibold text-ink" href="mailto:hello@businesslistingmanagement.com">
+                hello@businesslistingmanagement.com
               </a>
               .
             </p>

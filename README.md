@@ -13,7 +13,7 @@
 **Keep every location accurate across Google, Apple, Bing, and the directory network, from one workspace.**
 
 Live demo:
-- [https://businesslistingmanagement.co](https://businesslistingmanagement.co)
+- [https://businesslistingmanagement.com](https://businesslistingmanagement.com)
 
 ---
 
