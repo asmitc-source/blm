@@ -50,9 +50,6 @@ export const FOOTER = {
   compare: COMPARE_LINKS,
   company: [
     { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
-    { href: "/signup", label: "Create workspace" },
-    { href: "/login", label: "Log in" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy" },
