@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { InnerPage } from "@/components/layout/inner-page";
 import { pageHead } from "@/lib/seo";
@@ -20,7 +20,13 @@ function TermsPage() {
       <InnerPage eyebrow="Legal" title="Terms of use" lede="Last updated 1 September 2026.">
         <div className="max-w-3xl space-y-4 text-[17px] leading-relaxed text-ink-soft">
           <p>
-            By using {SITE.domain} you agree to these terms. The Listing Health Auditor is provided to help you understand listing quality. Results are generated from the information you enter and our matching model; they are not a guarantee of search rankings.
+            By using {SITE.domain} you agree to these terms for BLM business listing management software. The Listing
+            Health Auditor helps you understand listing quality. Results are generated from the information you enter and
+            our matching model; they are not a guarantee of search rankings. Product overview lives on the{" "}
+            <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+              BLM homepage
+            </Link>
+            .
           </p>
           <h2 className="font-display text-2xl font-semibold text-ink">Accounts</h2>
           <p>

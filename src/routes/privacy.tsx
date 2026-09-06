@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { InnerPage } from "@/components/layout/inner-page";
 import { pageHead } from "@/lib/seo";
@@ -20,7 +20,13 @@ function PrivacyPage() {
       <InnerPage eyebrow="Legal" title="Privacy policy" lede="Last updated 1 September 2026.">
         <div className="max-w-3xl space-y-4 text-[17px] leading-relaxed text-ink-soft">
           <p>
-            {SITE.legalName} (“BLM”, “we”) provides listing management software at {SITE.domain}. This policy describes the information we collect when you use the site, the auditor, forms, and a workspace.
+            {SITE.legalName} (“BLM”, “we”) provides business listing management software at {SITE.domain}. This policy
+            describes the information we collect when you use the site, the auditor, forms, and a workspace. For product
+            context, start on the{" "}
+            <Link to="/" className="font-medium text-ink underline-offset-2 hover:underline">
+              BLM homepage
+            </Link>
+            .
           </p>
           <h2 className="font-display text-2xl font-semibold text-ink">What we collect</h2>
           <p>
