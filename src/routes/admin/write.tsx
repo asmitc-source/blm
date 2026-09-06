@@ -11,16 +11,20 @@ import { cmsBootstrap, cmsGetArticle, cmsImportDoc, cmsSaveArticle } from "@/lib
 import { cn } from "@/lib/utils";
 import { pageHead } from "@/lib/seo";
 
-type Search = { id?: string };
+type Search = { id?: string; title?: string; import?: string };
 
 export const Route = createFileRoute("/admin/write")({
-  validateSearch: (s: Record<string, unknown>): Search => ({ id: typeof s.id === "string" ? s.id : undefined }),
+  validateSearch: (s: Record<string, unknown>): Search => ({
+    id: typeof s.id === "string" ? s.id : undefined,
+    title: typeof s.title === "string" ? s.title : undefined,
+    import: typeof s.import === "string" ? s.import : undefined,
+  }),
   head: () => pageHead({ title: "Write", description: "Write an article.", path: "/admin/write" }),
   component: WritePage,
 });
 
 function WritePage() {
-  const { id } = Route.useSearch();
+  const { id, title: seedTitle } = Route.useSearch();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [ready, setReady] = useState(false);
@@ -30,7 +34,7 @@ function WritePage() {
   const [docUrl, setDocUrl] = useState("");
   const [form, setForm] = useState({
     id: "",
-    title: "",
+    title: seedTitle ?? "",
     answer: "",
     slug: "",
     description: "",

@@ -35,13 +35,13 @@ export function AdminShell({
 
   return (
     <div className="admin-desk min-h-svh">
-      <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/85 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
           <Link to="/admin" className="flex items-center gap-2.5">
             <LogoMark className="size-8" />
             <span className="font-display text-xl font-semibold tracking-tight">The desk</span>
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden flex-1 items-center justify-center gap-1 md:flex">
             {NAV.map((item) => {
               const on = item.exact ? pathname === "/admin" || pathname === "/admin/" : pathname.startsWith(item.to);
               return (
@@ -59,7 +59,7 @@ export function AdminShell({
               );
             })}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2">
             <p className="hidden text-sm text-muted sm:block">{username}</p>
             <Button type="button" size="sm" variant="ghost" onClick={() => void signOut()}>
               <LogOut className="size-3.5" />

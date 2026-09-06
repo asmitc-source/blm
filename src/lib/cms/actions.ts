@@ -87,14 +87,27 @@ export const cmsLogin = createServerFn({ method: "POST" })
       throw new Error("Wrong id or password.");
     }
     const username = (auth.user.email ?? email).toLowerCase();
+    let deskToken = newToken();
     try {
       const { upsertAdminFromAuth, createSession } = await import("./store");
       await upsertAdminFromAuth(auth.user.id, username);
-      await createSession(auth.user.id, auth.session.access_token);
+      await createSession(auth.user.id, deskToken);
     } catch {
-      /* session is the supabase JWT */
+      deskToken = auth.session.access_token;
     }
-    return { token: auth.session.access_token, username };
+    try {
+      const { setCookie } = await import("@tanstack/react-start/server");
+      setCookie("blm_desk", deskToken, {
+        path: "/",
+        httpOnly: false,
+        secure: true,
+        sameSite: "lax",
+        maxAge: 14 * 86400,
+      });
+    } catch {
+      /* client also writes the cookie */
+    }
+    return { token: deskToken, refresh: auth.session.refresh_token ?? "", username };
   });
 
 export const cmsLogout = createServerFn({ method: "POST" })
@@ -102,6 +115,12 @@ export const cmsLogout = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     const { destroySession } = await import("./store");
     await destroySession(context.deskToken);
+    try {
+      const { setCookie } = await import("@tanstack/react-start/server");
+      setCookie("blm_desk", "", { path: "/", maxAge: 0 });
+    } catch {
+      /* client clears storage */
+    }
     return { ok: true };
   });
 
@@ -109,10 +128,24 @@ export const cmsDashboard = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const { dashboardStats, listArticles, seedCmsIfEmpty } = await import("./store");
-    await seedCmsIfEmpty();
-    const [stats, articles] = await Promise.all([dashboardStats(), listArticles()]);
-    return { stats, recent: articles.slice(0, 6), admin: context.admin };
+    const { dashboardStats, listArticles, listLeads } = await import("./store");
+    const [stats, articles, leads] = await Promise.all([dashboardStats(), listArticles(), listLeads()]);
+    return {
+      stats,
+      recent: articles.slice(0, 8),
+      drafts: articles.filter((a) => a.status !== "published").slice(0, 6),
+      live: articles.filter((a) => a.status === "published").slice(0, 6),
+      leads: leads.slice(0, 8),
+      admin: context.admin,
+    };
+  });
+
+export const cmsSeedLibrary = createServerFn({ method: "POST" })
+  .middleware([deskMiddleware])
+  .handler(async ({ context }) => {
+    requireAdmin(context.admin);
+    const { seedLibrary } = await import("./store");
+    return seedLibrary();
   });
 
 export const cmsListArticles = createServerFn({ method: "GET" })

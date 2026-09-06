@@ -1104,6 +1104,40 @@
   }
 }
 
+.desk-stat {
+  background: var(--cream);
+}
+.desk-stat-a {
+  box-shadow: inset 4px 0 0 var(--tile-a);
+}
+.desk-stat-b {
+  box-shadow: inset 4px 0 0 var(--tile-b);
+}
+.desk-stat-c {
+  box-shadow: inset 4px 0 0 var(--tile-c);
+}
+.desk-stat-d {
+  box-shadow: inset 4px 0 0 var(--tile-d);
+}
+.desk-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.desk-pill.is-live {
+  background: color-mix(in oklab, var(--tile-d) 28%, var(--cream));
+  color: var(--ink);
+}
+.desk-pill.is-draft {
+  background: var(--sand);
+  color: var(--ink-soft);
+}
+
 .admin-desk {
   background:
     radial-gradient(ellipse 50% 40% at 0% 0%, color-mix(in oklab, var(--tile-a) 22%, transparent), transparent 60%),

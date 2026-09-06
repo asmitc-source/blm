@@ -7,7 +7,15 @@ export const deskMiddleware = createMiddleware({ type: "function" })
   })
   .server(async ({ next, context }) => {
     const { sessionAdmin } = await import("./store");
-    const token = (context as { deskToken?: string }).deskToken;
+    let token = (context as { deskToken?: string }).deskToken;
+    if (!token) {
+      try {
+        const { getCookie } = await import("@tanstack/react-start/server");
+        token = getCookie("blm_desk") ?? undefined;
+      } catch {
+        /* not in a request */
+      }
+    }
     const admin = await sessionAdmin(token);
     return next({ context: { deskToken: token, admin } });
   });

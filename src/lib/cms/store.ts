@@ -172,17 +172,15 @@ export async function createSession(adminId: string, token: string, days = 14) {
       values (${crypto.randomUUID()}, ${adminId}, ${token}, ${expires})
     `;
   }
-  try {
-    const sb = await sbAdmin();
-    await sb?.from("cms_sessions").insert({
-      id: crypto.randomUUID(),
-      admin_id: adminId,
-      token,
-      expires_at: expires,
-    });
-  } catch {
-    /* jwt is the source of truth */
-  }
+  const sb = await sbAdmin();
+  if (!sb) return;
+  const { error } = await sb.from("cms_sessions").insert({
+    id: crypto.randomUUID(),
+    admin_id: adminId,
+    token,
+    expires_at: expires,
+  });
+  if (error) throw new Error(error.message);
 }
 
 export async function sessionAdmin(token: string | null | undefined) {
@@ -514,6 +512,62 @@ export async function dashboardStats() {
     drafts: drafts[0]?.n ?? 0,
     leads,
   };
+}
+
+export async function listLeads() {
+  const sb = await sbAdmin();
+  if (sb) {
+    const { data, error } = await sb.from("leads").select("id, kind, email, name, company, created_at").order("created_at", { ascending: false }).limit(20);
+    if (error) return [];
+    return (data ?? []).map((r) => ({
+      id: String(r.id),
+      kind: String(r.kind ?? "signup"),
+      email: String(r.email ?? ""),
+      name: r.name ? String(r.name) : "",
+      company: r.company ? String(r.company) : "",
+      created_at: String(r.created_at ?? ""),
+    }));
+  }
+  const sql = await localSql();
+  if (!sql) return [];
+  try {
+    const rows = await sql<{ id: string; kind: string; email: string; name: string | null; company: string | null; created_at: string }>`
+      select id, kind, email, name, company, created_at from leads order by created_at desc limit 20
+    `;
+    return rows.map((r) => ({
+      id: r.id,
+      kind: r.kind,
+      email: r.email,
+      name: r.name ?? "",
+      company: r.company ?? "",
+      created_at: r.created_at,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function seedLibrary() {
+  const existing = await listArticles();
+  if (existing.length) return { added: 0, total: existing.length };
+  let added = 0;
+  for (const post of BLOG_POSTS) {
+    await saveArticle({
+      slug: post.slug,
+      title: post.title,
+      answer: post.excerpt,
+      description: post.description,
+      body_html: markdownToHtml(POST_BODY[post.slug] ?? ""),
+      author: post.author,
+      tags: post.tags,
+      kind: "article",
+      status: "published",
+      date: post.date,
+      minutes: post.minutes,
+    });
+    added += 1;
+  }
+  return { added, total: added };
 }
 
 export type { PricingPlan };
