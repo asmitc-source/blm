@@ -1,5 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { FOOTER, SITE } from "@/lib/site";
 import { Logo } from "@/components/logo";
+import { Button } from "@/components/ui/button";
 
 export function SiteFooter() {
   return (
@@ -9,6 +11,9 @@ export function SiteFooter() {
           <Logo />
           <p className="mt-4 text-sm leading-relaxed text-muted">{SITE.oneLiner}</p>
           <p className="mt-4 text-sm text-faint">{SITE.email}</p>
+          <Button asChild size="md" className="mt-5">
+            <Link to="/contact">Contact us</Link>
+          </Button>
         </div>
         <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-4 lg:gap-x-14">
           <FooterCol title="Product" items={FOOTER.product} />
