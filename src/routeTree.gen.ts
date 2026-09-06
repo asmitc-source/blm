@@ -31,6 +31,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminArticlesRouteImport } from './routes/admin/articles'
 import { Route as AdminInboxRouteImport } from './routes/admin/inbox'
+import { Route as AdminLeadsRouteImport } from './routes/admin/leads'
 import { Route as AdminSiteRouteImport } from './routes/admin/site'
 import { Route as AdminWriteRouteImport } from './routes/admin/write'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
@@ -153,6 +154,11 @@ const AdminInboxRoute = AdminInboxRouteImport.update({
   path: '/admin/inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/admin/leads',
+  path: '/admin/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSiteRoute = AdminSiteRouteImport.update({
   id: '/admin/site',
   path: '/admin/site',
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/inbox': typeof AdminInboxRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/site': typeof AdminSiteRoute
   '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -270,6 +277,7 @@ export interface FileRoutesByTo {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/inbox': typeof AdminInboxRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/site': typeof AdminSiteRoute
   '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -306,6 +314,7 @@ export interface FileRoutesById {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/inbox': typeof AdminInboxRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/site': typeof AdminSiteRoute
   '/admin/write': typeof AdminWriteRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -343,6 +352,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/articles'
     | '/admin/inbox'
+    | '/admin/leads'
     | '/admin/site'
     | '/admin/write'
     | '/blog/$slug'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/articles'
     | '/admin/inbox'
+    | '/admin/leads'
     | '/admin/site'
     | '/admin/write'
     | '/blog/$slug'
@@ -413,6 +424,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/articles'
     | '/admin/inbox'
+    | '/admin/leads'
     | '/admin/site'
     | '/admin/write'
     | '/blog/$slug'
@@ -449,6 +461,7 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   AdminArticlesRoute: typeof AdminArticlesRoute
   AdminInboxRoute: typeof AdminInboxRoute
+  AdminLeadsRoute: typeof AdminLeadsRoute
   AdminSiteRoute: typeof AdminSiteRoute
   AdminWriteRoute: typeof AdminWriteRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -619,6 +632,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInboxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/admin/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/site': {
       id: '/admin/site'
       path: '/admin/site'
@@ -721,6 +741,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   AdminArticlesRoute: AdminArticlesRoute,
   AdminInboxRoute: AdminInboxRoute,
+  AdminLeadsRoute: AdminLeadsRoute,
   AdminSiteRoute: AdminSiteRoute,
   AdminWriteRoute: AdminWriteRoute,
   BlogSlugRoute: BlogSlugRoute,

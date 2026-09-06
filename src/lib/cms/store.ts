@@ -86,11 +86,28 @@ export async function seedCmsIfEmpty() {
     }
   }
   const admins = await sql<{ n: number }>`select count(*)::int as n from cms_admins`;
-  const articles = await sql<{ n: number }>`select count(*)::int as n from cms_articles`;
-  if (!articles[0]?.n) {
-    for (const post of BLOG_POSTS) {
+  for (const post of BLOG_POSTS) {
+    const body = markdownToHtml(POST_BODY[post.slug] ?? "");
+    const tags = post.tags.join(",");
+    const found = await sql<{ id: string }>`select id from cms_articles where slug = ${post.slug} limit 1`;
+    if (found[0]) {
+      await sql`
+        update cms_articles set
+          title = ${post.title},
+          answer = ${post.excerpt},
+          description = ${post.description},
+          body_html = ${body},
+          author = ${post.author},
+          tags = ${tags},
+          kind = ${"article"},
+          status = ${"published"},
+          date = ${post.date},
+          minutes = ${post.minutes},
+          updated_at = now()
+        where id = ${found[0].id}
+      `;
+    } else {
       const id = crypto.randomUUID();
-      const body = markdownToHtml(POST_BODY[post.slug] ?? "");
       await sql`
         insert into cms_articles (id, slug, title, answer, description, body_html, author, tags, kind, status, date, minutes)
         values (
@@ -101,7 +118,7 @@ export async function seedCmsIfEmpty() {
           ${post.description},
           ${body},
           ${post.author},
-          ${post.tags.join(",")},
+          ${tags},
           ${"article"},
           ${"published"},
           ${post.date},
@@ -319,12 +336,21 @@ export async function saveArticle(input: ArticleInput) {
   };
   const sb = await sbAdmin();
   if (sb) {
+    if (!input.id) {
+      const { data: bySlug } = await sb.from("cms_articles").select("id").eq("slug", input.slug).maybeSingle();
+      if (bySlug?.id) payload.id = String(bySlug.id);
+    }
     await sb.from("cms_articles").upsert(payload);
-    return getArticle(id);
+    return getArticle(String(payload.id));
   }
   const sql = await localSql();
   if (!sql) return getArticle(id);
-  const existing = await sql<{ id: string }>`select id from cms_articles where id = ${id} limit 1`;
+  let existing = await sql<{ id: string }>`select id from cms_articles where id = ${id} limit 1`;
+  if (!existing[0]) {
+    existing = await sql<{ id: string }>`select id from cms_articles where slug = ${input.slug} limit 1`;
+    if (existing[0]) payload.id = existing[0].id;
+  }
+  const resolvedId = existing[0]?.id ?? id;
   const tags = payload.tags;
   if (existing[0]) {
     await sql`
@@ -341,19 +367,19 @@ export async function saveArticle(input: ArticleInput) {
         date = ${input.date},
         minutes = ${input.minutes},
         updated_at = now()
-      where id = ${id}
+      where id = ${resolvedId}
     `;
   } else {
     await sql`
       insert into cms_articles (id, slug, title, answer, description, body_html, author, tags, kind, status, date, minutes)
       values (
-        ${id}, ${input.slug}, ${input.title}, ${input.answer}, ${input.description},
+        ${resolvedId}, ${input.slug}, ${input.title}, ${input.answer}, ${input.description},
         ${input.body_html}, ${input.author}, ${tags}, ${input.kind}, ${input.status},
         ${input.date}, ${input.minutes}
       )
     `;
   }
-  return getArticle(id);
+  return getArticle(resolvedId);
 }
 
 export async function deleteArticle(id: string) {
@@ -549,17 +575,38 @@ export async function listLeads() {
   }
 }
 
+/** Slugs that should exist in the desk library (live polished blog posts). */
+export function expectedLibrarySlugs() {
+  return BLOG_POSTS.map((p) => p.slug);
+}
+
+/** Which of the six live blog posts are missing from CMS (by slug). */
+export async function missingLibrarySlugs() {
+  const existing = await listArticles();
+  const have = new Set(existing.map((a) => a.slug));
+  return BLOG_POSTS.filter((p) => !have.has(p.slug)).map((p) => p.slug);
+}
+
+/**
+ * Upsert the six live blog posts into CMS by slug.
+ * Source of truth: BLOG_POSTS + POST_BODY (same modules that power /blog/$slug).
+ * Adds missing rows; refreshes body/metadata for existing slugs.
+ */
 export async function seedLibrary() {
   const existing = await listArticles();
-  if (existing.length) return { added: 0, total: existing.length };
+  const bySlug = new Map(existing.map((a) => [a.slug, a]));
   let added = 0;
+  let updated = 0;
   for (const post of BLOG_POSTS) {
+    const body_html = markdownToHtml(POST_BODY[post.slug] ?? "");
+    const prev = bySlug.get(post.slug);
     await saveArticle({
+      id: prev?.id,
       slug: post.slug,
       title: post.title,
       answer: post.excerpt,
       description: post.description,
-      body_html: markdownToHtml(POST_BODY[post.slug] ?? ""),
+      body_html,
       author: post.author,
       tags: post.tags,
       kind: "article",
@@ -567,9 +614,11 @@ export async function seedLibrary() {
       date: post.date,
       minutes: post.minutes,
     });
-    added += 1;
+    if (prev) updated += 1;
+    else added += 1;
   }
-  return { added, total: added };
+  const total = (await listArticles()).length;
+  return { added, updated, total, expected: BLOG_POSTS.length };
 }
 
 export type { PricingPlan };

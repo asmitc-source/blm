@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { FileText, Inbox, LayoutGrid, LogOut, PenLine, Settings2 } from "lucide-react";
+import { FileText, Inbox, LayoutGrid, LogOut, PenLine, Settings2, Target } from "lucide-react";
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { cmsLogout } from "@/lib/cms/actions";
@@ -11,6 +11,7 @@ const NAV = [
   { to: "/admin/articles", label: "Articles", icon: FileText },
   { to: "/admin/write", label: "Write", icon: PenLine },
   { to: "/admin/inbox", label: "Inbox", icon: Inbox },
+  { to: "/admin/leads", label: "Leads", icon: Target },
   { to: "/admin/site", label: "Site", icon: Settings2 },
 ] as const;
 
@@ -44,7 +45,7 @@ export function AdminShell({
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => {
-              const on = item.exact ? pathname === "/admin" || pathname === "/admin/" : pathname.startsWith(item.to);
+              const on = "exact" in item && item.exact ? pathname === "/admin" || pathname === "/admin/" : pathname.startsWith(item.to);
               return (
                 <Link
                   key={item.to}

@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getSql } from "@/lib/db";
 import { authMiddleware } from "@/lib/auth/middleware";
 
-export type LeadKind = "audit" | "contact" | "demo" | "signup" | "early-access";
+export type LeadKind = "audit" | "contact" | "demo" | "signup" | "early-access" | "login";
 
 export type LeadInput = {
   kind: LeadKind;
@@ -29,7 +29,7 @@ function parseLead(data: unknown): LeadInput {
     throw new Error("Enter a valid work email.");
   }
   const kind = asString(d.kind, "contact") as LeadKind;
-  const allowed: LeadKind[] = ["audit", "contact", "demo", "signup", "early-access"];
+  const allowed: LeadKind[] = ["audit", "contact", "demo", "signup", "early-access", "login"];
   if (!allowed.includes(kind)) throw new Error("Unknown form.");
   return {
     kind,
@@ -93,6 +93,53 @@ export const submitLead = createServerFn({ method: "POST" })
       await insertLead(sql, data);
     }
     return { ok: true as const };
+  });
+
+export type AuthLeadInput = {
+  kind: "login" | "signup";
+  email: string;
+  name?: string;
+  source?: string;
+};
+
+function parseAuthLead(data: unknown): AuthLeadInput {
+  const d = (data ?? {}) as Record<string, unknown>;
+  const email = asString(d.email).trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Enter a valid work email.");
+  }
+  const kind = asString(d.kind) as "login" | "signup";
+  if (kind !== "login" && kind !== "signup") throw new Error("Unknown auth event.");
+  return {
+    kind,
+    email,
+    name: asString(d.name).trim() || undefined,
+    source: asString(d.source).trim() || (kind === "login" ? "login" : "signup"),
+  };
+}
+
+/** Record login/signup intent. Logins always insert (repeatable). Signups dedupe by email. */
+export const recordAuthLead = createServerFn({ method: "POST" })
+  .validator(parseAuthLead)
+  .handler(async ({ data }) => {
+    const sql = await getSql();
+    if (data.kind === "signup") {
+      const result = await captureSignupLead(sql, {
+        email: data.email,
+        name: data.name,
+        source: data.source,
+        payload: "trial:7d",
+      });
+      return { ok: true as const, created: result.created };
+    }
+    await insertLead(sql, {
+      kind: "login",
+      email: data.email,
+      name: data.name,
+      source: data.source ?? "login",
+      payload: "auth:login",
+    });
+    return { ok: true as const, created: true };
   });
 
 export type WorkspaceInput = {
