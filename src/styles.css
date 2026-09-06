@@ -1299,82 +1299,86 @@
 }
 
 
-/* Newsletter card — animated pastel border */
-@property --newsletter-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
+/* Newsletter card — animated pastel border on full perimeter */
 @keyframes newsletter-border-spin {
   to {
-    --newsletter-angle: 360deg;
+    transform: rotate(360deg);
   }
 }
 
 .newsletter-card {
+  position: relative;
   isolation: isolate;
 }
 
-.newsletter-card::before {
-  content: "";
+.newsletter-card-glow {
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
+  inset: -3px;
+  border-radius: 1.6rem;
   background: conic-gradient(
-    from var(--newsletter-angle),
+    from 0deg,
+    color-mix(in oklab, var(--tile-a) 70%, transparent),
+    color-mix(in oklab, var(--tile-b) 70%, transparent),
+    color-mix(in oklab, var(--tile-c) 70%, transparent),
+    color-mix(in oklab, var(--tile-d) 70%, transparent),
+    color-mix(in oklab, var(--tile-a) 70%, transparent)
+  );
+  filter: blur(16px);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+  animation: newsletter-border-spin 10s linear infinite;
+}
+
+.newsletter-card-border {
+  position: relative;
+  z-index: 1;
+  border-radius: 1.5rem;
+  padding: 2px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.newsletter-card-spin {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 0deg,
     var(--tile-a),
     var(--tile-b),
     var(--tile-c),
     var(--tile-d),
     var(--tile-a)
   );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  animation: newsletter-border-spin 12s linear infinite;
+  animation: newsletter-border-spin 8s linear infinite;
   pointer-events: none;
-  z-index: 2;
-  opacity: 0.92;
 }
 
-.newsletter-card::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from var(--newsletter-angle),
-    color-mix(in oklab, var(--tile-a) 55%, transparent),
-    color-mix(in oklab, var(--tile-b) 55%, transparent),
-    color-mix(in oklab, var(--tile-c) 55%, transparent),
-    color-mix(in oklab, var(--tile-d) 55%, transparent),
-    color-mix(in oklab, var(--tile-a) 55%, transparent)
-  );
-  filter: blur(14px);
-  opacity: 0.28;
-  animation: newsletter-border-spin 12s linear infinite;
-  pointer-events: none;
-  z-index: 0;
+.newsletter-card-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: calc(1.5rem - 2px);
+  overflow: hidden;
 }
 
-.dark .newsletter-card::before {
-  opacity: 1;
-}
-
-.dark .newsletter-card::after {
-  opacity: 0.38;
+.dark .newsletter-card-glow {
+  opacity: 0.5;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .newsletter-card::before,
-  .newsletter-card::after {
+  .newsletter-card-glow,
+  .newsletter-card-spin {
     animation: none;
+  }
+
+  .newsletter-card-spin {
+    background: conic-gradient(
+      from 45deg,
+      var(--tile-a),
+      var(--tile-b),
+      var(--tile-c),
+      var(--tile-d),
+      var(--tile-a)
+    );
   }
 }
