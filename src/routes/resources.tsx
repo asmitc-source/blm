@@ -5,10 +5,12 @@ import { InnerPage } from "@/components/layout/inner-page";
 import { Reveal } from "@/components/home/reveal";
 import { LogoMark } from "@/components/logo";
 import { BLOG_POSTS } from "@/lib/content/blog";
+import { loadPublicSite, toCard } from "@/lib/cms/public";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 
 export const Route = createFileRoute("/resources")({
+  loader: () => loadPublicSite(),
   head: () =>
     pageHead({
       title: "Resources",
@@ -26,8 +28,10 @@ const HUBS = [
 ];
 
 function ResourcesPage() {
-  const featured = BLOG_POSTS[0];
-  const rest = BLOG_POSTS.slice(1);
+  const data = Route.useLoaderData();
+  const posts = (data.articles.length ? data.articles : BLOG_POSTS).map(toCard);
+  const featured = posts[0];
+  const rest = posts.slice(1);
 
   return (
     <SiteShell>

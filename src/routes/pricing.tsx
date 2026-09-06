@@ -6,11 +6,13 @@ import { InnerPage } from "@/components/layout/inner-page";
 import { Reveal } from "@/components/home/reveal";
 import { Button } from "@/components/ui/button";
 import { PRICING } from "@/lib/site";
+import { loadPublicSite } from "@/lib/cms/public";
 import { pageHead, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/pricing")({
+  loader: () => loadPublicSite(),
   head: () =>
     pageHead({
       title: "Pricing",
@@ -35,6 +37,9 @@ const SCALES = [
 
 function PricingPage() {
   const [picked, setPicked] = useState("growth");
+  const data = Route.useLoaderData();
+  const plans = data.copy.plans?.length ? data.copy.plans : PRICING;
+  const pageFaqs = data.faqs.length ? data.faqs : faqs;
 
   return (
     <SiteShell>
@@ -44,12 +49,12 @@ function PricingPage() {
           { name: "Pricing", path: "/pricing" },
         ])}
       />
-      <JsonLd data={faqJsonLd(faqs)} />
+      <JsonLd data={faqJsonLd(pageFaqs)} />
       <InnerPage
         compact
         eyebrow="Pricing"
-        title="Starter $49. Growth $149. Seven days free."
-        lede="Start a free trial of Starter or Growth. After seven days, pick the plan that matches the footprint."
+        title={data.copy.pricingTitle}
+        lede={data.copy.pricingLede}
       >
         <div className="mb-8 flex flex-wrap items-center gap-2">
           <p className="mr-2 text-sm font-semibold text-ink-soft">How many storefronts?</p>
@@ -65,7 +70,7 @@ function PricingPage() {
           ))}
         </div>
         <div className="grid items-stretch gap-4 lg:grid-cols-3">
-          {PRICING.map((plan, i) => (
+          {plans.map((plan, i) => (
             <Reveal key={plan.id} delay={i * 80} className="h-full">
               <article
                 tabIndex={0}
@@ -102,7 +107,7 @@ function PricingPage() {
           ))}
         </div>
         <dl className="mt-12 grid gap-3">
-          {faqs.map((f) => (
+          {pageFaqs.map((f) => (
             <FaqRow key={f.q} q={f.q} a={f.a} />
           ))}
         </dl>

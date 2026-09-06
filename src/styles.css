@@ -1103,3 +1103,100 @@
     transform: none;
   }
 }
+
+.admin-desk {
+  background:
+    radial-gradient(ellipse 50% 40% at 0% 0%, color-mix(in oklab, var(--tile-a) 22%, transparent), transparent 60%),
+    radial-gradient(ellipse 40% 36% at 100% 0%, color-mix(in oklab, var(--tile-b) 18%, transparent), transparent 58%),
+    radial-gradient(ellipse 46% 30% at 100% 100%, color-mix(in oklab, var(--tile-d) 16%, transparent), transparent 60%),
+    var(--paper);
+}
+
+.article-html {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.article-html h2 {
+  margin: 1.4rem 0 0.6rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.article-html h3 {
+  margin: 1rem 0 0.4rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.article-html p {
+  margin: 0 0 0.9rem;
+}
+
+.article-html ul,
+.article-html ol {
+  margin: 0 0 0.9rem;
+  padding-left: 1.25rem;
+}
+
+.article-html ul {
+  list-style: disc;
+}
+
+.article-html ol {
+  list-style: decimal;
+}
+
+.article-html li {
+  margin: 0.2rem 0;
+}
+
+.article-html strong,
+.article-html b {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.article-html em,
+.article-html i {
+  font-style: italic;
+}
+
+.article-html a {
+  font-weight: 600;
+  color: var(--mint);
+  text-underline-offset: 2px;
+}
+
+.article-html a:hover {
+  text-decoration: underline;
+}
+
+.article-html blockquote {
+  margin: 0 0 0.9rem;
+  border-left: 3px solid var(--tile-c);
+  padding-left: 1rem;
+  color: var(--ink);
+}
+
+.article-html [contenteditable]:empty:before,
+[contenteditable][data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: var(--faint);
+}
+
+.desk-drop {
+  border: 1px dashed var(--line-strong);
+  background: color-mix(in oklab, var(--cream) 80%, transparent);
+}
+
+.desk-drop.is-over {
+  border-color: var(--tile-a);
+  background: color-mix(in oklab, var(--tile-b) 16%, var(--cream));
+}

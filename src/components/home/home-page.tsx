@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import { Link } from "@tanstack/react-router";
 import { LogoMark } from "@/components/logo";
 import { ArrowRight, Check, ChevronDown } from "lucide-react";
@@ -22,8 +22,12 @@ import { cn } from "@/lib/utils";
 
 const ask = encodeURIComponent(ASK_PROMPT);
 
-export function HomePage() {
+type HomeCopy = { lede: string; trialLine: string; faqs: { q: string; a: string }[] };
+const CopyCtx = createContext<HomeCopy | null>(null);
+
+export function HomePage({ copy }: { copy?: HomeCopy }) {
   return (
+    <CopyCtx.Provider value={copy ?? null}>
     <main>
       <JsonLd data={orgJsonLd()} />
       <JsonLd data={softwareJsonLd()} />
@@ -40,10 +44,12 @@ export function HomePage() {
       <Resources />
       <FinalCta />
     </main>
+    </CopyCtx.Provider>
   );
 }
 
 function Hero() {
+  const copy = useContext(CopyCtx);
   return (
     <section className="relative">
       <div className="page-wrap pb-12 pt-16 sm:pt-20 lg:pb-16 lg:pt-24">
@@ -60,7 +66,8 @@ function Hero() {
             className="animate-fade-up mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft"
             style={{ animationDelay: "90ms" }}
           >
-            Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and directories in lockstep from one workspace.
+            {copy?.lede ??
+              "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and directories in lockstep from one workspace."}
           </p>
           <div
             className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3"
@@ -74,7 +81,7 @@ function Hero() {
             </Button>
           </div>
           <p className="animate-fade-up mt-4 text-sm text-muted" style={{ animationDelay: "220ms" }}>
-            7-day free trial. Then Starter at $49/month or Growth at $149/month.
+            {copy?.trialLine ?? "7-day free trial. Then Starter at $49/month or Growth at $149/month."}
           </p>
           <Link
             to="/demo"
@@ -298,6 +305,8 @@ function Industries() {
 }
 
 function FaqSection() {
+  const copy = useContext(CopyCtx);
+  const items = copy?.faqs?.length ? copy.faqs : FAQ;
   return (
     <section className="border-y border-line bg-cream py-16 sm:py-24" aria-labelledby="faq-title">
       <div className="page-wrap grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
@@ -309,7 +318,7 @@ function FaqSection() {
           <p className="mt-4 text-ink-soft">Citation-ready answers for buyers, analysts, and models.</p>
         </Reveal>
         <div>
-          {FAQ.map((item) => (
+          {items.map((item) => (
             <FaqItem key={item.q} q={item.q} a={item.a} />
           ))}
         </div>

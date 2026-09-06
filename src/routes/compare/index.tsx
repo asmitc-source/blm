@@ -7,9 +7,10 @@ import { Reveal } from "@/components/home/reveal";
 import { LogoMark } from "@/components/logo";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
-import { cn } from "@/lib/utils";
+import { loadPublicSite } from "@/lib/cms/public";
 
 export const Route = createFileRoute("/compare/")({
+  loader: () => loadPublicSite(),
   head: () =>
     pageHead({
       title: "Compare listing software",
@@ -68,6 +69,7 @@ const ROWS = [
 function CompareHub() {
   const [row, setRow] = useState(0);
   const active = ROWS[row];
+  const extras = Route.useLoaderData().articles.filter((a) => a.kind === "comparison");
 
   return (
     <SiteShell>
@@ -162,6 +164,22 @@ function CompareHub() {
             </Link>
           </Reveal>
         </div>
+        {extras.length ? (
+          <div className="mt-8 grid gap-3">
+            {extras.map((a) => (
+              <Link
+                key={a.id}
+                to="/blog/$slug"
+                params={{ slug: a.slug }}
+                className="rounded-2xl bg-cream px-5 py-4 hairline"
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Comparison</p>
+                <h3 className="mt-1 font-display text-xl font-semibold">{a.title}</h3>
+                <p className="mt-1 text-sm text-muted">{a.answer}</p>
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </InnerPage>
     </SiteShell>
   );

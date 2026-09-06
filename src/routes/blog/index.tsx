@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { InnerPage } from "@/components/layout/inner-page";
+import { loadPublicSite, toCard } from "@/lib/cms/public";
 import { BLOG_POSTS } from "@/lib/content/blog";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 
 export const Route = createFileRoute("/blog/")({
+  loader: () => loadPublicSite(),
   head: () =>
     pageHead({
       title: "Blog",
@@ -17,6 +19,9 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndex() {
+  const data = Route.useLoaderData();
+  const posts = (data.articles.length ? data.articles : BLOG_POSTS).map(toCard);
+
   return (
     <SiteShell>
       <JsonLd
@@ -31,7 +36,7 @@ function BlogIndex() {
         lede="No recycled ‘10 tools’ roundups. Each piece starts with a definition you can cite."
       >
         <div className="grid gap-5">
-          {BLOG_POSTS.map((post) => (
+          {posts.map((post) => (
             <article key={post.slug} className="grid gap-2 rounded-3xl bg-cream p-6 hairline md:grid-cols-[8rem_1fr]">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{post.date}</p>
               <div>
