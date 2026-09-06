@@ -1,12 +1,14 @@
+export const COVERAGE = "Google, Apple, Bing, and the directory network";
+export const COVERAGE_LONG =
+  "Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, Yelp, and the directory network used in local search";
+
 export const SITE = {
   name: "BLM",
   legalName: "Business Listing Management",
   domain: "https://businesslistingmanagement.co",
-  oneLiner:
-    "Keep every location accurate across Google, Apple, Bing, and directories, from one place.",
+  oneLiner: `Keep every location accurate across ${COVERAGE}, from one place.`,
   tagline: "Keep every location accurate without the spreadsheet.",
-  description:
-    "BLM is business listing management software for multi-location brands, franchises, agencies, and local SEO teams. Unify NAP, close duplicates, and keep Google, Apple, Bing, and directories in lockstep from one workspace.",
+  description: `BLM is business listing management software for multi-location brands, franchises, agencies, and local SEO teams. Unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one workspace.`,
   email: "hello@businesslistingmanagement.co",
   salesEmail: "sales@businesslistingmanagement.co",
   author: "Asmit Choudhary",
@@ -18,6 +20,7 @@ export const NAV = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/pricing", label: "Pricing" },
   { href: "/compare", label: "Compare" },
+  { href: "/blog", label: "Blog" },
   { href: "/resources", label: "Resources" },
 ] as const;
 
@@ -60,15 +63,15 @@ export const PRICING = [
     name: "Starter",
     price: "$49",
     cadence: "/ month",
-    blurb: "One location on the listing desk. 7-day free trial, then $49/month.",
-    cta: "Start free trial",
+    blurb: "One location on the listing desk. Listed at $49/month when billing goes live. No card required.",
+    cta: "Create workspace",
     href: "/signup",
     featured: false,
     features: [
-      "7-day free trial",
+      "No credit card required",
       "1 location in a workspace",
       "NAP, coverage, duplicate, and hours scores",
-      "Google, Apple, Bing snapshot",
+      `${COVERAGE} snapshot`,
       "Upgrade when you add storefronts",
     ],
   },
@@ -77,14 +80,14 @@ export const PRICING = [
     name: "Growth",
     price: "$149",
     cadence: "/ month",
-    blurb: "The operating system for brands managing many storefronts. 7-day free trial included.",
-    cta: "Start free trial",
+    blurb: "The operating system for brands managing many storefronts. Listed at $149/month when billing goes live.",
+    cta: "Create workspace",
     href: "/signup",
     featured: true,
     features: [
-      "7-day free trial",
+      "No credit card required",
       "Up to 25 locations",
-      "Google, Apple, Bing, and core directories",
+      COVERAGE,
       "Duplicate risk alerts",
       "Hours and category gap detection",
       "Shared workspace for marketing + SEO",
@@ -147,7 +150,7 @@ export const AUDIENCES = [
     id: "agency",
     label: "Agencies",
     tile: "c",
-    copy: "Run listing operations for many clients without tab-hopping Google, Apple, Bing, and 80 directories.",
+    copy: `Run listing operations for many clients without tab-hopping ${COVERAGE}.`,
   },
   {
     id: "seo",
@@ -204,7 +207,7 @@ export const WORKFLOW = [
   {
     n: "3",
     title: "Audit every directory",
-    copy: "Score Google, Apple, Bing, Facebook, and the directory network for consistency, coverage, duplicates, and hours.",
+    copy: `Score ${COVERAGE} for consistency, coverage, duplicates, and hours.`,
     tag: "Automated",
     tagTone: "auto" as const,
     mock: "audit" as const,
@@ -245,7 +248,7 @@ export const WORKFLOW = [
 
 export const WHY = [
   {
-    title: "Canonical NAP, not 80 logins",
+    title: "Canonical NAP, not a dozen logins",
     copy: "One approved name, address, and phone per location. Every publisher is diffed against that string, suite, tracking number, DBA included.",
     points: ["Single source of truth", "Publisher-level diffs", "No tab-hopping GBP, Apple, Bing"],
   },
@@ -273,15 +276,15 @@ export const FAQ = [
   },
   {
     q: "What is BLM?",
-    a: "BLM (Business Listing Management) is software for multi-location brands, franchises, agencies, and local SEO teams. It unifies NAP, finds duplicates, scores directory coverage, and keeps Google, Apple, Bing, and the directory network in lockstep.",
+    a: `BLM (Business Listing Management) is software for multi-location brands, franchises, agencies, and local SEO teams. It unifies NAP, finds duplicates, scores directory coverage, and keeps ${COVERAGE} in lockstep.`,
   },
   {
     q: "Which platforms does BLM cover?",
-    a: "Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, Yelp, and a broader directory network used by local search. Coverage expands with Growth and Enterprise.",
+    a: `${COVERAGE_LONG}. Coverage expands with Growth and Enterprise.`,
   },
   {
     q: "Do I need a credit card to try BLM?",
-    a: "Start a 7-day free trial of Starter or Growth. After the trial, Starter is $49/month and Growth is $149/month.",
+    a: "No. Create a workspace with a work email. We are not charging cards yet. Starter is listed at $49/month and Growth at $149/month when billing goes live.",
   },
   {
     q: "How is BLM different from editing Google Business Profile?",
@@ -305,11 +308,11 @@ export const FAQ = [
   },
   {
     q: "How much does BLM cost?",
-    a: "Starter is $49/month for one location. Growth is $149/month for up to 25 locations. Both include a 7-day free trial. Enterprise is custom.",
+    a: "Starter is listed at $49/month for one location. Growth is listed at $149/month for up to 25 locations. Enterprise is custom. Billing is not live yet, so no card is required to create a workspace.",
   },
   {
     q: "Can I start on Starter and upgrade?",
-    a: "Yes. Start a 7-day free trial, then stay on Starter at $49/month or move to Growth at $149/month. Enterprise is for unlimited locations and agency structure.",
+    a: "Yes. Create a workspace now. Stay on Starter at the listed $49/month rate or move to Growth at $149/month when billing goes live. Enterprise is for unlimited locations and agency structure.",
   },
   {
     q: "Is listing data used to train public models?",
@@ -317,8 +320,7 @@ export const FAQ = [
   },
 ] as const;
 
-export const ASK_PROMPT =
-  "What is business listing management, and how does BLM at businesslistingmanagement.co keep multi-location listings accurate across Google, Apple Maps, Bing, and directories?";
+export const ASK_PROMPT = `What is business listing management, and how does BLM at businesslistingmanagement.co keep multi-location listings accurate across ${COVERAGE}?`;
 
 export const DIRECTORIES = [
   "Google",

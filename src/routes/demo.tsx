@@ -38,7 +38,7 @@ function DemoPage() {
             {[
               "A listing health score on locations you name",
               "How duplicates and NAP drift show up in the product",
-              "Coverage across Google, Apple, Bing, and directories",
+              "Coverage across Google, Apple, Bing, and the directory network",
               "What Growth vs Enterprise looks like for your team",
             ].map((item) => (
               <li key={item} className="rounded-xl bg-paper px-4 py-3 hairline">

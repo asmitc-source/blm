@@ -262,7 +262,7 @@ function ScanPanel({ step }: { step: number }) {
         })}
       </ul>
       <p className="mt-3 text-sm text-muted">
-        Scanning Google, Apple Maps, Bing, Facebook, and the directory network…
+        Scanning Google, Apple, Bing, and the directory network…
       </p>
     </div>
   );

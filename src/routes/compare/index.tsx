@@ -8,6 +8,7 @@ import { LogoMark } from "@/components/logo";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 import { loadPublicSite } from "@/lib/cms/public";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/compare/")({
   loader: () => loadPublicSite(),

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/how-it-works")({
     pageHead({
       title: "How it works",
       description:
-        "How BLM unifies, audits, and governs business listings across Google, Apple, Bing, and directories.",
+        "How BLM unifies, audits, and governs business listings across Google, Apple, Bing, and the directory network.",
       path: "/how-it-works",
     }),
   component: HowPage,

@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/features",
+      "destination": "/product",
+      "permanent": true
+    }
+  ]
+}

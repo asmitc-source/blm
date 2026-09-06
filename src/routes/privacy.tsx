@@ -24,7 +24,7 @@ function PrivacyPage() {
           </p>
           <h2 className="font-display text-2xl font-semibold text-ink">What we collect</h2>
           <p>
-            Work email, name, company, role, location count, and messages you submit on contact, demo, signup, and “email me the full report.” If you create an account, we store authentication data via our identity provider (Google, X, or email and password).
+            Work email, name, company, role, location count, and messages you submit on contact, demo, signup, and “email me the full report.” If you create an account, we store authentication data via our identity provider (Google or email and password).
           </p>
           <h2 className="font-display text-2xl font-semibold text-ink">How we use it</h2>
           <p>

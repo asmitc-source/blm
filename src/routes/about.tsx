@@ -11,7 +11,7 @@ export const Route = createFileRoute("/about")({
     pageHead({
       title: "About",
       description:
-        "BLM is an independent business listing management company building software so every location stays accurate across Google, Apple, Bing, and directories.",
+        "BLM is an independent business listing management company building software so every location stays accurate across Google, Apple, Bing, and the directory network.",
       path: "/about",
     }),
   component: AboutPage,

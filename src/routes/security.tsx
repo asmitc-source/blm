@@ -18,7 +18,7 @@ export const Route = createFileRoute("/security")({
 const ITEMS = [
   { t: "Encryption in transit", d: "TLS for every browser session and server function. Listing payloads are never posted to a third-party form by default." },
   { t: "Least-privilege access", d: "Workspace data is scoped to the signed-in user. Server functions authorize with a verified session, never a client-supplied user id." },
-  { t: "Session isolation", d: "Sign-in uses Google, X, or email and password. Sessions are same-origin. Gate viewers inherit a workspace session without extra clicks." },
+  { t: "Session isolation", d: "Sign-in uses Google or email and password. Sessions are same-origin. Gate viewers inherit a workspace session without extra clicks." },
   { t: "Lead capture with purpose", d: "Audit emails, demo requests, and signup fields are stored so we can measure demand and follow up, not to sell a list." },
   { t: "No surprise processors", d: "A data processing agreement is available for Growth and Enterprise. We will not claim certifications we have not completed." },
   { t: "Operational access", d: "Production access is limited to operators who need it to fulfill support. Listing data is not used to train public models." },

@@ -17,7 +17,7 @@ export const Route = createFileRoute("/compare/yext-alternative")({
 });
 
 const faqs = [
-  { q: "Is BLM a full Yext replacement?", a: "BLM focuses on listing health: NAP, coverage, duplicates, hours, across Google, Apple, Bing, and directories. Yext is a broader knowledge graph platform. Many teams only needed the listings layer." },
+  { q: "Is BLM a full Yext replacement?", a: "BLM focuses on listing health: NAP, coverage, duplicates, hours, across Google, Apple, Bing, and the directory network. Yext is a broader knowledge graph platform. Many teams only needed the listings layer." },
   { q: "Can we migrate off Yext?", a: "Export locations, run the BLM auditor, then open a Growth or Enterprise workspace. We do not promise a one-click publisher cutover on day one of early access." },
 ];
 
@@ -43,7 +43,7 @@ function YextPage() {
       <InnerPage
         eyebrow="Compare · Yext"
         title="A Yext alternative for teams who actually needed listing hygiene."
-        lede="Yext is excellent at being Yext. A surprising number of buyers needed something narrower: keep every location accurate on Google, Apple, Bing, and directories."
+        lede="Yext is excellent at being Yext. A surprising number of buyers needed something narrower: keep every location accurate on Google, Apple, Bing, and the directory network."
       >
         <div className="prose-like max-w-3xl space-y-4 text-[17px] leading-relaxed text-ink-soft">
           <p>

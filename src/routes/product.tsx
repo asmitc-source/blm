@@ -106,7 +106,7 @@ function ProductPage() {
         compact
         eyebrow="Product"
         title="The listing desk your maps already wish you had."
-        lede="BLM is business listing management software for teams who cannot afford a different address on Google, Apple, Bing, and the rest of the internet."
+        lede="BLM is business listing management software for teams who cannot afford a different address on Google, Apple, Bing, and the directory network."
       />
       <section className="page-wrap py-10 sm:py-16">
         <ProductDesk />

@@ -17,22 +17,22 @@ export const Route = createFileRoute("/pricing")({
     pageHead({
       title: "Pricing",
       description:
-        "BLM pricing: Starter at $49/month, Growth at $149/month, Enterprise custom. Both Starter and Growth include a 7-day free trial.",
+        "BLM pricing: Starter listed at $49/month, Growth at $149/month, Enterprise custom. Billing is not live yet — no card required to create a workspace.",
       path: "/pricing",
     }),
   component: PricingPage,
 });
 
 const faqs = [
-  { q: "How do I start?", a: "Start a 7-day free trial of Starter or Growth. We capture the lead. After seven days Starter is $49/month and Growth is $149/month." },
+  { q: "How do I start?", a: "Create a workspace. We capture the lead. Billing is not live yet, so no card is required. Listed rates are Starter $49/month and Growth $149/month when charging begins." },
   { q: "What counts as a location?", a: "A unique storefront NAP: one canonical name, address, and phone. Service-area businesses count as one location per coverage area you publish." },
-  { q: "Is there a free plan?", a: "No. Starter is $49/month and Growth is $149/month. Both include a 7-day free trial." },
+  { q: "Is there a free plan?", a: "There is no billed free plan. Create a workspace without a card. Listed rates are Starter $49/month and Growth $149/month when billing goes live." },
 ];
 
 const SCALES = [
   { id: "starter", label: "1 location" },
-  { id: "growth", label: "Up to 25" },
-  { id: "enterprise", label: "80 and up" },
+  { id: "growth", label: "2–25" },
+  { id: "enterprise", label: "26+" },
 ] as const;
 
 function PricingPage() {

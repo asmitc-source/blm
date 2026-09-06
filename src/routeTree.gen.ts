@@ -15,6 +15,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DemoRouteImport } from './routes/demo'
+import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as IntegrationsRouteImport } from './routes/integrations'
@@ -61,6 +62,11 @@ const CookiesRoute = CookiesRouteImport.update({
 const DemoRoute = DemoRouteImport.update({
   id: '/demo',
   path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlossaryRoute = GlossaryRouteImport.update({
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/demo': typeof DemoRoute
+  '/features': typeof FeaturesRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/integrations': typeof IntegrationsRoute
@@ -182,6 +189,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/demo': typeof DemoRoute
+  '/features': typeof FeaturesRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/integrations': typeof IntegrationsRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/demo': typeof DemoRoute
+  '/features': typeof FeaturesRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/integrations': typeof IntegrationsRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/demo'
+    | '/features'
     | '/glossary'
     | '/how-it-works'
     | '/integrations'
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/demo'
+    | '/features'
     | '/glossary'
     | '/how-it-works'
     | '/integrations'
@@ -285,6 +296,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/demo'
+    | '/features'
     | '/glossary'
     | '/how-it-works'
     | '/integrations'
@@ -311,6 +323,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   DemoRoute: typeof DemoRoute
+  FeaturesRoute: typeof FeaturesRoute
   GlossaryRoute: typeof GlossaryRoute
   HowItWorksRoute: typeof HowItWorksRoute
   IntegrationsRoute: typeof IntegrationsRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/demo'
       fullPath: '/demo'
       preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glossary': {
@@ -503,6 +523,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   DemoRoute: DemoRoute,
+  FeaturesRoute: FeaturesRoute,
   GlossaryRoute: GlossaryRoute,
   HowItWorksRoute: HowItWorksRoute,
   IntegrationsRoute: IntegrationsRoute,

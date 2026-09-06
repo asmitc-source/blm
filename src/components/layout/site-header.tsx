@@ -31,7 +31,7 @@ export function SiteHeader() {
       <div className="chrome-pad relative flex h-16 items-center justify-between sm:h-[4.25rem]">
         <Logo className="relative z-10 shrink-0" />
         <nav
-          className="pointer-events-none absolute inset-0 hidden items-center justify-center lg:flex"
+          className="pointer-events-none absolute inset-0 hidden items-center justify-center xl:flex"
           aria-label="Primary"
         >
           <div className="pointer-events-auto flex items-center gap-1">
@@ -56,7 +56,7 @@ export function SiteHeader() {
           </div>
           <button
             type="button"
-            className="glass-icon inline-flex size-11 items-center justify-center lg:hidden"
+            className="glass-icon inline-flex size-11 items-center justify-center xl:hidden"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
@@ -68,7 +68,7 @@ export function SiteHeader() {
       <div className="absolute inset-x-0 bottom-0 h-px bg-transparent">
         <div className="h-full origin-left bg-brand/80" style={{ transform: `scaleX(${progress})` }} />
       </div>
-      <div className={cn("border-t border-line/60 lg:hidden", open ? "block" : "hidden")}>
+      <div className={cn("border-t border-line/60 xl:hidden", open ? "block" : "hidden")}>
         <nav className="chrome-pad flex flex-col gap-1.5 py-3" aria-label="Mobile">
           {NAV.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);

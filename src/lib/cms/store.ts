@@ -52,11 +52,13 @@ function asArticle(row: Record<string, unknown>): CmsArticle {
 
 const defaultCopy = (): SiteCopy => ({
   home: {
-    lede: "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and directories in lockstep from one workspace.",
-    trialLine: "7-day free trial. Then Starter at $49/month or Growth at $149/month.",
+    lede: "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and the directory network in lockstep from one workspace.",
+    trialLine:
+      "Create a workspace. No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live.",
   },
-  pricingTitle: "Starter $49. Growth $149. Seven days free.",
-  pricingLede: "Start a free trial of Starter or Growth. After seven days, pick the plan that matches the footprint.",
+  pricingTitle: "Starter $49. Growth $149. Billing not live yet.",
+  pricingLede:
+    "Create a workspace of Starter or Growth. No card required. Listed prices apply when billing goes live.",
   plans: PRICING.map((p) => ({
     id: p.id,
     name: p.name,

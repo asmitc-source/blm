@@ -28,17 +28,16 @@ function AppWorkspace() {
     void ensureTrialWorkspace().then((row) => setWorkspace(row));
   }, [user]);
 
-  if (isPending) {
-    return (
-      <div className="min-h-svh bg-paper p-6">
-        <div className="mx-auto max-w-6xl">
-          <div className="h-16 animate-pulse rounded-2xl bg-sand" />
-          <div className="mt-6 h-64 animate-pulse rounded-3xl bg-sand" />
+  if (!user) {
+    if (isPending) {
+      return (
+        <div className="grid min-h-svh place-items-center bg-paper px-6">
+          <p className="text-sm text-muted">Checking your session…</p>
         </div>
-      </div>
-    );
+      );
+    }
+    return <RedirectToSignIn />;
   }
-  if (!user) return <RedirectToSignIn />;
 
   const display = user.displayName;
   const company = workspace?.company;
@@ -63,14 +62,14 @@ function AppWorkspace() {
           Welcome{display ? `, ${display.split(" ")[0]}` : ""}.
         </h1>
         <p className="mt-2 max-w-2xl text-ink-soft">
-          {company ? `${company} is on a 7-day trial.` : "Your listing workspace is on a 7-day free trial."}{" "}
-          Then Starter is $49/month or Growth is $149/month.
+          {company ? `${company} is in early access.` : "Your listing workspace is in early access."}{" "}
+          Listed rates are Starter $49/month or Growth $149/month when billing goes live.
         </p>
 
         <div className="mt-6 rounded-2xl bg-cream px-5 py-4 hairline">
-          <p className="text-sm font-semibold text-ink">7-day free trial</p>
+          <p className="text-sm font-semibold text-ink">No card required</p>
           <p className="mt-1 text-sm text-ink-soft">
-            We logged this workspace as a lead. After the trial, stay on Starter at $49/month or move to Growth at $149/month.
+            We logged this workspace as a lead. Billing is not live yet. When it is, Starter is listed at $49/month and Growth at $149/month.
           </p>
         </div>
 

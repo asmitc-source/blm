@@ -86,9 +86,9 @@ function Signup() {
         <main className="hero-wash grid min-h-[calc(100svh-5rem)] place-items-center px-4 py-10">
           <div className="w-full max-w-lg rounded-2xl bg-cream p-6 shadow-[var(--shadow-soft)] hairline sm:p-8">
             <Logo compact />
-            <h1 className="mt-6 font-display text-3xl font-semibold">You’re on the 7-day trial.</h1>
+            <h1 className="mt-6 font-display text-3xl font-semibold">Workspace request received.</h1>
             <p className="mt-2 text-sm text-ink-soft">
-              We captured the lead. After seven days Starter is $49/month and Growth is $149/month.
+              We captured the lead. Billing is not live yet, so no card is required. Listed rates are Starter $49/month and Growth $149/month.
             </p>
           </div>
         </main>
@@ -101,9 +101,9 @@ function Signup() {
     <main className="hero-wash grid min-h-[calc(100svh-5rem)] place-items-center px-4 py-10">
       <div className="w-full max-w-lg rounded-2xl bg-cream p-6 shadow-[var(--shadow-soft)] hairline sm:p-8">
         <Logo compact />
-        <h1 className="mt-6 font-display text-3xl font-semibold">Start your free trial</h1>
+        <h1 className="mt-6 font-display text-3xl font-semibold">Create a workspace</h1>
         <p className="mt-2 text-sm text-muted">
-          7 days free. Then Starter at $49/month or Growth at $149/month. Work email required.
+          No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live. Work email required.
         </p>
         <form onSubmit={onSubmit} className="mt-6 grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -150,7 +150,7 @@ function Signup() {
           <Field label="Password" name="password" type="password" autoComplete="new-password" required />
           {error ? <p className="text-sm text-coral">{error}</p> : null}
           <Button type="submit" disabled={saving}>
-            {saving ? "Starting trial…" : "Start free trial"}
+            {saving ? "Creating workspace…" : "Create workspace"}
           </Button>
         </form>
         <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-[0.14em] text-faint">

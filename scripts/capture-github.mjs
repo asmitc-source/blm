@@ -5,8 +5,7 @@ const out = "/tmp/blm-docs";
 mkdirSync(out, { recursive: true });
 
 const hide = `
-  [data-grok], [class*="grok-app"], iframe[src*="grok.com"],
-  a[href*="grok.com/grok-app-builder"] { display: none !important; visibility: hidden !important; }
+  [data-builder], [class*="app-builder"] { display: none !important; visibility: hidden !important; }
 `;
 
 const browser = await chromium.launch({ args: ["--no-sandbox"] });

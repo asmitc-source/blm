@@ -36,7 +36,7 @@ function IntegrationsPage() {
       />
       <InnerPage
         eyebrow="Integrations"
-        title="Google, Apple, Bing, and the directories customers still open."
+        title="Google, Apple, Bing, and the directory network customers still open."
         lede="A listing is not a Google-only object. BLM treats maps, social discovery, and classic directories as one coverage graph."
       >
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

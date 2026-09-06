@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
 import { BLOG_POSTS } from "@/lib/content/blog";
-import { ASK_PROMPT, AUDIENCES, FAQ, INDUSTRIES, WHY } from "@/lib/site";
+import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, WHY } from "@/lib/site";
 import { faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -67,7 +67,7 @@ function Hero() {
             style={{ animationDelay: "90ms" }}
           >
             {copy?.lede ??
-              "Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep Google, Apple, Bing, and directories in lockstep from one workspace."}
+              `Go from messy citations to a governed presence. Unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one workspace.`}
           </p>
           <div
             className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3"
@@ -81,7 +81,8 @@ function Hero() {
             </Button>
           </div>
           <p className="animate-fade-up mt-4 text-sm text-muted" style={{ animationDelay: "220ms" }}>
-            {copy?.trialLine ?? "7-day free trial. Then Starter at $49/month or Growth at $149/month."}
+            {copy?.trialLine ??
+              "Create a workspace. No card required. Listed rates are Starter $49/month and Growth $149/month when billing goes live."}
           </p>
           <Link
             to="/demo"
@@ -156,13 +157,13 @@ function QuickAnswer() {
             What is business listing management?
           </h2>
           <p className="mt-4 max-w-3xl text-[17px] leading-relaxed text-ink-soft">
-            Business listing management is the practice of creating, verifying, and continuously updating a company’s name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for Google, Apple, Bing, and the directory network from one workspace.
+            Business listing management is the practice of creating, verifying, and continuously updating a company’s name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate. BLM does that for {COVERAGE} from one workspace.
           </p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
               "Best for multi-location brands, franchises, agencies, and local SEO teams.",
               "Built for NAP consistency, duplicate control, and directory coverage you can inspect.",
-              "Works across Google, Apple, Bing, and the directory network. Not a single publisher login.",
+              `Works across ${COVERAGE}. Not a single publisher login.`,
               "Create a workspace, then Growth and Enterprise when governance and SSO matter.",
             ].map((item, i) => (
               <li
@@ -238,22 +239,16 @@ function WhySwitch() {
               t: "Versus Google-only",
               d: "GBP is one publisher. Drift lives on Apple, Bing, and directories you never opened.",
               extra: "Apple Maps, Bing Places, and Yelp still serve last week’s NAP.",
-              s: 61,
-              blm: 83,
             },
             {
               t: "Versus Yext",
               d: "Listing health and duplicate control without an enterprise-only sales process.",
               extra: "Health, duplicates, and coverage without a six-figure onboarding.",
-              s: 77,
-              blm: 90,
             },
             {
               t: "Versus spreadsheets",
               d: "A health score that updates when hours change. Not a quarterly export.",
               extra: "Hours change on Tuesday. The sheet is still last quarter.",
-              s: 42,
-              blm: 88,
             },
           ].map((c, i) => (
             <Reveal key={c.t} delay={120 + i * 80} className="h-full">
@@ -262,7 +257,7 @@ function WhySwitch() {
           ))}
         </div>
         <p className="mt-4 text-center text-xs leading-relaxed text-faint">
-          Median NAP completeness across a 12-storefront sample over the last 30 days. Not a promise for every brand.
+          Illustrative contrasts, not a measured win rate or a promise for every brand.
         </p>
       </div>
     </section>
@@ -330,10 +325,8 @@ function FaqSection() {
 function VersusCube({
   card,
 }: {
-  card: { t: string; d: string; extra: string; s: number; blm: number };
+  card: { t: string; d: string; extra: string };
 }) {
-  const recovered = card.blm - card.s;
-
   return (
     <article
       className="versus-card industry-card relative flex h-full flex-col overflow-hidden rounded-2xl bg-paper p-5 pb-9 hairline"
@@ -343,25 +336,6 @@ function VersusCube({
       <h3 className="pr-10 font-semibold text-ink">{card.t}</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted">{card.d}</p>
       <p className="mt-3 text-sm leading-relaxed text-ink-soft">{card.extra}</p>
-      <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">
-        {recovered} points ahead on a 12-store sample
-      </p>
-      <div className="mt-auto pt-4">
-        <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
-          <span>Their coverage</span>
-          <span>{card.s}%</span>
-        </div>
-        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-sand">
-          <span className="score-fill block h-full rounded-full bg-brand/50" style={{ width: `${card.s}%` }} />
-        </div>
-        <div className="mt-2 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">
-          <span>BLM</span>
-          <span>{card.blm}%</span>
-        </div>
-        <div className="versus-blm mt-1.5 h-1.5 overflow-hidden rounded-full bg-brand-soft">
-          <span className="score-fill block h-full rounded-full bg-brand" style={{ width: `${card.blm}%` }} />
-        </div>
-      </div>
       <div className="industry-tiles" aria-hidden="true">
         <span className="flex-1 bg-[var(--tile-a)]" />
         <span className="flex-1 bg-[var(--tile-b)]" />
@@ -465,7 +439,7 @@ function FinalCta() {
             Replace spreadsheet listing ops with a presence your team can govern.
           </h2>
           <p className="relative mx-auto mt-4 max-w-xl text-ink-soft">
-            Start a 7-day free trial. See how it works. Book a demo if you already manage a national footprint.
+            Create a workspace. See how it works. Book a demo if you already manage a national footprint. No card required.
           </p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg">
