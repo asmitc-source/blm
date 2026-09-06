@@ -14,7 +14,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "what-is-business-listing-management",
     title: "What is business listing management?",
     description:
-      "Business listing management defined: create, verify, and continuously update name, address, phone, hours, and categories across search, maps, and directories. Why NAP consistency matters for multi-location brands on Google, Apple, Bing, and the directory network.",
+      "Business listing management defined for US teams: create, verify, and continuously update name, address, phone, hours, and categories across search, maps, and directories so every location stays accurate on Google, Apple, Bing, and the directory network.",
     date: "2026-03-12",
     author: "Asmit Choudhary",
     minutes: 9,
@@ -56,7 +56,7 @@ export const BLOG_POSTS: BlogPost[] = [
     minutes: 8,
     tags: ["Google"],
     excerpt:
-      "Google Business Profile is one listing. Business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when customers still search and navigate on platforms Google does not control.",
+      "Google Business Profile is one listing. Business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when US customers still search and navigate on platforms Google does not control.",
   },
   {
     slug: "how-to-find-and-fix-duplicate-business-listings",
@@ -68,7 +68,7 @@ export const BLOG_POSTS: BlogPost[] = [
     minutes: 10,
     tags: ["Duplicates"],
     excerpt:
-      "Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first; choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
+      "Duplicate business listings split reviews, confuse hours, and suppress the map pack. The operator playbook is find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first. Do not create a \"clean\" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
   },
   {
     slug: "business-listing-management-for-agencies",
