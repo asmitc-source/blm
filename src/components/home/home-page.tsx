@@ -17,13 +17,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
 import { BLOG_POSTS } from "@/lib/content/blog";
+import { toCard } from "@/lib/cms/public";
+import type { CmsArticle } from "@/lib/cms/types";
 import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, SITE, WHY } from "@/lib/site";
 import { definedTermJsonLd, faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const ask = encodeURIComponent(ASK_PROMPT);
 
-type HomeCopy = { lede: string; trialLine: string; faqs: { q: string; a: string }[] };
+type HomeCopy = { lede: string; trialLine: string; faqs: { q: string; a: string }[]; articles?: CmsArticle[] };
 const CopyCtx = createContext<HomeCopy | null>(null);
 
 export function HomePage({ copy }: { copy?: HomeCopy }) {
@@ -123,7 +125,7 @@ function AskRow() {
           href={l.href}
           target="_blank"
           rel="noreferrer"
-          className="glass-chip inline-flex h-11 items-center gap-2 px-3.5 text-sm font-semibold text-ink"
+          className="glass-chip inline-flex h-11 min-h-11 min-w-[10.5rem] items-center justify-center gap-2 px-3.5 text-sm font-semibold text-ink"
         >
           <l.Mark label={false} className="[&_svg]:size-[1.125rem]" />
           {l.label}
@@ -397,9 +399,9 @@ function AudienceChip({
   tile: "a" | "b" | "c" | "d";
 }) {
   return (
-    <button type="button" data-tile={tile} className="audience-chip">
+    <button type="button" data-tile={tile} className="audience-chip min-h-[10.5rem]">
       <span className="block text-sm font-semibold">{label}</span>
-      <span className="mt-1.5 block text-sm font-normal leading-relaxed">{copy}</span>
+      <span className="mt-1.5 block line-clamp-4 text-sm font-normal leading-relaxed">{copy}</span>
     </button>
   );
 }
@@ -427,6 +429,30 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 function Resources() {
+  const copy = useContext(CopyCtx);
+  const cms = (copy?.articles ?? [])
+    .filter((a) => a.status === "published" && a.kind === "article")
+    .slice()
+    .sort((a, b) => {
+      const byDate = b.date.localeCompare(a.date);
+      if (byDate) return byDate;
+      return (b.updated_at || "").localeCompare(a.updated_at || "");
+    });
+  const cards =
+    cms.length > 0
+      ? cms.slice(0, 6).map(toCard)
+      : BLOG_POSTS.slice(0, 6).map(toCard);
+  // If CMS has some but fewer than 6, fill from bundled posts not already listed.
+  if (cms.length > 0 && cards.length < 6) {
+    const have = new Set(cards.map((c) => c.slug));
+    for (const post of BLOG_POSTS) {
+      if (cards.length >= 6) break;
+      if (have.has(post.slug)) continue;
+      cards.push(toCard(post));
+      have.add(post.slug);
+    }
+  }
+
   return (
     <section className="page-wrap py-16 sm:py-24" aria-labelledby="resources-title">
       <Reveal className="flex items-end justify-between gap-4">
@@ -441,7 +467,7 @@ function Resources() {
         </Link>
       </Reveal>
       <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3">
-        {BLOG_POSTS.slice(0, 6).map((post, i) => (
+        {cards.map((post, i) => (
           <Reveal key={post.slug} delay={i * 60} className="h-full">
             <Link
               to="/blog/$slug"

@@ -133,7 +133,7 @@ export const cmsDashboard = createServerFn({ method: "GET" })
     return {
       stats,
       recent: articles.slice(0, 8),
-      drafts: articles.filter((a) => a.status !== "published").slice(0, 6),
+      drafts: articles.filter((a) => a.status === "draft").slice(0, 6),
       live: homepageLiveArticles(articles),
       admin: context.admin,
     };
@@ -175,9 +175,10 @@ export const cmsDeskHome = createServerFn({ method: "GET" })
 
     // Signed-in fast path: skip seed/ping waterfall; load desk data in parallel.
     const { BLOG_POSTS } = await import("@/lib/content/blog");
-    const { dashboardStats, expectedLibrarySlugs, homepageLiveArticles, listArticles } = await import("./store");
+    const { dashboardStats, expectedLibrarySlugs, homepageLiveArticles, listArticles, backfillArticleMetaDescriptions } = await import("./store");
     const { loadInboxStats } = await import("./inbox");
 
+    await backfillArticleMetaDescriptions().catch(() => undefined);
     const [stats, articles, inbox] = await Promise.all([dashboardStats(), listArticles(), loadInboxStats()]);
 
     const have = new Set(articles.map((a) => a.slug));
@@ -192,7 +193,7 @@ export const cmsDeskHome = createServerFn({ method: "GET" })
       dash: {
         stats,
         recent: articles.slice(0, 8),
-        drafts: articles.filter((a) => a.status !== "published").slice(0, 6),
+        drafts: articles.filter((a) => a.status === "draft").slice(0, 6),
         live: homepageLiveArticles(articles),
         admin: context.admin,
       },
@@ -210,8 +211,10 @@ export const cmsSeedLibrary = createServerFn({ method: "POST" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const { seedLibrary } = await import("./store");
-    return seedLibrary();
+    const { seedLibrary, backfillArticleMetaDescriptions } = await import("./store");
+    const result = await seedLibrary();
+    const backfill = await backfillArticleMetaDescriptions();
+    return { ...result, backfill };
   });
 
 export const cmsLibraryStatus = createServerFn({ method: "GET" })
@@ -232,7 +235,8 @@ export const cmsListArticles = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const { listArticles } = await import("./store");
+    const { listArticles, backfillArticleMetaDescriptions } = await import("./store");
+    await backfillArticleMetaDescriptions().catch(() => undefined);
     return listArticles();
   });
 
@@ -251,40 +255,68 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
     const o = (d ?? {}) as Record<string, unknown>;
     const title = str(o.title).trim();
     if (!title) throw new Error("Add a title.");
-    const kind = (str(o.kind, "article") as ArticleKind) || "article";
-    const status = (str(o.status, "draft") as ArticleStatus) || "draft";
+    const kindRaw = str(o.kind, "article");
+    const kind: ArticleKind = ["article", "comparison", "resource"].includes(kindRaw)
+      ? (kindRaw as ArticleKind)
+      : "article";
+    const statusRaw = str(o.status, "draft");
+    const status: ArticleStatus =
+      statusRaw === "published" || statusRaw === "scheduled" ? statusRaw : "draft";
     const tags = str(o.tags)
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
     const body_html = cleanArticleHtml(str(o.body_html));
+    const meta_title = str(o.meta_title).trim().slice(0, 70);
+    const canonical_url = str(o.canonical_url).trim().slice(0, 500);
+    const category = str(o.category).trim().slice(0, 80);
+    const cover_url = str(o.cover_url).trim() || null;
+    const cover_alt = str(o.cover_alt).trim().slice(0, 200);
+    const published_at = str(o.published_at).trim();
+    const date = str(o.date).trim() || (published_at.slice(0, 10) || new Date().toISOString().slice(0, 10));
+    let description = str(o.description).trim();
+    if (description.length > 170) {
+      throw new Error("Meta description must be 170 characters or fewer.");
+    }
+    if ((status === "published" || status === "scheduled") && !description) {
+      throw new Error("Meta description is required before publishing.");
+    }
+    // Drafts may omit it; still prefer answer as a soft fallback for storage.
+    if (!description) description = str(o.answer).trim().slice(0, 170);
     return {
       id: str(o.id) || undefined,
       title,
       slug: str(o.slug).trim() || slugify(title),
       answer: str(o.answer).trim(),
-      description: str(o.description).trim() || str(o.answer).trim(),
+      description,
+      meta_title,
+      canonical_url,
       body_html,
       author: str(o.author).trim() || SITE.editorial,
       tags,
-      kind: ["article", "comparison", "resource"].includes(kind) ? kind : "article",
-      status: status === "published" ? "published" : "draft",
-      date: str(o.date) || new Date().toISOString().slice(0, 10),
+      category,
+      kind,
+      status,
+      date,
+      published_at,
       minutes: Number(o.minutes) || estimateMinutes(body_html),
+      cover_url,
+      cover_alt,
     };
   })
   .handler(async ({ context, data }) => {
     requireAdmin(context.admin);
     const { saveArticle, getArticle } = await import("./store");
-    const { syncArticle } = await import("./supabase.server");
+    const { invalidatePublicSiteCache } = await import("./public");
     const previous = data.id ? await getArticle(data.id) : null;
     const wasPublished = previous?.status === "published";
     const saved = await saveArticle(data);
-    if (saved) await syncArticle(saved).catch(() => undefined);
-    if (saved?.status === "published" && !wasPublished) {
+    if (!saved) throw new Error("Could not save article. Check the database connection and try again.");
+    invalidatePublicSiteCache();
+    if (saved.status === "published" && !wasPublished) {
       const { notifySubscribersNewArticle } = await import("@/lib/newsletter");
       const excerpt = (saved.description || saved.answer || "").slice(0, 280);
-      await notifySubscribersNewArticle({
+      void notifySubscribersNewArticle({
         title: saved.title,
         slug: saved.slug,
         excerpt: excerpt || saved.title,
@@ -300,8 +332,10 @@ export const cmsDeleteArticle = createServerFn({ method: "POST" })
     requireAdmin(context.admin);
     const { deleteArticle } = await import("./store");
     const { syncDeleteArticle } = await import("./supabase.server");
+    const { invalidatePublicSiteCache } = await import("./public");
     await deleteArticle(data.id);
     await syncDeleteArticle(data.id).catch(() => undefined);
+    invalidatePublicSiteCache();
     return { ok: true };
   });
 
@@ -355,6 +389,8 @@ export const cmsSaveSite = createServerFn({ method: "POST" })
     const faqs = await listFaqs("home");
     await syncSiteCopy(data.copy).catch(() => undefined);
     await syncFaqs("home", faqs).catch(() => undefined);
+    const { invalidatePublicSiteCache } = await import("./public");
+    invalidatePublicSiteCache();
     return { ok: true };
   });
 

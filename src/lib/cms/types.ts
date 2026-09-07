@@ -1,5 +1,5 @@
 export type ArticleKind = "article" | "comparison" | "resource";
-export type ArticleStatus = "draft" | "published";
+export type ArticleStatus = "draft" | "published" | "scheduled";
 
 export type CmsArticle = {
   id: string;
@@ -7,14 +7,19 @@ export type CmsArticle = {
   title: string;
   answer: string;
   description: string;
+  meta_title: string;
+  canonical_url: string;
   body_html: string;
   author: string;
   tags: string[];
+  category: string;
   kind: ArticleKind;
   status: ArticleStatus;
   date: string;
+  published_at: string;
   minutes: number;
   cover_url: string | null;
+  cover_alt: string;
   created_at: string;
   updated_at: string;
 };

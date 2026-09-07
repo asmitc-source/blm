@@ -31,20 +31,27 @@ function tagsFrom(value: unknown) {
 }
 
 function asArticle(row: Record<string, unknown>): CmsArticle {
+  const statusRaw = String(row.status ?? "draft");
+  const status = (statusRaw === "published" || statusRaw === "scheduled" ? statusRaw : "draft") as ArticleStatus;
   return {
     id: String(row.id),
     slug: String(row.slug),
     title: String(row.title),
     answer: String(row.answer ?? ""),
     description: String(row.description ?? ""),
+    meta_title: String(row.meta_title ?? ""),
+    canonical_url: String(row.canonical_url ?? ""),
     body_html: String(row.body_html ?? ""),
     author: String(row.author ?? SITE.editorial),
     tags: tagsFrom(row.tags),
+    category: String(row.category ?? ""),
     kind: (String(row.kind ?? "article") as ArticleKind) || "article",
-    status: (String(row.status ?? "draft") as ArticleStatus) || "draft",
+    status,
     date: String(row.date ?? "").slice(0, 10),
+    published_at: String(row.published_at ?? ""),
     minutes: Number(row.minutes ?? 6) || 6,
     cover_url: row.cover_url ? String(row.cover_url) : null,
+    cover_alt: String(row.cover_alt ?? ""),
     created_at: String(row.created_at ?? ""),
     updated_at: String(row.updated_at ?? ""),
   };
@@ -94,7 +101,7 @@ export async function seedCmsIfEmpty() {
         update cms_articles set
           title = ${post.title},
           answer = ${post.excerpt},
-          description = ${post.description},
+          description = ${post.description.slice(0, 170)},
           body_html = ${body},
           author = ${post.author},
           tags = ${tags},
@@ -114,7 +121,7 @@ export async function seedCmsIfEmpty() {
           ${post.slug},
           ${post.title},
           ${post.excerpt},
-          ${post.description},
+          ${post.description.slice(0, 170)},
           ${body},
           ${post.author},
           ${tags},
@@ -307,30 +314,56 @@ export type ArticleInput = {
   title: string;
   answer: string;
   description: string;
+  meta_title?: string;
+  canonical_url?: string;
   body_html: string;
   author: string;
   tags: string[];
+  category?: string;
   kind: ArticleKind;
   status: ArticleStatus;
   date: string;
+  published_at?: string;
   minutes: number;
+  cover_url?: string | null;
+  cover_alt?: string;
 };
 
 export async function saveArticle(input: ArticleInput) {
   const id = input.id || crypto.randomUUID();
+  const meta_title = (input.meta_title ?? "").trim();
+  const canonical_url = (input.canonical_url ?? "").trim();
+  const category = (input.category ?? "").trim();
+  const cover_alt = (input.cover_alt ?? "").trim();
+  const cover_url = input.cover_url ? String(input.cover_url).trim() : null;
+  let published_at = (input.published_at ?? "").trim();
+  let date = input.date || new Date().toISOString().slice(0, 10);
+  if (input.status === "published" && !published_at) {
+    published_at = new Date().toISOString();
+  }
+  if (published_at) {
+    const d = published_at.slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) date = d;
+  }
   const payload = {
     id,
     slug: input.slug,
     title: input.title,
     answer: input.answer,
     description: input.description,
+    meta_title,
+    canonical_url,
     body_html: input.body_html,
     author: input.author,
     tags: input.tags.join(","),
+    category,
     kind: input.kind,
     status: input.status,
-    date: input.date,
+    date,
+    published_at,
     minutes: input.minutes,
+    cover_url,
+    cover_alt,
     updated_at: new Date().toISOString(),
   };
   const sb = await sbAdmin();
@@ -339,11 +372,14 @@ export async function saveArticle(input: ArticleInput) {
       const { data: bySlug } = await sb.from("cms_articles").select("id").eq("slug", input.slug).maybeSingle();
       if (bySlug?.id) payload.id = String(bySlug.id);
     }
-    await sb.from("cms_articles").upsert(payload);
-    return getArticle(String(payload.id));
+    const { error } = await sb.from("cms_articles").upsert(payload);
+    if (error) throw new Error(error.message || "Could not save article to Supabase.");
+    const saved = await getArticle(String(payload.id));
+    if (!saved) throw new Error("Article saved but could not be reloaded.");
+    return saved;
   }
   const sql = await localSql();
-  if (!sql) return getArticle(id);
+  if (!sql) throw new Error("No database available to save the article.");
   let existing = await sql<{ id: string }>`select id from cms_articles where id = ${id} limit 1`;
   if (!existing[0]) {
     existing = await sql<{ id: string }>`select id from cms_articles where slug = ${input.slug} limit 1`;
@@ -358,23 +394,32 @@ export async function saveArticle(input: ArticleInput) {
         title = ${input.title},
         answer = ${input.answer},
         description = ${input.description},
+        meta_title = ${meta_title},
+        canonical_url = ${canonical_url},
         body_html = ${input.body_html},
         author = ${input.author},
         tags = ${tags},
+        category = ${category},
         kind = ${input.kind},
         status = ${input.status},
-        date = ${input.date},
+        date = ${date},
+        published_at = ${published_at},
         minutes = ${input.minutes},
+        cover_url = ${cover_url},
+        cover_alt = ${cover_alt},
         updated_at = now()
       where id = ${resolvedId}
     `;
   } else {
     await sql`
-      insert into cms_articles (id, slug, title, answer, description, body_html, author, tags, kind, status, date, minutes)
+      insert into cms_articles (
+        id, slug, title, answer, description, meta_title, canonical_url, body_html,
+        author, tags, category, kind, status, date, published_at, minutes, cover_url, cover_alt
+      )
       values (
         ${resolvedId}, ${input.slug}, ${input.title}, ${input.answer}, ${input.description},
-        ${input.body_html}, ${input.author}, ${tags}, ${input.kind}, ${input.status},
-        ${input.date}, ${input.minutes}
+        ${meta_title}, ${canonical_url}, ${input.body_html}, ${input.author}, ${tags}, ${category},
+        ${input.kind}, ${input.status}, ${date}, ${published_at}, ${input.minutes}, ${cover_url}, ${cover_alt}
       )
     `;
   }
@@ -533,10 +578,34 @@ export async function dashboardStats() {
   };
 }
 
-/** Homepage Live set: the six BLOG_POSTS shown on the marketing home, in that order. */
+/** Homepage Live set: newest 6 published articles (by date, then updated_at). */
 export function homepageLiveArticles(articles: Awaited<ReturnType<typeof listArticles>>) {
+  const published = articles
+    .filter((a) => a.status === "published" && a.kind === "article")
+    .slice()
+    .sort((a, b) => {
+      const byDate = b.date.localeCompare(a.date);
+      if (byDate) return byDate;
+      return (b.updated_at || "").localeCompare(a.updated_at || "");
+    });
+  const top = published.slice(0, 6);
+  if (top.length >= 6) return top;
+  if (!top.length) {
+    const bySlug = new Map(articles.filter((a) => a.status === "published").map((a) => [a.slug, a]));
+    return BLOG_POSTS.map((p) => bySlug.get(p.slug)).filter((a): a is NonNullable<typeof a> => Boolean(a)).slice(0, 6);
+  }
+  const have = new Set(top.map((a) => a.slug));
   const bySlug = new Map(articles.filter((a) => a.status === "published").map((a) => [a.slug, a]));
-  return BLOG_POSTS.map((p) => bySlug.get(p.slug)).filter((a): a is NonNullable<typeof a> => Boolean(a));
+  for (const post of BLOG_POSTS) {
+    if (top.length >= 6) break;
+    if (have.has(post.slug)) continue;
+    const row = bySlug.get(post.slug);
+    if (row) {
+      top.push(row);
+      have.add(post.slug);
+    }
+  }
+  return top;
 }
 
 export async function listLeads() {
@@ -602,7 +671,7 @@ export async function seedLibrary() {
       slug: post.slug,
       title: post.title,
       answer: post.excerpt,
-      description: post.description,
+      description: deriveMetaDescription({ description: post.description, answer: post.excerpt, title: post.title }),
       body_html,
       author: post.author,
       tags: post.tags,
@@ -616,6 +685,52 @@ export async function seedLibrary() {
   }
   const total = (await listArticles()).length;
   return { added, updated, total, expected: BLOG_POSTS.length };
+}
+
+
+/** Ensure every published article has a non-empty meta description (max 170). */
+export function deriveMetaDescription(input: {
+  description?: string;
+  answer?: string;
+  title?: string;
+}) {
+  const raw = (input.description || input.answer || "").trim();
+  if (raw) return raw.slice(0, 170);
+  const title = (input.title || "Article").trim();
+  return `A BLM guide to ${title.replace(/\.*$/, "")}.`.slice(0, 170);
+}
+
+export async function backfillArticleMetaDescriptions() {
+  const articles = await listArticles();
+  let updated = 0;
+  for (const article of articles) {
+    if (article.status !== "published" && article.status !== "scheduled") continue;
+    const next = deriveMetaDescription(article);
+    if (article.description.trim() === next && article.description.trim()) continue;
+    if (article.description.trim()) continue; // already has a description
+    await saveArticle({
+      id: article.id,
+      slug: article.slug,
+      title: article.title,
+      answer: article.answer,
+      description: next,
+      meta_title: article.meta_title,
+      canonical_url: article.canonical_url,
+      body_html: article.body_html,
+      author: article.author,
+      tags: article.tags,
+      category: article.category,
+      kind: article.kind,
+      status: article.status,
+      date: article.date,
+      published_at: article.published_at,
+      minutes: article.minutes,
+      cover_url: article.cover_url,
+      cover_alt: article.cover_alt,
+    });
+    updated += 1;
+  }
+  return { updated };
 }
 
 export type { PricingPlan };

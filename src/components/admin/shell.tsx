@@ -15,6 +15,13 @@ const NAV = [
   { to: "/admin/site", label: "Site", icon: Settings2 },
 ] as const;
 
+function navActive(pathname: string, item: (typeof NAV)[number]) {
+  if ("exact" in item && item.exact) {
+    return pathname === "/admin" || pathname === "/admin/";
+  }
+  return pathname === item.to || pathname.startsWith(`${item.to}/`);
+}
+
 export function AdminShell({
   username,
   children,
@@ -45,7 +52,7 @@ export function AdminShell({
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => {
-              const on = "exact" in item && item.exact ? pathname === "/admin" || pathname === "/admin/" : pathname.startsWith(item.to);
+              const on = navActive(pathname, item);
               return (
                 <Link
                   key={item.to}
@@ -71,15 +78,21 @@ export function AdminShell({
         </div>
       </header>
       <nav className="flex gap-2 overflow-x-auto border-b border-line px-4 py-2 md:hidden">
-        {NAV.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className="shrink-0 rounded-full bg-sand px-3 py-1 text-sm font-semibold text-ink"
-          >
-            {item.label}
-          </Link>
-        ))}
+        {NAV.map((item) => {
+          const on = navActive(pathname, item);
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={cn(
+                "shrink-0 rounded-full px-3 py-1 text-sm font-semibold transition-colors",
+                on ? "bg-ink text-cream" : "bg-sand text-ink",
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">{children}</div>
     </div>

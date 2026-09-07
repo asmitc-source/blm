@@ -15,12 +15,21 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!data) throw notFound();
     return data;
   },
-  head: ({ loaderData }) =>
-    pageHead({
-      title: loaderData?.article.title ?? "Article",
-      description: loaderData?.article.description ?? "",
-      path: `/blog/${loaderData?.article.slug ?? ""}`,
-    }),
+  head: ({ loaderData }) => {
+    const article = loaderData?.article;
+    const description = (
+      article?.description?.trim() ||
+      article?.answer?.trim() ||
+      (article?.title ? `A BLM guide to ${article.title}.` : "") ||
+      "Business listing management guide from BLM."
+    ).slice(0, 170);
+    return pageHead({
+      title: (article?.meta_title || article?.title) ?? "Article",
+      description,
+      path: `/blog/${article?.slug ?? ""}`,
+      canonical: article?.canonical_url || undefined,
+    });
+  },
   component: BlogPostPage,
 });
 

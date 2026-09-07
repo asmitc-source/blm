@@ -5,6 +5,16 @@ import { FAQ, PRICING } from "@/lib/site";
 import { markdownToHtml } from "./convert";
 import type { CmsArticle, SiteCopy } from "./types";
 
+function ensureArticleDescription(article: CmsArticle): CmsArticle {
+  const description = (
+    article.description?.trim() ||
+    article.answer?.trim() ||
+    `A BLM guide to ${article.title}.`
+  ).slice(0, 170);
+  return { ...article, description };
+}
+
+
 function fallbackCopy(): SiteCopy {
   return {
     home: {
@@ -27,6 +37,10 @@ type PublicSitePayload = {
 let publicSiteCache: { at: number; data: PublicSitePayload } | null = null;
 const PUBLIC_SITE_TTL_MS = 45_000;
 
+export function invalidatePublicSiteCache() {
+  publicSiteCache = null;
+}
+
 export const loadPublicSite = createServerFn({ method: "GET" }).handler(async () => {
   const now = Date.now();
   if (publicSiteCache && now - publicSiteCache.at < PUBLIC_SITE_TTL_MS) {
@@ -39,7 +53,7 @@ export const loadPublicSite = createServerFn({ method: "GET" }).handler(async ()
     const data: PublicSitePayload = {
       copy,
       faqs: faqs.map((f) => ({ q: f.question, a: f.answer })),
-      articles,
+      articles: articles.map(ensureArticleDescription),
     };
     publicSiteCache = { at: now, data };
     return data;
@@ -63,7 +77,7 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
     if (post && markdown) {
       return {
         source: "static" as const,
-        article: {
+        article: ensureArticleDescription({
           id: post.slug,
           slug: post.slug,
           title: post.title,
@@ -76,10 +90,15 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
           status: "published" as const,
           date: post.date,
           minutes: post.minutes,
+          meta_title: "",
+          canonical_url: "",
+          category: post.tags[0] ?? "",
+          published_at: post.date,
           cover_url: null,
+          cover_alt: "",
           created_at: post.date,
           updated_at: post.date,
-        } satisfies CmsArticle,
+        } satisfies CmsArticle),
         markdown,
       };
     }
@@ -87,7 +106,7 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
       const { getArticleBySlug, seedCmsIfEmpty } = await import("./store");
       await seedCmsIfEmpty();
       const cms = await getArticleBySlug(data.slug, true);
-      if (cms) return { source: "cms" as const, article: cms, markdown: "" };
+      if (cms) return { source: "cms" as const, article: ensureArticleDescription(cms), markdown: "" };
     } catch {
       /* no CMS article */
     }

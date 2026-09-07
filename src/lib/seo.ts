@@ -47,19 +47,25 @@ export function pageHead(opts: {
   title: string;
   description: string;
   path?: string;
+  /** Absolute canonical override when an article sets canonical_url. */
+  canonical?: string;
   /** Optional robots directive, e.g. "noindex, follow" for auth/conversion shells. */
   robots?: string;
 }) {
+  const description = (opts.description || "").trim();
+  const canonical =
+    (opts.canonical || "").trim() ||
+    (opts.path ? `${SITE.domain}${opts.path}` : "");
   return {
     meta: [
       { title: pageTitle(opts.title) },
-      { name: "description", content: opts.description },
+      { name: "description", content: description },
       ...(opts.robots ? [{ name: "robots", content: opts.robots }] : []),
       ...shareMeta(opts),
     ],
     links: [
       { rel: "image_src", href: defaultShareImage() },
-      ...(opts.path ? [{ rel: "canonical", href: `${SITE.domain}${opts.path}` }] : []),
+      ...(canonical ? [{ rel: "canonical", href: canonical }] : []),
     ],
   };
 }

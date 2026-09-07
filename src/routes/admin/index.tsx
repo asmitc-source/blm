@@ -144,10 +144,11 @@ function AdminHome() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-5">
         <section className="lg:col-span-3">
-          <SectionHead title="In progress" hint="Drafts first. Then publish." />
+          <SectionHead title="In progress" hint="Drafts only." />
           {dash ? (
             <Stack
-              items={(dash.drafts.length ? dash.drafts : dash.recent).map((a) => ({
+              empty="No drafts"
+              items={dash.drafts.map((a) => ({
                 id: a.id,
                 title: a.title,
                 meta: `${a.status} · ${a.kind} · ${a.date}`,
@@ -318,9 +319,15 @@ function SectionHead({ title, hint, className }: { title: string; hint: string; 
   );
 }
 
-function Stack({ items }: { items: { id: string; title: string; meta: string; status: string }[] }) {
+function Stack({
+  items,
+  empty = "Nothing here yet.",
+}: {
+  items: { id: string; title: string; meta: string; status: string }[];
+  empty?: string;
+}) {
   if (!items.length) {
-    return <p className="rounded-2xl bg-cream px-4 py-6 text-sm text-muted hairline">Nothing here yet.</p>;
+    return <p className="rounded-2xl bg-cream px-4 py-6 text-sm text-muted hairline">{empty}</p>;
   }
   return (
     <div className="grid gap-2">

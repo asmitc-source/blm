@@ -559,7 +559,7 @@
 .audience-chip {
   display: flex;
   height: 100%;
-  min-height: 9.75rem;
+  min-height: 10.5rem;
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;

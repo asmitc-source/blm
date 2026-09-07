@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AdminShell } from "@/components/admin/shell";
 import { Button } from "@/components/ui/button";
@@ -23,12 +23,35 @@ function ArticlesPage() {
   const [missing, setMissing] = useState<string[]>([]);
   const [expected, setExpected] = useState(6);
   const [busy, setBusy] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const autoSeeded = useRef(false);
 
-  async function load() {
-    const [list, status] = await Promise.all([cmsListArticles(), cmsLibraryStatus()]);
-    setRows(list);
-    setMissing(status.missing);
-    setExpected(status.expected);
+  async function load(opts?: { allowAutoSeed?: boolean }) {
+    setLoading(true);
+    setError("");
+    try {
+      let list = await cmsListArticles();
+      let status = await cmsLibraryStatus();
+      if (!list.length && opts?.allowAutoSeed !== false && !autoSeeded.current) {
+        autoSeeded.current = true;
+        setBusy(true);
+        try {
+          await cmsSeedLibrary();
+          list = await cmsListArticles();
+          status = await cmsLibraryStatus();
+        } finally {
+          setBusy(false);
+        }
+      }
+      setRows(list);
+      setMissing(status.missing);
+      setExpected(status.expected);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not load articles.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -38,7 +61,7 @@ function ArticlesPage() {
         return;
       }
       setUsername(b.admin.username);
-      void load();
+      void load({ allowAutoSeed: true });
     });
   }, []);
 
@@ -49,20 +72,20 @@ function ArticlesPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Library</p>
           <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight">Articles</h1>
           <p className="mt-2 text-sm text-ink-soft">
-            {rows.length} in The desk
-            {missing.length ? ` · ${missing.length} of ${expected} live posts still missing` : ""}.
+            {loading ? "Loading…" : `${rows.length} in The desk`}
+            {!loading && missing.length ? ` · ${missing.length} of ${expected} live posts still missing` : ""}.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {missing.length ? (
+          {missing.length || !rows.length ? (
             <Button
               type="button"
               variant="secondary"
-              disabled={busy}
+              disabled={busy || loading}
               onClick={() => {
                 setBusy(true);
                 void cmsSeedLibrary()
-                  .then(load)
+                  .then(() => load({ allowAutoSeed: false }))
                   .finally(() => setBusy(false));
               }}
             >
@@ -75,6 +98,16 @@ function ArticlesPage() {
         </div>
       </div>
 
+      {error ? (
+        <div className="mt-6 rounded-3xl bg-cream px-5 py-5 hairline sm:px-6">
+          <p className="font-display text-xl font-semibold text-coral">Could not load articles</p>
+          <p className="mt-2 max-w-2xl text-sm text-ink-soft">{error}</p>
+          <Button type="button" className="mt-4" variant="secondary" onClick={() => void load({ allowAutoSeed: false })}>
+            Try again
+          </Button>
+        </div>
+      ) : null}
+
       {missing.length ? (
         <div className="mt-6 rounded-3xl bg-cream px-5 py-5 hairline sm:px-6">
           <p className="font-display text-xl font-semibold">Load existing articles</p>
@@ -86,12 +119,35 @@ function ArticlesPage() {
       ) : null}
 
       <div className="mt-8 grid gap-2">
-        {!rows.length ? (
+        {loading ? (
+          <div className="grid gap-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-[4.5rem] animate-pulse rounded-2xl bg-cream hairline" />
+            ))}
+          </div>
+        ) : !rows.length ? (
           <div className="rounded-3xl bg-cream px-6 py-12 text-center hairline">
             <p className="font-display text-xl font-semibold">No articles in The desk yet</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
               Load the six live blog posts, or write a new one.
             </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              <Button
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  setBusy(true);
+                  void cmsSeedLibrary()
+                    .then(() => load({ allowAutoSeed: false }))
+                    .finally(() => setBusy(false));
+                }}
+              >
+                {busy ? "Loading…" : "Load existing articles"}
+              </Button>
+              <Button asChild variant="secondary">
+                <Link to="/admin/write">Write a new one</Link>
+              </Button>
+            </div>
           </div>
         ) : (
           rows.map((a) => (
@@ -116,7 +172,7 @@ function ArticlesPage() {
                   variant="ghost"
                   onClick={() => {
                     if (!window.confirm("Delete this article?")) return;
-                    void cmsDeleteArticle({ data: { id: a.id } }).then(load);
+                    void cmsDeleteArticle({ data: { id: a.id } }).then(() => load({ allowAutoSeed: false }));
                   }}
                 >
                   Delete
