@@ -15,7 +15,7 @@ export function SiteFooter() {
           <p className="mt-4 text-sm leading-relaxed text-muted">{SITE.oneLiner}</p>
           <p className="mt-4 text-sm text-faint">{SITE.email}</p>
           <Button asChild size="md" className="mt-5">
-            <Link to="/contact">Contact us</Link>
+            <Link to="/trial">Start free trial</Link>
           </Button>
         </div>
         <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-4 lg:gap-x-14">
@@ -30,7 +30,7 @@ export function SiteFooter() {
           <p>
             © {new Date().getFullYear()} {SITE.legalName}. All rights reserved.
           </p>
-          <p>Contact us · Book a call · Early access</p>
+          <p>Start free trial · Book a call · Early access</p>
         </div>
       </div>
     </footer>
