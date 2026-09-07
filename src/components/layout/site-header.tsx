@@ -86,9 +86,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-2">
           <ThemeToggle />
-          <div className="hidden sm:block">
-            <AuthSlot />
-          </div>
+          <AuthSlot compact />
           <button
             type="button"
             className="glass-icon inline-flex size-11 items-center justify-center xl:hidden"
@@ -142,20 +140,10 @@ export function SiteHeader() {
               </Link>
             ),
           )}
-          <div className="mt-2 flex flex-col gap-2 pb-2 sm:hidden">
-            <Button asChild variant="secondary">
-              <Link to="/login" onClick={() => setOpen(false)}>
-                Log in
-              </Link>
-            </Button>
+          <div className="mt-2 flex flex-col gap-2 pb-2">
             <Button asChild>
               <Link to="/trial" onClick={() => setOpen(false)}>
                 Start free trial
-              </Link>
-            </Button>
-            <Button asChild variant="secondary">
-              <Link to="/book" onClick={() => setOpen(false)}>
-                Book a call
               </Link>
             </Button>
           </div>
