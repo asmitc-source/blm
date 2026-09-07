@@ -480,7 +480,7 @@ function FinalCta() {
             Replace spreadsheet listing ops with a presence your team can govern.
           </h2>
           <p className="relative mx-auto mt-4 max-w-xl text-ink-soft">
-            Start a free trial for product access. Book a call if you already manage a national footprint.
+            Start a free trial to open the workspace, book a call for a national footprint, or contact us if you want a human first.
           </p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg">
@@ -488,6 +488,9 @@ function FinalCta() {
             </Button>
             <Button asChild size="lg" variant="secondary">
               <Link to="/book">Book a call</Link>
+            </Button>
+            <Button asChild size="lg" variant="secondary">
+              <Link to="/contact">Contact us</Link>
             </Button>
           </div>
         </div>
