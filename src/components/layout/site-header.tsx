@@ -44,9 +44,24 @@ export function SiteHeader() {
     setCompareOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   return (
-    <header className={cn("glass-bar sticky top-0 z-40", scrolled && "is-scrolled")}>
-      <div className="chrome-pad grid h-16 grid-cols-[1fr_auto] items-center sm:h-[4.25rem] xl:grid-cols-[1fr_auto_1fr]">
+    <header className={cn("glass-bar relative sticky top-0 z-50", scrolled && "is-scrolled")}>
+      {/* Ribbon stays mounted on every viewport — menu opens beneath, never replaces it */}
+      <div className="chrome-pad relative z-[60] grid h-16 grid-cols-[1fr_auto] items-center sm:h-[4.25rem] xl:grid-cols-[1fr_auto_1fr]">
         <Logo className="justify-self-start" />
         <nav className="hidden items-center justify-center xl:flex" aria-label="Primary">
           <div className="flex items-center gap-1">
@@ -88,7 +103,20 @@ export function SiteHeader() {
       <div className="absolute inset-x-0 bottom-0 h-px bg-transparent">
         <div ref={progressRef} className="h-full origin-left bg-brand/80" style={{ transform: "scaleX(0)" }} />
       </div>
-      <div className={cn("border-t border-line/60 xl:hidden", open ? "block" : "hidden")}>
+      {open ? (
+        <button
+          type="button"
+          className="fixed inset-0 z-[45] bg-ink/25 xl:hidden"
+          aria-label="Close menu"
+          onClick={() => setOpen(false)}
+        />
+      ) : null}
+      <div
+        className={cn(
+          "absolute inset-x-0 top-full z-[55] max-h-[min(70vh,calc(100dvh-4.25rem))] overflow-y-auto border-t border-line/60 bg-cream shadow-[var(--shadow-soft)] xl:hidden",
+          open ? "block" : "hidden",
+        )}
+      >
         <nav className="chrome-pad flex flex-col gap-1.5 py-3" aria-label="Mobile">
           {NAV.map((item) =>
             item.href === "/compare" ? (

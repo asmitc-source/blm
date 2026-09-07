@@ -30,7 +30,7 @@ export function SiteFooter() {
           <p>
             © {new Date().getFullYear()} {SITE.legalName}. All rights reserved.
           </p>
-          <p>Start free trial · Book a call · Early access</p>
+          <p>Contact us · Book a call · Early access</p>
         </div>
       </div>
     </footer>
