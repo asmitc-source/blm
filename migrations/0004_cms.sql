@@ -22,6 +22,11 @@ create table if not exists cms_articles (
   title text not null,
   answer text not null default '',
   description text not null default '',
+  meta_title text not null default '',
+  canonical_url text not null default '',
+  published_at text not null default '',
+  category text not null default '',
+  cover_alt text not null default '',
   body_html text not null default '',
   author text not null default 'BLM Editorial',
   tags text not null default '',
@@ -52,3 +57,9 @@ create table if not exists cms_settings (
   value text not null,
   updated_at timestamptz not null default now()
 );
+
+alter table cms_articles add column if not exists meta_title text not null default '';
+alter table cms_articles add column if not exists canonical_url text not null default '';
+alter table cms_articles add column if not exists published_at text not null default '';
+alter table cms_articles add column if not exists category text not null default '';
+alter table cms_articles add column if not exists cover_alt text not null default '';

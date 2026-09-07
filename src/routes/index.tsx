@@ -20,7 +20,7 @@ function Home() {
   const data = Route.useLoaderData();
   return (
     <SiteShell>
-      <HomePage copy={{ lede: data.copy.home.lede, trialLine: data.copy.home.trialLine, faqs: data.faqs }} />
+      <HomePage copy={{ lede: data.copy.home.lede, trialLine: data.copy.home.trialLine, faqs: data.faqs, articles: data.articles }} />
     </SiteShell>
   );
 }

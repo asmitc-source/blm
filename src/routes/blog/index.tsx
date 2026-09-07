@@ -20,9 +20,12 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogIndex() {
   const data = Route.useLoaderData();
-  const bundled = new Set(BLOG_POSTS.map((p) => p.slug));
-  const extras = data.articles.filter((a) => !bundled.has(a.slug));
-  const posts = [...BLOG_POSTS, ...extras].map(toCard);
+  const bySlug = new Map(BLOG_POSTS.map((p) => [p.slug, toCard(p)]));
+  for (const article of data.articles) {
+    if (article.status !== "published") continue;
+    bySlug.set(article.slug, toCard(article)); // CMS wins on slug collision
+  }
+  const posts = [...bySlug.values()].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
     <SiteShell>
