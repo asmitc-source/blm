@@ -3,6 +3,7 @@ import { FAQ, PRICING, SITE } from "@/lib/site";
 import { BLOG_POSTS } from "@/lib/content/blog";
 import { POST_BODY } from "@/lib/content/posts";
 import { markdownToHtml } from "./convert";
+import { ensureImageAlts, imagesMissingAlt } from "./gdoc";
 import { hashPassword } from "./crypto";
 import type { ArticleKind, ArticleStatus, CmsArticle, CmsFaq, PricingPlan, SiteCopy } from "./types";
 
@@ -914,6 +915,75 @@ export async function backfillArticleMetaDescriptions() {
     }
   }
   return { updated, skipped };
+}
+
+
+
+/** Persist non-empty alts for any published/scheduled article whose body still has empty-alt imgs. */
+export async function backfillEmptyImageAlts() {
+  let articles: CmsArticle[] = [];
+  try {
+    articles = await listArticles();
+  } catch {
+    return { updated: 0, skipped: 0, scanned: 0 };
+  }
+  let updated = 0;
+  let skipped = 0;
+  let scanned = 0;
+  for (const article of articles) {
+    if (article.status !== "published" && article.status !== "scheduled") continue;
+    scanned += 1;
+    const missing = imagesMissingAlt(article.body_html);
+    if (!missing.length) {
+      skipped += 1;
+      continue;
+    }
+    const body_html = ensureImageAlts(article.body_html, article.title);
+    if (imagesMissingAlt(body_html).length) {
+      skipped += 1;
+      continue;
+    }
+    try {
+      const sb = await sbAdmin();
+      if (sb) {
+        const { error } = await withTimeout(
+          sb
+            .from("cms_articles")
+            .update({ body_html, updated_at: new Date().toISOString() })
+            .eq("id", article.id),
+          20_000,
+          "alt backfill patch",
+        );
+        if (error) throw new Error(error.message || "alt backfill failed");
+        updated += 1;
+        continue;
+      }
+      await saveArticle({
+        id: article.id,
+        slug: article.slug,
+        title: article.title,
+        answer: article.answer,
+        description: article.description,
+        meta_title: article.meta_title,
+        canonical_url: article.canonical_url,
+        body_html,
+        author: article.author,
+        tags: article.tags,
+        category: article.category,
+        kind: article.kind,
+        status: article.status,
+        date: article.date,
+        published_at: article.published_at,
+        minutes: article.minutes,
+        cover_url: article.cover_url,
+        cover_alt: article.cover_alt,
+      });
+      updated += 1;
+    } catch {
+      skipped += 1;
+    }
+  }
+  return { updated, skipped, scanned };
 }
 
 export type { PricingPlan };

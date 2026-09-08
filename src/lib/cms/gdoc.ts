@@ -29,19 +29,70 @@ function applyGoogleSpans(html: string, styles: Map<string, { bold?: boolean; it
   });
 }
 
+function imgAltValue(tag: string) {
+  const altMatch = tag.match(/\balt\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+  return (altMatch?.[1] ?? altMatch?.[2] ?? altMatch?.[3] ?? "").trim();
+}
+
+function stripTags(html: string) {
+  return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+}
+
 /** Images in body HTML missing a non-empty alt attribute. */
 export function imagesMissingAlt(html: string): string[] {
   const missing: string[] = [];
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0];
-    const altMatch = tag.match(/\balt\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
-    const alt = (altMatch?.[1] ?? altMatch?.[2] ?? altMatch?.[3] ?? "").trim();
-    if (!alt) {
+    if (!imgAltValue(tag)) {
       const src = tag.match(/\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
       missing.push((src?.[1] ?? src?.[2] ?? src?.[3] ?? "image").slice(0, 120));
     }
   }
   return missing;
+}
+
+/**
+ * Nuclear safety net: every <img> gets a non-empty descriptive alt.
+ * Prefers nearest preceding figcaption / heading; else "Illustration for {title} (n)".
+ */
+export function ensureImageAlts(html: string, articleTitle = "article"): string {
+  if (!html.trim()) return html;
+  const title = stripTags(articleTitle) || "article";
+  let lastHeading = "";
+  let lastFigcaption = "";
+  let illustrationIndex = 0;
+
+  return html.replace(
+    /(<h([1-4])\b[^>]*>([\s\S]*?)<\/h\2>)|(<figcaption\b[^>]*>([\s\S]*?)<\/figcaption>)|(<img\b[^>]*>)/gi,
+    (match, _hAll, _hLevel, hInner, _figAll, figInner, imgTag) => {
+      if (imgTag) {
+        if (imgAltValue(imgTag)) return match;
+        illustrationIndex += 1;
+        const fromCaption = lastFigcaption.trim();
+        const fromHeading = lastHeading.trim();
+        const nextAlt = (
+          fromCaption ||
+          fromHeading ||
+          `Illustration for ${title} (${illustrationIndex})`
+        ).slice(0, 200);
+        const safeAlt = nextAlt.replace(/"/g, "&quot;");
+        if (/\balt\s*=/i.test(imgTag)) {
+          return imgTag.replace(/\balt\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i, `alt="${safeAlt}"`);
+        }
+        return imgTag.replace(/<img\b/i, `<img alt="${safeAlt}"`);
+      }
+      if (figInner != null) {
+        lastFigcaption = stripTags(String(figInner));
+        return match;
+      }
+      if (hInner != null) {
+        lastHeading = stripTags(String(hInner));
+        lastFigcaption = "";
+        return match;
+      }
+      return match;
+    },
+  );
 }
 
 function cleanImgTag(attrs: string) {
@@ -55,7 +106,7 @@ function cleanImgTag(attrs: string) {
   return `<img src="${safeSrc}" alt="${safeAlt}">`;
 }
 
-export function cleanArticleHtml(raw: string) {
+export function cleanArticleHtml(raw: string, opts?: { title?: string; fillEmptyAlts?: boolean }) {
   if (!raw.trim()) return "";
   let html = raw;
   const body = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1];
@@ -88,7 +139,10 @@ export function cleanArticleHtml(raw: string) {
   html = html.replace(/(<br\s*\/?>\s*){3,}/gi, "<br><br>");
   html = html.replace(/\n{3,}/g, "\n\n");
   void ALLOWED;
-  return html.trim();
+  const cleaned = html.trim();
+  if (opts?.fillEmptyAlts === false) return cleaned;
+  const title = (opts?.title || extractTitleFromHtml(cleaned) || "article").trim();
+  return ensureImageAlts(cleaned, title);
 }
 
 export function extractTitleFromHtml(html: string) {

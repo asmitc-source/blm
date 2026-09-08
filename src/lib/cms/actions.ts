@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { SITE } from "@/lib/site";
 import { deskMiddleware } from "./middleware";
 import { newToken } from "./crypto";
-import { cleanArticleHtml, extractTitleFromHtml, googleDocExportUrl, googleDocId, imagesMissingAlt } from "./gdoc";
+import { cleanArticleHtml, ensureImageAlts, extractTitleFromHtml, googleDocExportUrl, googleDocId, imagesMissingAlt } from "./gdoc";
 import { estimateMinutes, slugify } from "./convert";
 import type { ArticleKind, ArticleStatus, SiteCopy } from "./types";
 
@@ -175,11 +175,12 @@ export const cmsDeskHome = createServerFn({ method: "GET" })
 
     // Signed-in fast path: skip seed/ping waterfall; load desk data in parallel.
     const { BLOG_POSTS } = await import("@/lib/content/blog");
-    const { dashboardStats, expectedLibrarySlugs, homepageLiveArticles, listArticles, backfillArticleMetaDescriptions } = await import("./store");
+    const { dashboardStats, expectedLibrarySlugs, homepageLiveArticles, listArticles, backfillArticleMetaDescriptions, backfillEmptyImageAlts } = await import("./store");
     const { loadInboxStats } = await import("./inbox");
 
-    // Never block desk home on meta backfill (fire-and-forget).
+    // Never block desk home on meta/alt backfill (fire-and-forget).
     void backfillArticleMetaDescriptions().catch(() => undefined);
+    void backfillEmptyImageAlts().catch(() => undefined);
     const [stats, articles, inbox] = await Promise.all([dashboardStats(), listArticles(), loadInboxStats()]);
 
     const have = new Set(articles.map((a) => a.slug));
@@ -212,10 +213,11 @@ export const cmsSeedLibrary = createServerFn({ method: "POST" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const { seedLibrary, backfillArticleMetaDescriptions } = await import("./store");
+    const { seedLibrary, backfillArticleMetaDescriptions, backfillEmptyImageAlts } = await import("./store");
     const result = await seedLibrary();
-    // Never block the Load button / request on meta backfill.
+    // Never block the Load button / request on meta/alt backfill.
     void backfillArticleMetaDescriptions().catch(() => undefined);
+    void backfillEmptyImageAlts().catch(() => undefined);
     return { ...result, backfill: { updated: 0, skipped: 0, pending: true } };
   });
 
@@ -240,9 +242,10 @@ export const cmsListArticles = createServerFn({ method: "GET" })
   .middleware([deskMiddleware])
   .handler(async ({ context }) => {
     requireAdmin(context.admin);
-    const { listArticles, backfillArticleMetaDescriptions } = await import("./store");
+    const { listArticles, backfillArticleMetaDescriptions, backfillEmptyImageAlts } = await import("./store");
     // Hot path: never await backfill — list must return immediately.
     void backfillArticleMetaDescriptions().catch(() => undefined);
+    void backfillEmptyImageAlts().catch(() => undefined);
     return listArticles();
   });
 
@@ -254,8 +257,9 @@ export const cmsArticlesPage = createServerFn({ method: "GET" })
       return { admin: null as null, articles: [] as Awaited<ReturnType<typeof import("./store").listArticles>>, missing: [] as string[], expected: 0 };
     }
     const { BLOG_POSTS } = await import("@/lib/content/blog");
-    const { listArticles, expectedLibrarySlugs, backfillArticleMetaDescriptions } = await import("./store");
+    const { listArticles, expectedLibrarySlugs, backfillArticleMetaDescriptions, backfillEmptyImageAlts } = await import("./store");
     void backfillArticleMetaDescriptions().catch(() => undefined);
+    void backfillEmptyImageAlts().catch(() => undefined);
     const articles = await listArticles();
     const have = new Set(articles.map((a) => a.slug));
     const missing = BLOG_POSTS.filter((p) => !have.has(p.slug)).map((p) => p.slug);
@@ -293,7 +297,8 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
-    const body_html = cleanArticleHtml(str(o.body_html));
+    // Clean without auto-fill first so the publish gate still sees empty alts.
+    const cleanedBody = cleanArticleHtml(str(o.body_html), { title, fillEmptyAlts: false });
     const meta_title = str(o.meta_title).trim().slice(0, 70);
     const canonical_url = str(o.canonical_url).trim().slice(0, 500);
     const category = str(o.category).trim().slice(0, 80);
@@ -309,7 +314,7 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
       throw new Error("Meta description is required before publishing.");
     }
     if (status === "published" || status === "scheduled") {
-      const missingAlts = imagesMissingAlt(body_html);
+      const missingAlts = imagesMissingAlt(cleanedBody);
       if (missingAlts.length) {
         throw new Error(
           `Every image needs alt text before publishing (${missingAlts.length} missing). Add alt on: ${missingAlts.slice(0, 3).join(", ")}`,
@@ -319,6 +324,8 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
         throw new Error("Cover image alt text is required before publishing.");
       }
     }
+    // Persist never ships empty alt — fill from nearest heading/figcaption or title.
+    const body_html = ensureImageAlts(cleanedBody, title);
     // Drafts may omit it; still prefer answer as a soft fallback for storage.
     if (!description) description = str(o.answer).trim().slice(0, 170);
     return {
