@@ -431,7 +431,11 @@ export async function saveArticle(input: ArticleInput) {
   const canonical_url = (input.canonical_url ?? "").trim();
   const category = (input.category ?? "").trim();
   const cover_alt = (input.cover_alt ?? "").trim();
-  const cover_url = input.cover_url ? String(input.cover_url).trim() : null;
+  const cover_url = input.cover_url ? String(input.cover_url).trim() || null : null;
+  // Nuclear store bar: publish/schedule always need cover_alt (seed paths must set one).
+  if ((input.status === "published" || input.status === "scheduled") && !cover_alt) {
+    throw new Error("Cover image alt is required to publish or schedule.");
+  }
   let published_at = (input.published_at ?? "").trim();
   let date = input.date || new Date().toISOString().slice(0, 10);
   if (input.status === "published" && !published_at) {
@@ -882,6 +886,8 @@ export async function seedLibrary() {
       status: "published",
       date: post.date,
       minutes: post.minutes,
+      cover_url: prev?.cover_url ?? null,
+      cover_alt: (prev?.cover_alt || "").trim() || post.title.slice(0, 200),
     });
     if (prev) updated += 1;
     else added += 1;
@@ -1002,7 +1008,7 @@ export async function backfillEmptyImageAlts() {
         published_at: article.published_at,
         minutes: article.minutes,
         cover_url: article.cover_url,
-        cover_alt: article.cover_alt,
+        cover_alt: (article.cover_alt || "").trim() || article.title.slice(0, 200),
       });
       updated += 1;
     } catch {

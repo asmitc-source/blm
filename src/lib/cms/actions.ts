@@ -320,9 +320,9 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
           `Every image needs alt text before publishing (${missingAlts.length} missing). Add alt on: ${missingAlts.slice(0, 3).join(", ")}`,
         );
       }
-      // Nuclear: any non-empty cover_url after trim requires non-empty cover_alt after trim.
-      if (coverAltMissing(cover_url, cover_alt) || coverAltMissing(str(o.cover_url), str(o.cover_alt))) {
-        throw new Error("Cover image alt text is required before publishing.");
+      // Nuclear: cover_alt must be non-empty for publish/schedule even when cover_url is blank.
+      if (coverAltMissing(cover_url, cover_alt) || !str(o.cover_alt).trim()) {
+        throw new Error("Cover image alt is required to publish or schedule.");
       }
     }
     // Persist never ships empty alt — fill from nearest heading/figcaption or title.
