@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cmsBootstrap, cmsGetArticle, cmsImportDoc, cmsSaveArticle } from "@/lib/cms/actions";
+import { imagesMissingAlt } from "@/lib/cms/gdoc";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { pageHead } from "@/lib/seo";
@@ -145,6 +146,13 @@ function WritePage() {
     if (status === "published" || status === "scheduled") {
       if (!desc) return "Meta description is required before publishing.";
       if (desc.length > 170) return "Meta description must be 170 characters or fewer.";
+      const missingAlts = imagesMissingAlt(form.body_html);
+      if (missingAlts.length) {
+        return `Every image needs alt text before publishing (${missingAlts.length} missing).`;
+      }
+      if (form.cover_url.trim() && !form.cover_alt.trim()) {
+        return "Cover image alt text is required before publishing.";
+      }
     }
     if (desc.length > 170) return "Meta description must be 170 characters or fewer.";
     if (status === "scheduled" && !form.published_at) {
@@ -161,9 +169,10 @@ function WritePage() {
     }
     setSaving(true);
     setError("");
+    const started = performance.now();
     let timer = 0;
     const timedOut = new Promise<never>((_, reject) => {
-      timer = window.setTimeout(() => reject(new Error("Publish timed out — check Articles")), 45_000);
+      timer = window.setTimeout(() => reject(new Error("Publish timed out after 12s — check Articles")), 12_000);
     });
     try {
       const published_at =
@@ -179,6 +188,10 @@ function WritePage() {
       };
       const saved = await Promise.race([cmsSaveArticle({ data: payload }), timedOut]);
       if (!saved) throw new Error("Could not save.");
+      const elapsed = Math.round(performance.now() - started);
+      console.info(`[desk] publish ok in ${elapsed}ms`, saved.slug);
+      // Clear Publishing… immediately — do not wait on navigation / articles load.
+      setSaving(false);
       patch({
         id: saved.id,
         slug: saved.slug,
@@ -188,15 +201,15 @@ function WritePage() {
         published_at: toDatetimeLocal(saved.published_at || saved.date),
       });
       if (status === "published") {
-        await navigate({ to: "/admin/articles" });
+        void navigate({ to: "/admin/articles" });
       } else {
-        await navigate({ to: "/admin/write", search: { id: saved.id } });
+        void navigate({ to: "/admin/write", search: { id: saved.id } });
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not save.");
+      setSaving(false);
     } finally {
       window.clearTimeout(timer);
-      setSaving(false);
     }
   }
 

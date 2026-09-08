@@ -25,5 +25,51 @@
       "destination": "/blog/best-business-listing-management-software-2026",
       "permanent": true
     }
+  ],
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "private, no-store" }]
+    },
+    {
+      "source": "/admin",
+      "headers": [{ "key": "Cache-Control", "value": "private, no-store" }]
+    },
+    {
+      "source": "/",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/blog",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/blog/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/pricing",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/resources",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/product",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/how-it-works",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/compare",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    },
+    {
+      "source": "/compare/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }]
+    }
   ]
 }

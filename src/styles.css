@@ -1232,19 +1232,32 @@
 .article-html ul,
 .article-html ol {
   margin: 0 0 0.9rem;
-  padding-left: 1.25rem;
+  padding-left: 1.5rem;
+  list-style-position: outside;
 }
 
 .article-html ul {
-  list-style: disc;
+  list-style-type: disc !important;
 }
 
 .article-html ol {
-  list-style: decimal;
+  list-style-type: decimal !important;
 }
 
 .article-html li {
-  margin: 0.2rem 0;
+  margin: 0.25rem 0;
+  display: list-item;
+}
+
+.article-html li::marker {
+  color: var(--ink-soft);
+}
+
+.article-html img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 0.75rem 0;
 }
 
 .article-html strong,

@@ -12,10 +12,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function cmd(command: string, value?: string) {
-  document.execCommand(command, false, value);
-}
-
 export function RichEditor({
   value,
   onChange,
@@ -33,25 +29,33 @@ export function RichEditor({
     if (el.innerHTML !== value) el.innerHTML = value || "";
   }, [value]);
 
+  function run(command: string, commandValue?: string) {
+    const el = ref.current;
+    if (!el) return;
+    el.focus();
+    document.execCommand(command, false, commandValue);
+    onChange(el.innerHTML);
+  }
+
   return (
     <div className="overflow-hidden rounded-2xl border border-line bg-cream">
       <div className="flex flex-wrap gap-1 border-b border-line px-2 py-2">
-        <Tool icon={Bold} label="Bold" onClick={() => cmd("bold")} />
-        <Tool icon={Italic} label="Italic" onClick={() => cmd("italic")} />
-        <Tool icon={Heading2} label="Heading" onClick={() => cmd("formatBlock", "h2")} />
-        <Tool icon={Heading3} label="Subhead" onClick={() => cmd("formatBlock", "h3")} />
-        <Tool icon={List} label="Bullets" onClick={() => cmd("insertUnorderedList")} />
-        <Tool icon={ListOrdered} label="Numbers" onClick={() => cmd("insertOrderedList")} />
-        <Tool icon={Quote} label="Quote" onClick={() => cmd("formatBlock", "blockquote")} />
+        <Tool icon={Bold} label="Bold" onClick={() => run("bold")} />
+        <Tool icon={Italic} label="Italic" onClick={() => run("italic")} />
+        <Tool icon={Heading2} label="Heading" onClick={() => run("formatBlock", "h2")} />
+        <Tool icon={Heading3} label="Subhead" onClick={() => run("formatBlock", "h3")} />
+        <Tool icon={List} label="Bullets" onClick={() => run("insertUnorderedList")} />
+        <Tool icon={ListOrdered} label="Numbers" onClick={() => run("insertOrderedList")} />
+        <Tool icon={Quote} label="Quote" onClick={() => run("formatBlock", "blockquote")} />
         <Tool
           icon={LinkIcon}
           label="Link"
           onClick={() => {
             const url = window.prompt("Link URL");
-            if (url) cmd("createLink", url);
+            if (url) run("createLink", url);
           }}
         />
-        <Tool icon={RemoveFormatting} label="Paragraph" onClick={() => cmd("formatBlock", "p")} />
+        <Tool icon={RemoveFormatting} label="Paragraph" onClick={() => run("formatBlock", "p")} />
       </div>
       <div
         ref={ref}
