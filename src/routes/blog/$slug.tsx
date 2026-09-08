@@ -4,8 +4,18 @@ import { Markdown } from "@/components/markdown";
 import { ArticleHtml } from "@/components/article-html";
 import { JsonLd } from "@/components/json-ld";
 import { loadPublicArticle } from "@/lib/cms/public";
+import { absoluteShareImage } from "@/lib/content/share-image";
 import { stripDuplicateMarkdownOpener } from "@/lib/content/strip-duplicate-opener";
-import { articleJsonLd, breadcrumbJsonLd, definedTermJsonLd, faqJsonLd, pageHead } from "@/lib/seo";
+import {
+  articleJsonLd,
+  breadcrumbJsonLd,
+  definedTermJsonLd,
+  defaultShareImage,
+  faqJsonLd,
+  pageHead,
+  publicOrigin,
+} from "@/lib/seo";
+import { isSocialUnfurlBot } from "@/lib/seo-bots";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +23,17 @@ export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const data = await loadPublicArticle({ data: { slug: params.slug } });
     if (!data) throw notFound();
+    // Social unfurlers fail on multi-MB CMS SSR HTML. Omit body for bots only —
+    // stored CMS HTML is unchanged; humans still get the full article.
+    const { getRequest } = await import("@tanstack/react-start/server");
+    const ua = getRequest()?.headers.get("user-agent");
+    if (isSocialUnfurlBot(ua) && data.source === "cms") {
+      return {
+        ...data,
+        article: { ...data.article, body_html: "" },
+        markdown: "",
+      };
+    }
     return data;
   },
   head: ({ loaderData }) => {
@@ -23,11 +44,16 @@ export const Route = createFileRoute("/blog/$slug")({
       (article?.title ? `A BLM guide to ${article.title}.` : "") ||
       "Business listing management guide from BLM."
     ).slice(0, 170);
+    const origin = publicOrigin();
+    const image = absoluteShareImage(article?.cover_url, origin, defaultShareImage(origin));
     return pageHead({
       title: (article?.meta_title || article?.title) ?? "Article",
       description,
       path: `/blog/${article?.slug ?? ""}`,
       canonical: article?.canonical_url || undefined,
+      image,
+      type: "article",
+      imageAlt: article?.cover_alt?.trim() || article?.title || undefined,
     });
   },
   component: BlogPostPage,
@@ -40,6 +66,7 @@ function BlogPostPage() {
     source === "static" && markdown
       ? stripDuplicateMarkdownOpener(markdown, answer)
       : markdown;
+  const shareImage = absoluteShareImage(article.cover_url, publicOrigin(), defaultShareImage());
 
   return (
     <SiteShell>
@@ -50,6 +77,7 @@ function BlogPostPage() {
           path: `/blog/${article.slug}`,
           date: article.date,
           author: article.author,
+          image: shareImage,
         })}
       />
       <JsonLd

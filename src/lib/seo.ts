@@ -21,20 +21,29 @@ export function pageTitle(title: string) {
   return `${title} · ${SITE.name}`;
 }
 
-export function shareMeta(opts: { title: string; description: string; path?: string; image?: string }) {
+export function shareMeta(opts: {
+  title: string;
+  description: string;
+  path?: string;
+  image?: string;
+  /** Defaults to website; blog posts should pass "article". */
+  type?: string;
+  imageAlt?: string;
+}) {
   const origin = publicOrigin();
   const url = opts.path ? `${origin}${opts.path}` : origin;
   const image = opts.image ?? defaultShareImage(origin);
   const title = pageTitle(opts.title);
+  const imageAlt = (opts.imageAlt || "").trim() || `${SITE.name}: ${SITE.tagline}`;
   return [
-    { property: "og:type", content: "website" },
+    { property: "og:type", content: opts.type || "website" },
     { property: "og:site_name", content: SITE.legalName },
     { property: "og:title", content: title },
     { property: "og:description", content: opts.description },
     { property: "og:image", content: image },
     { property: "og:image:width", content: OG_IMAGE_WIDTH },
     { property: "og:image:height", content: OG_IMAGE_HEIGHT },
-    { property: "og:image:alt", content: `${SITE.name}: ${SITE.tagline}` },
+    { property: "og:image:alt", content: imageAlt },
     { property: "og:url", content: url },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
@@ -51,20 +60,25 @@ export function pageHead(opts: {
   canonical?: string;
   /** Optional robots directive, e.g. "noindex, follow" for auth/conversion shells. */
   robots?: string;
+  /** Absolute HTTPS share image; defaults to site OG banner. */
+  image?: string;
+  type?: string;
+  imageAlt?: string;
 }) {
   const description = (opts.description || "").trim();
   const canonical =
     (opts.canonical || "").trim() ||
     (opts.path ? `${SITE.domain}${opts.path}` : "");
+  const image = opts.image || defaultShareImage();
   return {
     meta: [
       { title: pageTitle(opts.title) },
       { name: "description", content: description },
       ...(opts.robots ? [{ name: "robots", content: opts.robots }] : []),
-      ...shareMeta(opts),
+      ...shareMeta({ ...opts, image }),
     ],
     links: [
-      { rel: "image_src", href: defaultShareImage() },
+      { rel: "image_src", href: image },
       ...(canonical ? [{ rel: "canonical", href: canonical }] : []),
     ],
   };
@@ -132,6 +146,7 @@ export function articleJsonLd(opts: {
   path: string;
   date: string;
   author?: string;
+  image?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -142,7 +157,7 @@ export function articleJsonLd(opts: {
     author: { "@type": "Person", name: opts.author ?? SITE.editorial },
     publisher: { "@type": "Organization", name: SITE.legalName, url: SITE.domain },
     url: `${SITE.domain}${opts.path}`,
-    image: defaultShareImage(),
+    image: opts.image || defaultShareImage(),
   };
 }
 
