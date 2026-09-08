@@ -1206,6 +1206,7 @@
   font-size: 17px;
   line-height: 1.7;
   color: var(--ink-soft);
+  overflow: visible;
 }
 
 .article-html h2 {
@@ -1229,28 +1230,58 @@
   margin: 0 0 0.9rem;
 }
 
+/*
+  Tailwind preflight sets ul/ol { list-style: none }. Native ::marker discs were still
+  invisible for Asmit on Key Takeaways despite list-style-type: disc !important — use an
+  explicit ::before disc so bullets are guaranteed visible in light and dark themes.
+*/
 .article-html ul,
 .article-html ol {
   margin: 0 0 0.9rem;
-  padding-left: 1.5rem;
-  list-style-position: outside;
+  padding-left: 0;
+  list-style: none !important;
+  overflow: visible;
 }
 
-.article-html ul {
-  list-style-type: disc !important;
+.article-html ul > li,
+.article-html ol > li {
+  position: relative;
+  display: block;
+  margin: 0.4rem 0;
+  padding-left: 1.45rem;
+  overflow: visible;
+}
+
+.article-html ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0.28rem;
+  top: 0.72em;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: var(--ink);
+  transform: translateY(-50%);
 }
 
 .article-html ol {
-  list-style-type: decimal !important;
+  counter-reset: article-ol;
 }
 
-.article-html li {
-  margin: 0.25rem 0;
-  display: list-item;
+.article-html ol > li {
+  counter-increment: article-ol;
 }
 
-.article-html li::marker {
-  color: var(--ink-soft);
+.article-html ol > li::before {
+  content: counter(article-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.25rem;
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 .article-html img {
@@ -1258,6 +1289,72 @@
   height: auto;
   border-radius: 0.75rem;
   margin: 0.75rem 0;
+}
+
+.article-html .article-table-wrap {
+  margin: 0.75rem 0 1.1rem;
+  overflow-x: auto;
+  border-radius: 0.85rem;
+  border: 1px solid var(--line);
+  background: var(--cream);
+}
+
+.article-html .article-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.article-html .article-table th,
+.article-html .article-table td {
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.article-html .article-table th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--sand) 55%, var(--cream));
+}
+
+.article-html .article-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.article-html .article-table-note,
+.article-html .article-missing-image {
+  margin: 0.55rem 0 0.9rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.article-html table {
+  width: 100%;
+  margin: 0.75rem 0 1.1rem;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.article-html table th,
+.article-html table td {
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.article-html table th {
+  color: var(--ink);
+  font-weight: 700;
+  background: color-mix(in oklab, var(--sand) 45%, var(--cream));
 }
 
 .article-html strong,
