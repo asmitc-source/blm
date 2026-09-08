@@ -5,6 +5,7 @@ import { FAQ, PRICING } from "@/lib/site";
 import { markdownToHtml } from "./convert";
 import { ensureImageAlts, imagesMissingAlt } from "./gdoc";
 import { repairArticleHtml } from "@/lib/content/repair-article-html";
+import { isSocialUnfurlBot } from "@/lib/seo-bots";
 import type { CmsArticle, SiteCopy } from "./types";
 
 function ensureArticleDescription(article: CmsArticle): CmsArticle {
@@ -126,6 +127,24 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     // Prefer published CMS so desk/GEO ships land without a static rewrite.
     // Fall back to bundled library posts when CMS has no published row.
+    let socialBot = false;
+    try {
+      const { getRequest } = await import("@tanstack/react-start/server");
+      socialBot = isSocialUnfurlBot(getRequest()?.headers.get("user-agent"));
+    } catch {
+      /* no request context */
+    }
+    const omitHeavyBody = (payload: { source: "cms" | "static"; article: CmsArticle; markdown: string }) => {
+      // Social unfurlers fail on multi-MB CMS SSR HTML. Omit body for bots only.
+      if (socialBot && payload.source === "cms") {
+        return {
+          ...payload,
+          article: { ...payload.article, body_html: "" },
+          markdown: "",
+        };
+      }
+      return payload;
+    };
     try {
       const { getArticleBySlug } = await import("./store");
       // Skip seedCmsIfEmpty on public article path for snappy TTFB.
@@ -155,7 +174,7 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
           })();
         }
         const article = ensureArticleDescription({ ...cms, body_html });
-        return { source: "cms" as const, article, markdown: "" };
+        return omitHeavyBody({ source: "cms" as const, article, markdown: "" });
       }
     } catch {
       /* no CMS article */
@@ -164,7 +183,7 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
     const post = BLOG_POSTS.find((p) => p.slug === data.slug);
     const markdown = POST_BODY[data.slug];
     if (post && markdown) {
-      return {
+      return omitHeavyBody({
         source: "static" as const,
         article: ensureArticleDescription({
           id: post.slug,
@@ -189,7 +208,7 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
           updated_at: post.date,
         } satisfies CmsArticle),
         markdown,
-      };
+      });
     }
     return null;
   });

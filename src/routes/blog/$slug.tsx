@@ -15,7 +15,6 @@ import {
   pageHead,
   publicOrigin,
 } from "@/lib/seo";
-import { isSocialUnfurlBot } from "@/lib/seo-bots";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 
@@ -23,17 +22,6 @@ export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const data = await loadPublicArticle({ data: { slug: params.slug } });
     if (!data) throw notFound();
-    // Social unfurlers fail on multi-MB CMS SSR HTML. Omit body for bots only —
-    // stored CMS HTML is unchanged; humans still get the full article.
-    const { getRequest } = await import("@tanstack/react-start/server");
-    const ua = getRequest()?.headers.get("user-agent");
-    if (isSocialUnfurlBot(ua) && data.source === "cms") {
-      return {
-        ...data,
-        article: { ...data.article, body_html: "" },
-        markdown: "",
-      };
-    }
     return data;
   },
   head: ({ loaderData }) => {
