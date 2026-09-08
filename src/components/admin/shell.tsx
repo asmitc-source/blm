@@ -1,4 +1,5 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Link, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { FileText, Inbox, LayoutGrid, LogOut, PenLine, Settings2, Target } from "lucide-react";
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -30,7 +31,15 @@ export function AdminShell({
   children: React.ReactNode;
 }) {
   const navigate = useNavigate();
+  const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // Warm the hot desk tabs so Desk ↔ Articles ↔ Write clicks feel sub-second.
+  useEffect(() => {
+    void router.preloadRoute({ to: "/admin/articles" }).catch(() => undefined);
+    void router.preloadRoute({ to: "/admin/write" }).catch(() => undefined);
+    void router.preloadRoute({ to: "/admin" }).catch(() => undefined);
+  }, [router]);
 
   async function signOut() {
     try {
@@ -46,7 +55,7 @@ export function AdminShell({
     <div className="admin-desk min-h-svh">
       <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/85 backdrop-blur-xl">
         <div className="grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 sm:px-6">
-          <Link to="/admin" className="flex items-center gap-2.5 justify-self-start">
+          <Link to="/admin" preload="intent" className="flex items-center gap-2.5 justify-self-start">
             <LogoMark className="size-8" />
             <span className="font-display text-xl font-semibold tracking-tight">The desk</span>
           </Link>
@@ -57,6 +66,7 @@ export function AdminShell({
                 <Link
                   key={item.to}
                   to={item.to}
+                  preload="intent"
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors",
                     on ? "bg-ink text-cream" : "text-ink-soft hover:bg-sand hover:text-ink",
@@ -84,6 +94,7 @@ export function AdminShell({
             <Link
               key={item.to}
               to={item.to}
+              preload="intent"
               className={cn(
                 "shrink-0 rounded-full px-3 py-1 text-sm font-semibold transition-colors",
                 on ? "bg-ink text-cream" : "bg-sand text-ink",

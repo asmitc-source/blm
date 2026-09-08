@@ -77,3 +77,21 @@ test("gdoc.ts exports ensureImageAlts", () => {
   assert.match(src, /fillEmptyAlts/);
   assert.match(src, /Illustration for/);
 });
+
+function coverAltMissing(coverUrl, coverAlt) {
+  const url = String(coverUrl ?? "").trim();
+  const alt = String(coverAlt ?? "").trim();
+  return Boolean(url) && !alt;
+}
+
+test("coverAltMissing treats whitespace alt as missing", () => {
+  assert.equal(coverAltMissing("https://x.test/a.png", "   "), true);
+  assert.equal(coverAltMissing("https://x.test/a.png", "A cover"), false);
+  assert.equal(coverAltMissing("  ", ""), false);
+  assert.equal(coverAltMissing("", "   "), false);
+});
+
+test("gdoc.ts exports coverAltMissing", () => {
+  const src = readFileSync(resolve("src/lib/cms/gdoc.ts"), "utf8");
+  assert.match(src, /export function coverAltMissing/);
+});

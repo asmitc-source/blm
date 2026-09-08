@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { SITE } from "@/lib/site";
 import { deskMiddleware } from "./middleware";
 import { newToken } from "./crypto";
-import { cleanArticleHtml, ensureImageAlts, extractTitleFromHtml, googleDocExportUrl, googleDocId, imagesMissingAlt } from "./gdoc";
+import { cleanArticleHtml, coverAltMissing, ensureImageAlts, extractTitleFromHtml, googleDocExportUrl, googleDocId, imagesMissingAlt } from "./gdoc";
 import { estimateMinutes, slugify } from "./convert";
 import type { ArticleKind, ArticleStatus, SiteCopy } from "./types";
 
@@ -320,7 +320,8 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
           `Every image needs alt text before publishing (${missingAlts.length} missing). Add alt on: ${missingAlts.slice(0, 3).join(", ")}`,
         );
       }
-      if (cover_url && !cover_alt) {
+      // Nuclear: any non-empty cover_url after trim requires non-empty cover_alt after trim.
+      if (coverAltMissing(cover_url, cover_alt) || coverAltMissing(str(o.cover_url), str(o.cover_alt))) {
         throw new Error("Cover image alt text is required before publishing.");
       }
     }

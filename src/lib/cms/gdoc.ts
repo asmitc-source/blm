@@ -38,6 +38,13 @@ function stripTags(html: string) {
   return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
+/** True when a cover URL is set but alt is missing/whitespace-only. */
+export function coverAltMissing(coverUrl: string | null | undefined, coverAlt: string | null | undefined) {
+  const url = String(coverUrl ?? "").trim();
+  const alt = String(coverAlt ?? "").trim();
+  return Boolean(url) && !alt;
+}
+
 /** Images in body HTML missing a non-empty alt attribute. */
 export function imagesMissingAlt(html: string): string[] {
   const missing: string[] = [];

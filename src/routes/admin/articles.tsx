@@ -10,6 +10,12 @@ type PageData = Awaited<ReturnType<typeof cmsArticlesPage>>;
 
 export const Route = createFileRoute("/admin/articles")({
   loader: () => cmsArticlesPage(),
+
+  pendingComponent: () => (
+    <div className="admin-desk min-h-svh px-4 py-10 sm:px-6">
+      <p className="text-sm font-semibold text-muted">Loading…</p>
+    </div>
+  ),
   head: () => pageHead({ title: "Articles", description: "All desk articles.", path: "/admin/articles" }),
   component: ArticlesPage,
 });

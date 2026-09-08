@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cmsBootstrap, cmsGetArticle, cmsImportDoc, cmsSaveArticle } from "@/lib/cms/actions";
-import { imagesMissingAlt } from "@/lib/cms/gdoc";
+import { coverAltMissing, imagesMissingAlt } from "@/lib/cms/gdoc";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { pageHead } from "@/lib/seo";
@@ -150,7 +150,7 @@ function WritePage() {
       if (missingAlts.length) {
         return `Every image needs alt text before publishing (${missingAlts.length} missing).`;
       }
-      if (form.cover_url.trim() && !form.cover_alt.trim()) {
+      if (coverAltMissing(form.cover_url, form.cover_alt)) {
         return "Cover image alt text is required before publishing.";
       }
     }
@@ -185,6 +185,7 @@ function WritePage() {
         date,
         published_at: published_at ? new Date(published_at).toISOString() : "",
         cover_url: form.cover_url.trim(),
+        cover_alt: form.cover_alt.trim(),
       };
       const saved = await Promise.race([cmsSaveArticle({ data: payload }), timedOut]);
       if (!saved) throw new Error("Could not save.");
