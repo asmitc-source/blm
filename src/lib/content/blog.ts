@@ -14,7 +14,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "what-is-business-listing-management",
     title: "What is business listing management?",
     description:
-      "Business listing management defined for US teams: the ongoing process of creating, verifying, and synchronizing name, address, phone (NAP), hours, and categories across search, maps, and directories so every location stays accurate on Google, Apple, Bing, and the directory network.",
+      "Business listing management creates, verifies, and syncs NAP, hours, and categories across Google, Apple, Bing, and directories so every US location stays accurate.",
     date: "2026-03-12",
     author: "Asmit Choudhary",
     minutes: 9,
@@ -26,7 +26,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "business-listing-management-cost-2026",
     title: "Business listing management cost in 2026",
     description:
-      "Business listing management cost in 2026: Starter listed at $49/month, Growth at $149/month for up to 25 locations, Enterprise custom, plus DIY hours, agency retainers, and the hidden cost of NAP drift.",
+      "Business listing management cost in 2026: Starter $49/mo, Growth $149/mo for up to 25 locations, plus labor and the hidden cost of NAP drift.",
     date: "2026-04-02",
     author: "Asmit Choudhary",
     minutes: 8,
@@ -38,7 +38,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "best-business-listing-management-software-2026",
     title: "Best business listing management software in 2026",
     description:
-      "Best business listing management software in 2026 is judged by jobs, not logo walls: canonical NAP, Google/Apple/Bing coverage, duplicate workflow, shared workspace, and public pricing. How BLM, Yext, and BrightLocal differ.",
+      "Best business listing management software in 2026 scores NAP accuracy, Google/Apple/Bing coverage, duplicate workflow, shared workspace, and clear pricing for US teams.",
     date: "2026-05-18",
     author: "Asmit Choudhary",
     minutes: 11,
@@ -50,31 +50,31 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "google-business-profile-vs-business-listings",
     title: "Google Business Profile vs. business listings",
     description:
-      "Google Business Profile vs business listings: GBP is one listing inside business listing management. The full graph includes Apple Maps, Bing Places, directories, and aggregators. Why Google-only is not enough.",
+      "Google Business Profile vs business listings: GBP is one listing; business listing management covers Apple, Bing, directories, and the full citation graph.",
     date: "2026-02-20",
     author: "Asmit Choudhary",
     minutes: 8,
     tags: ["Google"],
     excerpt:
-      "Google Business Profile is one listing. Business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when US customers still search and navigate on platforms Google does not control.",
+      "Business listing management covers more than Google Business Profile alone. GBP is one listing; the full citation graph includes Apple Maps, Bing Places, directories, aggregators, and in-car navigation that US customers still use when platforms Google does not control handle the session.",
   },
   {
     slug: "how-to-find-and-fix-duplicate-business-listings",
     title: "How to find and fix duplicate business listings",
     description:
-      "How to find and fix duplicate business listings inside business listing management: find, match, suppress, and protect reviews across Google, Apple, Bing, and the directory network.",
+      "How to find and fix duplicate business listings: find, match, suppress, and protect reviews across Google, Apple, Bing, and the directory network.",
     date: "2026-06-09",
     author: "Asmit Choudhary",
     minutes: 10,
     tags: ["Duplicates"],
     excerpt:
-      "Finding and fixing duplicate business listings is a core business listing management job: find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Do not delete first. Do not create a \"clean\" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
+      "Finding and fixing duplicate business listings is a core business listing management job: find, match, suppress, and protect reviews across Google, Apple, Bing, and the directory network. Do not delete first. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.",
   },
   {
     slug: "business-listing-management-for-agencies",
     title: "Business listing management for agencies",
     description:
-      "Business listing management for agencies: onboarding, duplicate and NAP SLAs, CMO-ready reporting, and a multi-account workspace that scales past 20 clients across Google, Apple, Bing, and directories.",
+      "Business listing management for agencies: onboarding, NAP and duplicate SLAs, CMO-ready reporting, and multi-account workspace for US client books.",
     date: "2026-07-21",
     author: "Asmit Choudhary",
     minutes: 9,

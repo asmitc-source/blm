@@ -1,6 +1,8 @@
 const markdown = `Business listing management for agencies is an operations product, not a monthly screenshot: defined onboarding, SLAs on duplicates and NAP drift, reporting a CMO can read, and a multi-account workspace that scales past 20 brands across Google, Apple, Bing, and the directory network.
 
-The work is the same as in-house business listing management (canonical NAP, coverage, duplicates, hours), sold as a retainer with proof. This is for US agency owners and local SEO leads who already sell citations or GBP support and need the practice to survive contact with a 30-client book. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) for side-by-side jobs, and check [pricing](/pricing) or [business listing management cost in 2026](/blog/business-listing-management-cost-2026) for listed rates. For how US buyers evaluate the category you are selling into, keep [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) handy in pitches.
+The work is the same as in-house business listing management (canonical NAP, coverage, duplicates, hours), sold as a retainer with proof. This is for US agency owners and local SEO leads who already sell citations or GBP support and need the practice to survive contact with a 30-client book. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](https://businesslistingmanagement.com/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) for side-by-side jobs, and check [pricing](/pricing) or [business listing management cost in 2026](https://businesslistingmanagement.com/blog/business-listing-management-cost-2026) for listed rates. For how US buyers evaluate the category you are selling into, keep [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us) and [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) handy in pitches.
+
+For official Google edits, follow the [Google Business Profile guidelines](https://support.google.com/business/answer/3038177). Buyer reviews on [G2's local listing management category](https://www.g2.com/categories/local-listing-management) and [Capterra's local SEO tools directory](https://www.capterra.com/directory/33515/local-seo-tools/software) help when you want peer feedback before you shortlist platforms.
 
 ## How should agencies onboard a new listing client?
 
@@ -10,7 +12,7 @@ Onboarding for business listing management is where you either become the system
 
 **Week 1: inventory.** Run every location against the graph. Score NAP, coverage, duplicates, and hours. [Start a free trial](/trial) to show the before state, then keep the after state in the same desk. Starter is enough to put one brand in before you negotiate Enterprise multi-account.
 
-**Week 1-2: survivor decisions.** For each duplicate cluster, pick the surviving profile using review count and correctable NAP. Put the decision in writing. The playbook is [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings).
+**Week 1-2: survivor decisions.** For each duplicate cluster, pick the surviving profile using review count and correctable NAP. Put the decision in writing. The playbook is [how to find and fix duplicate business listings](https://businesslistingmanagement.com/blog/how-to-find-and-fix-duplicate-business-listings).
 
 **Week 2-4: unify and claim.** Push canonical NAP to core publishers. File merges and reports. Do not promise Apple will match Google by Friday. Promise that you submitted, that you will re-scan, and that the score is the proof.
 
@@ -32,9 +34,9 @@ SLAs that an honest agency can keep:
 
 SLAs that get you fired or force you to lie: rank guarantees, "all 80 directories updated in 48 hours," review count increases, and Apple/Bing live parity on Google's clock.
 
-Write publisher lag into the agreement. Clients who have only ever used GBP think an edit is instant everywhere. A one-paragraph explainer, plus a link to [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings), saves a quarterly argument.
+Write publisher lag into the agreement. Clients who have only ever used GBP think an edit is instant everywhere. A one-paragraph explainer, plus a link to [Google Business Profile vs. business listings](https://businesslistingmanagement.com/blog/google-business-profile-vs-business-listings), saves a quarterly argument.
 
-Price the SLA. Faster duplicate response and after-hours hours changes are a higher tier, not a personality trait of your account manager. Public software pricing (Starter $49/month, Growth $149/month for 25 locations, Enterprise for agency structure) is the floor for tools; your labor sits on top. See [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) for how to pick a desk that makes SLAs measurable.
+Price the SLA. Faster duplicate response and after-hours hours changes are a higher tier, not a personality trait of your account manager. Public software pricing (Starter $49/month, Growth $149/month for 25 locations, Enterprise for agency structure) is the floor for tools; your labor sits on top. See [best business listing management software in 2026](https://businesslistingmanagement.com/blog/best-business-listing-management-software-2026) for how to pick a desk that makes SLAs measurable.
 
 ## How should agencies report listing work?
 
@@ -83,7 +85,7 @@ The product you sell the client is not a tool logo. It is onboarding, SLA, repor
 
 ### Should listing management be a line item or bundled into local SEO?
 
-Make business listing management a named line, even if the invoice is bundled. Clients who cannot see the listing product will cut it first when they want to "keep SEO but pause extras." A score, an SLA, and a report make the line defensible. For the software shortlist you may pitch beside the retainer, keep [best business listing management software in 2026](/blog/best-business-listing-management-software-2026) in the deck.
+Make business listing management a named line, even if the invoice is bundled. Clients who cannot see the listing product will cut it first when they want to "keep SEO but pause extras." A score, an SLA, and a report make the line defensible. For the software shortlist you may pitch beside the retainer, keep [best business listing management software in 2026](https://businesslistingmanagement.com/blog/best-business-listing-management-software-2026) in the deck.
 
 ### How do we handle franchisees who create new Google listings?
 
@@ -96,18 +98,6 @@ Growth is $149/month for up to 25 locations in one operating picture: fine for o
 ### What do we show in a pitch before we have access?
 
 A live audit of one public location with the listing auditor. Point at NAP mismatch, a missing Apple record, or a duplicate. Then show the onboarding plan. Do not show a logo wall. Prospects have seen logo walls. They have not always seen their own fork on Bing.
-
-## Sources
-
-Publisher and local-search references checked 2026-09-06. Confirm the live help article before you file a change; product UIs move.
-
-- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
-- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
-- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
-- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
-- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
-- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
-- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

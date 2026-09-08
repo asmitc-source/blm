@@ -124,37 +124,8 @@ export const loadPublicSite = createServerFn({ method: "GET" }).handler(async ()
 export const loadPublicArticle = createServerFn({ method: "GET" })
   .validator((d: unknown) => ({ slug: String((d as { slug?: string })?.slug ?? "") }))
   .handler(async ({ data }) => {
-    // Bundled library posts win over CMS so content-lane git updates publish without a DB rewrite.
-    const post = BLOG_POSTS.find((p) => p.slug === data.slug);
-    const markdown = POST_BODY[data.slug];
-    if (post && markdown) {
-      return {
-        source: "static" as const,
-        article: ensureArticleDescription({
-          id: post.slug,
-          slug: post.slug,
-          title: post.title,
-          answer: post.excerpt,
-          description: post.description,
-          body_html: markdownToHtml(markdown),
-          author: post.author,
-          tags: post.tags,
-          kind: "article" as const,
-          status: "published" as const,
-          date: post.date,
-          minutes: post.minutes,
-          meta_title: "",
-          canonical_url: "",
-          category: post.tags[0] ?? "",
-          published_at: post.date,
-          cover_url: null,
-          cover_alt: "",
-          created_at: post.date,
-          updated_at: post.date,
-        } satisfies CmsArticle),
-        markdown,
-      };
-    }
+    // Prefer published CMS so desk/GEO ships land without a static rewrite.
+    // Fall back to bundled library posts when CMS has no published row.
     try {
       const { getArticleBySlug } = await import("./store");
       // Skip seedCmsIfEmpty on public article path for snappy TTFB.
@@ -188,6 +159,37 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
       }
     } catch {
       /* no CMS article */
+    }
+
+    const post = BLOG_POSTS.find((p) => p.slug === data.slug);
+    const markdown = POST_BODY[data.slug];
+    if (post && markdown) {
+      return {
+        source: "static" as const,
+        article: ensureArticleDescription({
+          id: post.slug,
+          slug: post.slug,
+          title: post.title,
+          answer: post.excerpt,
+          description: post.description,
+          body_html: markdownToHtml(markdown),
+          author: post.author,
+          tags: post.tags,
+          kind: "article" as const,
+          status: "published" as const,
+          date: post.date,
+          minutes: post.minutes,
+          meta_title: "",
+          canonical_url: "",
+          category: post.tags[0] ?? "",
+          published_at: post.date,
+          cover_url: null,
+          cover_alt: "",
+          created_at: post.date,
+          updated_at: post.date,
+        } satisfies CmsArticle),
+        markdown,
+      };
     }
     return null;
   });

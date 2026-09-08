@@ -1,6 +1,8 @@
-const markdown = `Google Business Profile is one listing. Business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when US customers still search and navigate on platforms Google does not control.
+const markdown = `Business listing management covers more than Google Business Profile alone. GBP is one listing; business listings are the full citation graph: Apple Maps, Bing Places, Facebook, Yelp, aggregators, in-car navigation, and the directory network underneath. Managing only GBP is necessary and not sufficient when US customers still search and navigate on platforms Google does not control.
 
-If your local program is "we keep Google tidy," this piece is the argument for treating listings as a graph. Start on the [BLM homepage](/), read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) when shortlisting tools, and check [pricing](/pricing) for listed rates. For a second editorial take on the same fork (GBP versus the wider listings layer), read [Google Business Profile vs business listings](https://locallistingsmanagement.co/google-business-profile-vs-business-listings) on Local Listings Management.
+If your local program is "we keep Google tidy," this piece is the argument for treating listings as a graph. Start on the [BLM homepage](/), read [what is business listing management?](https://businesslistingmanagement.com/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) when shortlisting tools, and check [pricing](/pricing) for listed rates. For a second editorial take on the same fork (GBP versus the wider listings layer), read [Google Business Profile vs business listings](https://locallistingsmanagement.co/google-business-profile-vs-business-listings) on Local Listings Management.
+
+For official Google edits, follow the [Google Business Profile guidelines](https://support.google.com/business/answer/3038177). Buyer reviews on [G2's local listing management category](https://www.g2.com/categories/local-listing-management) and [Capterra's local SEO tools directory](https://www.capterra.com/directory/33515/local-seo-tools/software) help when you want peer feedback before you shortlist platforms.
 
 ## What is Google Business Profile actually responsible for?
 
@@ -54,7 +56,7 @@ None of this means you must manually garden 80 directories. It means you measure
 
 Google-only business listing management can be enough when you have one location, a category that is overwhelmingly Google-discovered, and no Apple/Bing presence worth claiming yet; when you are in the first two weeks of an emergency (wrong hours on the map pack) and GBP is the fire; or when you have zero owner access anywhere else and need a beachhead.
 
-Google-only is a bad steady state when you have multiple locations or franchisees, call tracking that has leaked onto other publishers, a rebrand/move/acquisition in recent memory, a non-trivial share of customers on iOS navigation, or duplicates already live. Google-only cleanup will not collapse Apple or Yelp forks. Use [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings).
+Google-only is a bad steady state when you have multiple locations or franchisees, call tracking that has leaked onto other publishers, a rebrand/move/acquisition in recent memory, a non-trivial share of customers on iOS navigation, or duplicates already live. Google-only cleanup will not collapse Apple or Yelp forks. Use [how to find and fix duplicate business listings](https://businesslistingmanagement.com/blog/how-to-find-and-fix-duplicate-business-listings).
 
 A useful rule: GBP is the priority surface; it is not the system of record. The system of record is your canonical NAP. GBP is a publisher you update from that record, first among equals.
 
@@ -65,9 +67,9 @@ Business listing management at graph scale does not mean assigning a person to "
 - Score NAP, coverage, duplicates, and hours per location.
 - Alert on change, not on existence.
 - Cadence: weekly digest in steady state; daily during rebrand or rollout.
-- Owners: brand owns name and category; local owns hours; agency or listing desk owns publisher tickets. See [business listing management for agencies](/blog/business-listing-management-for-agencies) if that desk is external.
+- Owners: brand owns name and category; local owns hours; agency or listing desk owns publisher tickets. See [business listing management for agencies](https://businesslistingmanagement.com/blog/business-listing-management-for-agencies) if that desk is external.
 
-[Start a free trial](/trial) to run the listing auditor against a real location. Cost context sits in [business listing management cost in 2026](/blog/business-listing-management-cost-2026): DIY time, retainers, Starter at $49/month after trial, Growth at $149/month, then Enterprise. The weekly meeting should look at the graph. If the only slide is a GBP insights screenshot, you are reporting a channel, not managing listings.
+[Start a free trial](/trial) to run the listing auditor against a real location. Cost context sits in [business listing management cost in 2026](https://businesslistingmanagement.com/blog/business-listing-management-cost-2026): DIY time, retainers, Starter at $49/month after trial, Growth at $149/month, then Enterprise. The weekly meeting should look at the graph. If the only slide is a GBP insights screenshot, you are reporting a channel, not managing listings.
 
 ## FAQ
 
@@ -86,18 +88,6 @@ In a system of record you control: a listing workspace, not a Google field. Push
 ### How fast should we expect non-Google publishers to update?
 
 Hours to weeks, depending on the publisher and whether you have owner access. Plan for lag. "We submitted it" is not "customers see it." Re-scan live records. That re-scan is the difference between listing management and listing theater.
-
-## Sources
-
-Publisher and local-search references checked 2026-09-06. Confirm the live help article before you file a change; product UIs move.
-
-- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
-- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
-- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
-- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
-- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
-- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
-- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

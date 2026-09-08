@@ -1,6 +1,8 @@
 const markdown = `Finding and fixing duplicate business listings is a core business listing management job: find, match, suppress, and protect reviews, in that order, across Google, Apple, Bing, and the directory network. Duplicates split reviews, confuse hours, and suppress the map pack. Do not delete first. Do not create a "clean" new profile and hope the old one dies. Choose a survivor, merge or report the rest, then re-scan until aggregators catch up.
 
-This is a US field guide, not a theory of local SEO. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, and use [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) when the team still equates listings with Google alone. For software that queues near-matches, see [best business listing management software in 2026](/blog/best-business-listing-management-software-2026), [compare listing software](/compare), and [pricing](/pricing). For the wider operating playbook (including how duplicates fit a full listings program), see the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide).
+This is a US field guide, not a theory of local SEO. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](https://businesslistingmanagement.com/blog/what-is-business-listing-management) for the category definition, and use [Google Business Profile vs. business listings](https://businesslistingmanagement.com/blog/google-business-profile-vs-business-listings) when the team still equates listings with Google alone. For software that queues near-matches, see [best business listing management software in 2026](https://businesslistingmanagement.com/blog/best-business-listing-management-software-2026), [compare listing software](/compare), and [pricing](/pricing). For the wider operating playbook (including how duplicates fit a full listings program), see the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide).
+
+For official Google edits, follow the [Google Business Profile guidelines](https://support.google.com/business/answer/3038177). Buyer reviews on [G2's local listing management category](https://www.g2.com/categories/local-listing-management) and [Capterra's local SEO tools directory](https://www.capterra.com/directory/33515/local-seo-tools/software) help when you want peer feedback before you shortlist platforms.
 
 ## Why do duplicate listings appear in the first place?
 
@@ -75,7 +77,7 @@ Business listing management suppresses duplicates without orphaning reputation. 
 - If the high-review profile has the old address and you moved, follow that publisher's move/merge process.
 - Screenshot review counts before you file anything.
 
-Agencies should put this in the SLA: merge preferred, delete prohibited without written exception, reviews counted before and after. See [business listing management for agencies](/blog/business-listing-management-for-agencies).
+Agencies should put this in the SLA: merge preferred, delete prohibited without written exception, reviews counted before and after. See [business listing management for agencies](https://businesslistingmanagement.com/blog/business-listing-management-for-agencies).
 
 ## What should you do after the surviving listing is chosen?
 
@@ -87,7 +89,7 @@ Suppression is the middle of the business listing management job, not the end.
 - Close the source process that created the fork (old citation sheet, franchisee habit).
 - Do not blast new citations until the survivor is clean.
 
-For footprint and budget, duplicates change the cleanup line more than the software line. Ten locations with forks are a project; ten clean locations are a subscription. Numbers are in [business listing management cost in 2026](/blog/business-listing-management-cost-2026) and on [pricing](/pricing): Starter at $49/month after trial, Growth at $149/month for up to 25 locations, Enterprise for bulk workflow at scale.
+For footprint and budget, duplicates change the cleanup line more than the software line. Ten locations with forks are a project; ten clean locations are a subscription. Numbers are in [business listing management cost in 2026](https://businesslistingmanagement.com/blog/business-listing-management-cost-2026) and on [pricing](/pricing): Starter at $49/month after trial, Growth at $149/month for up to 25 locations, Enterprise for bulk workflow at scale.
 
 If you only remember four verbs: find, match, suppress, keep reviews. Everything else is publisher-specific paperwork.
 
@@ -108,18 +110,6 @@ Business listing management software can find and queue them, and in some networ
 ### We already ran a citation campaign. Why are forks still here?
 
 Because campaigns publish NAP; they do not reconcile identities. If the campaign used a tracking number or a different suite format, it likely created forks. Stop submitting. Inventory, pick survivors, then submit only the canonical record. A fresh listing auditor run is the cheapest way to see whether the campaign helped or multiplied you. For how this fits a full US listings program, return to the [local listings management guide](https://locallistingsmanagement.co/local-listings-management-guide).
-
-## Sources
-
-Publisher and local-search references checked 2026-09-06. Confirm the live help article before you file a change; product UIs move.
-
-- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
-- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
-- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
-- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
-- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
-- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
-- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;

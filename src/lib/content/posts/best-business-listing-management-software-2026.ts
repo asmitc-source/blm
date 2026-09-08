@@ -1,6 +1,8 @@
 const markdown = `The best business listing management software in 2026 is the system that catches NAP drift, duplicates, and coverage gaps before customers do, not the longest publisher logo wall. Score it on canonical NAP, verified status across Google, Apple, Bing, and the directory network, duplicate workflow that protects reviews, a shared workspace, and public pricing that matches your location count.
 
-Yext, BrightLocal, and focused desks like BLM solve overlapping jobs; they are not interchangeable. This buying guide is for US teams that have sat through a demo and still could not tell whether the product would notice a suite-line mismatch on Apple. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) for side-by-side jobs, and check [pricing](/pricing) or [business listing management cost in 2026](/blog/business-listing-management-cost-2026) for listed rates. For a broader US category shortlist, see [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) and [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
+For official Google edits, follow the [Google Business Profile guidelines](https://support.google.com/business/answer/3038177). Buyer reviews on [G2's local listing management category](https://www.g2.com/categories/local-listing-management) and [Capterra's local SEO tools directory](https://www.capterra.com/directory/33515/local-seo-tools/software) help when you want peer feedback before you shortlist platforms.
+
+Yext, BrightLocal, and focused desks like BLM solve overlapping jobs; they are not interchangeable. This buying guide is for US teams that have sat through a demo and still could not tell whether the product would notice a suite-line mismatch on Apple. Start on the [BLM homepage](/) for the product view, read [what is business listing management?](https://businesslistingmanagement.com/blog/what-is-business-listing-management) for the category definition, use [compare listing software](/compare) for side-by-side jobs, and check [pricing](/pricing) or [business listing management cost in 2026](https://businesslistingmanagement.com/blog/business-listing-management-cost-2026) for listed rates. For a broader US category shortlist, see [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software) and [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
 
 ## What should listing software actually do in 2026?
 
@@ -27,7 +29,7 @@ Coverage in business listing management means live status you can inspect, not a
 - How do aggregators factor in, and will the long tail reintroduce old NAP?
 - Can I run my own locations before I buy?
 
-[Start a free trial](/trial) and run the listing auditor on a name and city. Starter unlocks after a 7-day trial. Growth and Enterprise are there if the score is worth keeping. Then read [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) so nobody on the buying committee equates "we have Google" with "we have listings."
+[Start a free trial](/trial) and run the listing auditor on a name and city. Starter unlocks after a 7-day trial. Growth and Enterprise are there if the score is worth keeping. Then read [Google Business Profile vs. business listings](https://businesslistingmanagement.com/blog/google-business-profile-vs-business-listings) so nobody on the buying committee equates "we have Google" with "we have listings."
 
 ## How should you judge duplicate handling?
 
@@ -41,7 +43,7 @@ A 2026-ready workflow:
 - Tracks suppression or merge state per publisher, because Google's merge is not Apple's process.
 - Re-opens the issue if the fork comes back.
 
-If the vendor's story is "we submit to 100 sites, duplicates are rare," keep walking. The playbook in [how to find and fix duplicate business listings](/blog/how-to-find-and-fix-duplicate-business-listings) should map onto the product's screens. Ask what happens to reviews. A tool that encourages you to "delete the extra listing" without a merge path is a reputation risk.
+If the vendor's story is "we submit to 100 sites, duplicates are rare," keep walking. The playbook in [how to find and fix duplicate business listings](https://businesslistingmanagement.com/blog/how-to-find-and-fix-duplicate-business-listings) should map onto the product's screens. Ask what happens to reviews. A tool that encourages you to "delete the extra listing" without a merge path is a reputation risk.
 
 ## How does BLM compare to Yext and BrightLocal?
 
@@ -58,7 +60,7 @@ A fair evaluation is not "who has more publishers on a slide." It is:
 - Can we see live mismatches on the publishers our customers use?
 - Can two teams share the same location list without sharing passwords in a doc?
 - Can we afford to turn it on this quarter?
-- Will an agency run more than one brand without a spreadsheet of logins? (If yes matters, also read [business listing management for agencies](/blog/business-listing-management-for-agencies).)
+- Will an agency run more than one brand without a spreadsheet of logins? (If yes matters, also read [business listing management for agencies](https://businesslistingmanagement.com/blog/business-listing-management-for-agencies).)
 
 Run the same three locations through each shortlisted tool. Compare the issues each one finds. For a wider US shortlist beyond this three-way fork, use [best local listing management software](https://locallistingsmanagement.co/best-local-listing-management-software).
 
@@ -88,7 +90,7 @@ BLM's path is intentionally unromantic: [start a free trial](/trial), run the au
 
 ### Do we still need listing software if we only care about Google?
 
-You can run Google-only for a single shop. The moment customers use Apple Maps, CarPlay, Bing, or a directory, Google-only is a partial graph. Software earns its keep when the second publisher drifts. See [Google Business Profile vs. business listings](/blog/google-business-profile-vs-business-listings) and the companion on [Local Listings Management](https://locallistingsmanagement.co/google-business-profile-vs-business-listings).
+You can run Google-only for a single shop. The moment customers use Apple Maps, CarPlay, Bing, or a directory, Google-only is a partial graph. Software earns its keep when the second publisher drifts. See [Google Business Profile vs. business listings](https://businesslistingmanagement.com/blog/google-business-profile-vs-business-listings) and the companion on [Local Listings Management](https://locallistingsmanagement.co/google-business-profile-vs-business-listings).
 
 ### Is cheaper software worse coverage?
 
@@ -101,18 +103,6 @@ Cleanup is the asset: canonical NAP, claimed profiles, suppressed duplicates. To
 ### What is a reasonable first contract length?
 
 Annual makes sense once the workflow is proven. For a first buy, prefer monthly or a short commitment while you confirm Apple/Bing writes and duplicate queues. [Start a free trial](/trial) first so you are not negotiating a year blind. For how US teams sequence that purchase, see [where to buy local listing management software (US)](https://locallistingsmanagement.co/where-to-buy-local-listing-management-software-us).
-
-## Sources
-
-Publisher and local-search references checked 2026-09-06. Confirm the live help article before you file a change; product UIs move.
-
-- [Google Business Profile Help Center](https://support.google.com/business/): claim, verify, edit, hours, categories, and troubleshooting for Google listings.
-- [About Google Business Profile](https://support.google.com/business/answer/7091): what a profile includes on Search and Maps.
-- [Guidelines for representing your business on Google](https://support.google.com/business/answer/3038177): naming, addresses, and categories Google expects.
-- [Apple Business Connect](https://businessconnect.apple.com/): owner tools for places on Apple Maps and related Apple surfaces.
-- [Bing Places for Business](https://www.bingplaces.com/): claim and manage listings that feed Bing and Microsoft map surfaces.
-- [Bing Places support](https://www.bingplaces.com/Dashboard/Home/Help): listing management help and contact paths.
-- [Moz: Local SEO](https://moz.com/learn/seo/local): independent overview of local search, listings, and NAP consistency.
 `;
 
 export default markdown;
