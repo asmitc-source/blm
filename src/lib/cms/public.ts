@@ -4,6 +4,7 @@ import { POST_BODY } from "@/lib/content/posts";
 import { FAQ, PRICING } from "@/lib/site";
 import { markdownToHtml } from "./convert";
 import { ensureImageAlts, imagesMissingAlt } from "./gdoc";
+import { repairArticleHtml } from "@/lib/content/repair-article-html";
 import type { CmsArticle, SiteCopy } from "./types";
 
 function ensureArticleDescription(article: CmsArticle): CmsArticle {
@@ -162,9 +163,12 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
         new Promise<null>((resolve) => setTimeout(() => resolve(null), 4_000)),
       ]);
       if (cms) {
-        const body_html = ensureImageAlts(cms.body_html, cms.title);
+        const body_html = ensureImageAlts(repairArticleHtml(cms.body_html), cms.title);
         // Opportunistic persist: production has SUPABASE_SECRET_KEY; publishable key cannot write.
-        if (imagesMissingAlt(cms.body_html).length) {
+        const needsPersist =
+          imagesMissingAlt(cms.body_html).length > 0 ||
+          /chatgpt\.com\/backend-api\/estuary/i.test(cms.body_html);
+        if (needsPersist) {
           void (async () => {
             try {
               const { supabaseAdmin } = await import("./supabase.server");
