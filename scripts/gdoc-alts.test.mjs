@@ -79,19 +79,41 @@ test("gdoc.ts exports ensureImageAlts", () => {
 });
 
 function coverAltMissing(coverUrl, coverAlt) {
-  const url = String(coverUrl ?? "").trim();
-  const alt = String(coverAlt ?? "").trim();
-  return Boolean(url) && !alt;
+  // Nuclear: alt required even when cover URL empty (mirror gdoc.ts).
+  void coverUrl;
+  return !String(coverAlt ?? "").trim();
 }
 
-test("coverAltMissing treats whitespace alt as missing", () => {
+test("coverAltMissing blocks blank alt even with empty cover URL", () => {
   assert.equal(coverAltMissing("https://x.test/a.png", "   "), true);
   assert.equal(coverAltMissing("https://x.test/a.png", "A cover"), false);
-  assert.equal(coverAltMissing("  ", ""), false);
-  assert.equal(coverAltMissing("", "   "), false);
+  assert.equal(coverAltMissing("", ""), true);
+  assert.equal(coverAltMissing("  ", ""), true);
+  assert.equal(coverAltMissing("", "   "), true);
+  assert.equal(coverAltMissing("", "Desk cover"), false);
+  assert.equal(coverAltMissing(null, "ok"), false);
 });
 
-test("gdoc.ts exports coverAltMissing", () => {
+test("gdoc.ts exports nuclear coverAltMissing", () => {
   const src = readFileSync(resolve("src/lib/cms/gdoc.ts"), "utf8");
   assert.match(src, /export function coverAltMissing/);
+  assert.match(src, /Nuclear publish bar/);
+  assert.doesNotMatch(src, /Boolean\(url\) && !alt/);
+});
+
+test("write.tsx never returns null blank and hard-gates cover alt", () => {
+  const src = readFileSync(resolve("src/routes/admin/write.tsx"), "utf8");
+  assert.doesNotMatch(src, /if \(!ready\) return null/);
+  assert.match(src, /loader: \(\) => cmsBootstrap\(\)/);
+  assert.match(src, /pendingComponent:/);
+  assert.match(src, /pendingMs:\s*0/);
+  assert.match(src, /WriteSkeleton/);
+  assert.match(src, /Cover image alt is required to publish or schedule/);
+  assert.match(src, /disabled=\{saving \|\| coverNeedsAlt\}/);
+});
+
+test("server save throws always-required cover alt string", () => {
+  const src = readFileSync(resolve("src/lib/cms/actions.ts"), "utf8");
+  assert.match(src, /Cover image alt is required to publish or schedule/);
+  assert.match(src, /!str\(o\.cover_alt\)\.trim\(\)/);
 });

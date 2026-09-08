@@ -9,6 +9,7 @@ export function getRouter() {
     // Soft navigations: prefetch on hover/focus, keep loaders warm so clicks feel instant.
     defaultPreload: "intent",
     defaultPreloadDelay: 0,
+    defaultPendingMs: 0,
     defaultStaleTime: 60_000,
     defaultPreloadStaleTime: 30_000,
     scrollRestoration: true,

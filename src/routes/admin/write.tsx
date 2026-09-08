@@ -16,12 +16,35 @@ import { pageHead } from "@/lib/seo";
 type Search = { id?: string; title?: string; import?: string };
 type FormStatus = "draft" | "published" | "scheduled";
 
+function WriteSkeleton({ username = "" }: { username?: string }) {
+  return (
+    <AdminShell username={username}>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Write</p>
+      <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight">New article</h1>
+      <div className="mt-8 grid gap-5" aria-hidden>
+        <div className="h-11 animate-pulse rounded-xl bg-sand" />
+        <div className="h-24 animate-pulse rounded-xl bg-sand" />
+        <div className="h-40 animate-pulse rounded-3xl bg-sand" />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="h-11 animate-pulse rounded-xl bg-sand" />
+          <div className="h-11 animate-pulse rounded-xl bg-sand" />
+        </div>
+        <div className="h-64 animate-pulse rounded-3xl bg-sand" />
+      </div>
+    </AdminShell>
+  );
+}
+
 export const Route = createFileRoute("/admin/write")({
   validateSearch: (s: Record<string, unknown>): Search => ({
     id: typeof s.id === "string" ? s.id : undefined,
     title: typeof s.title === "string" ? s.title : undefined,
     import: typeof s.import === "string" ? s.import : undefined,
   }),
+  loader: () => cmsBootstrap(),
+  // Show AdminShell skeleton immediately — do not wait defaultPendingMs (~1s) blank.
+  pendingMs: 0,
+  pendingComponent: () => <WriteSkeleton />,
   head: () => pageHead({ title: "Write", description: "Write an article.", path: "/admin/write" }),
   component: WritePage,
 });
@@ -40,12 +63,13 @@ function toDatetimeLocal(value: string) {
 }
 
 function WritePage() {
+  const boot = Route.useLoaderData();
   const { id, title: seedTitle } = Route.useSearch();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [ready, setReady] = useState(false);
+  const username = boot.admin?.username ?? "";
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [coverAltError, setCoverAltError] = useState("");
   const [over, setOver] = useState(false);
   const [docUrl, setDocUrl] = useState("");
   const [form, setForm] = useState({
@@ -89,15 +113,10 @@ function WritePage() {
   }, [form.kind]);
 
   useEffect(() => {
-    void cmsBootstrap().then((b) => {
-      if (!b.admin) {
-        window.location.href = "/admin";
-        return;
-      }
-      setUsername(b.admin.username);
-      setReady(true);
-    });
-  }, []);
+    if (!boot.admin && typeof window !== "undefined") {
+      window.location.href = "/admin";
+    }
+  }, [boot.admin]);
 
   useEffect(() => {
     if (!id) return;
@@ -150,8 +169,9 @@ function WritePage() {
       if (missingAlts.length) {
         return `Every image needs alt text before publishing (${missingAlts.length} missing).`;
       }
-      if (coverAltMissing(form.cover_url, form.cover_alt)) {
-        return "Cover image alt text is required before publishing.";
+      // Nuclear: Cover image alt required always (even when Cover URL is empty).
+      if (coverAltMissing(form.cover_url, form.cover_alt) || !form.cover_alt.trim()) {
+        return "Cover image alt is required to publish or schedule.";
       }
     }
     if (desc.length > 170) return "Meta description must be 170 characters or fewer.";
@@ -165,10 +185,14 @@ function WritePage() {
     const clientError = validateForPublish(status);
     if (clientError) {
       setError(clientError);
+      if (clientError.includes("Cover image alt")) {
+        setCoverAltError(clientError);
+      }
       return;
     }
     setSaving(true);
     setError("");
+    setCoverAltError("");
     const started = performance.now();
     let timer = 0;
     const timedOut = new Promise<never>((_, reject) => {
@@ -207,16 +231,27 @@ function WritePage() {
         void navigate({ to: "/admin/write", search: { id: saved.id } });
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not save.");
+      const msg = e instanceof Error ? e.message : "Could not save.";
+      setError(msg);
+      if (msg.includes("Cover image alt")) setCoverAltError(msg);
       setSaving(false);
     } finally {
       window.clearTimeout(timer);
     }
   }
 
-  if (!ready) return null;
+  // Never blank the desk chrome — redirect still paints AdminShell.
+  if (!boot.admin) {
+    return (
+      <AdminShell username="">
+        <p className="text-sm text-muted">Redirecting…</p>
+      </AdminShell>
+    );
+  }
 
   const descLen = form.description.length;
+  const coverAltBlank = !form.cover_alt.trim();
+  const coverNeedsAlt = coverAltBlank; // nuclear: always required to publish/schedule
 
   return (
     <AdminShell username={username}>
@@ -477,14 +512,28 @@ function WritePage() {
             />
           </div>
           <div>
-            <Label htmlFor="cover_alt">Cover image alt</Label>
+            <Label htmlFor="cover_alt">
+              Cover image alt <span className="text-coral">*</span>
+            </Label>
             <Input
               id="cover_alt"
               value={form.cover_alt}
-              onChange={(e) => patch({ cover_alt: e.target.value })}
+              onChange={(e) => {
+                patch({ cover_alt: e.target.value });
+                if (e.target.value.trim()) setCoverAltError("");
+              }}
               className="mt-1.5"
               placeholder="Describe the image"
+              aria-invalid={coverNeedsAlt || Boolean(coverAltError)}
+              aria-required="true"
             />
+            {coverNeedsAlt || coverAltError ? (
+              <p className="mt-1.5 text-xs text-coral" role="alert">
+                {coverAltError || "Cover image alt is required to publish or schedule."}
+              </p>
+            ) : (
+              <p className="mt-1.5 text-xs text-muted">Required before Publish or Schedule (even with no cover URL).</p>
+            )}
           </div>
         </div>
 
@@ -501,10 +550,21 @@ function WritePage() {
           <Button type="button" variant="secondary" disabled={saving} onClick={() => void save("draft")}>
             {saving ? "Saving…" : "Save draft"}
           </Button>
-          <Button type="button" variant="secondary" disabled={saving} onClick={() => void save("scheduled")}>
+          <Button
+            type="button"
+            variant="secondary"
+            disabled={saving || coverNeedsAlt}
+            title={coverNeedsAlt ? "Cover image alt is required to publish or schedule." : undefined}
+            onClick={() => void save("scheduled")}
+          >
             {saving ? "Saving…" : "Schedule"}
           </Button>
-          <Button type="button" disabled={saving} onClick={() => void save("published")}>
+          <Button
+            type="button"
+            disabled={saving || coverNeedsAlt}
+            title={coverNeedsAlt ? "Cover image alt is required to publish or schedule." : undefined}
+            onClick={() => void save("published")}
+          >
             {saving ? "Publishing…" : "Publish"}
           </Button>
           {form.slug ? (
