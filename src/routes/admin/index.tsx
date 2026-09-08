@@ -13,6 +13,12 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/admin/")({
   loader: () => cmsDeskHome(),
+
+  pendingComponent: () => (
+    <div className="admin-desk min-h-svh px-4 py-10 sm:px-6">
+      <p className="text-sm font-semibold text-muted">Loading…</p>
+    </div>
+  ),
   head: () => pageHead({ title: "The desk", description: "BLM admin desk.", path: "/admin" }),
   component: AdminHome,
 });

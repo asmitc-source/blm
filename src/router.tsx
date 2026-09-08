@@ -8,7 +8,7 @@ export function getRouter() {
     defaultErrorComponent: AppErrorComponent,
     // Soft navigations: prefetch on hover/focus, keep loaders warm so clicks feel instant.
     defaultPreload: "intent",
-    defaultPreloadDelay: 50,
+    defaultPreloadDelay: 0,
     defaultStaleTime: 60_000,
     defaultPreloadStaleTime: 30_000,
     scrollRestoration: true,

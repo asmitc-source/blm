@@ -3,6 +3,7 @@ import { BLOG_POSTS, type BlogPost } from "@/lib/content/blog";
 import { POST_BODY } from "@/lib/content/posts";
 import { FAQ, PRICING } from "@/lib/site";
 import { markdownToHtml } from "./convert";
+import { ensureImageAlts, imagesMissingAlt } from "./gdoc";
 import type { CmsArticle, SiteCopy } from "./types";
 
 function ensureArticleDescription(article: CmsArticle): CmsArticle {
@@ -160,7 +161,27 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
         getArticleBySlug(data.slug, true),
         new Promise<null>((resolve) => setTimeout(() => resolve(null), 4_000)),
       ]);
-      if (cms) return { source: "cms" as const, article: ensureArticleDescription(cms), markdown: "" };
+      if (cms) {
+        const body_html = ensureImageAlts(cms.body_html, cms.title);
+        // Opportunistic persist: production has SUPABASE_SECRET_KEY; publishable key cannot write.
+        if (imagesMissingAlt(cms.body_html).length) {
+          void (async () => {
+            try {
+              const { supabaseAdmin } = await import("./supabase.server");
+              const sb = await supabaseAdmin();
+              if (!sb) return;
+              await sb
+                .from("cms_articles")
+                .update({ body_html, updated_at: new Date().toISOString() })
+                .eq("id", cms.id);
+            } catch {
+              /* never block the public response */
+            }
+          })();
+        }
+        const article = ensureArticleDescription({ ...cms, body_html });
+        return { source: "cms" as const, article, markdown: "" };
+      }
     } catch {
       /* no CMS article */
     }

@@ -1,3 +1,4 @@
+import { ensureImageAlts } from "@/lib/cms/gdoc";
 import { stripDuplicateHtmlOpener } from "@/lib/content/strip-duplicate-opener";
 
 function sanitize(html: string) {
@@ -9,7 +10,16 @@ function sanitize(html: string) {
     .replace(/javascript:/gi, "");
 }
 
-export function ArticleHtml({ html, answer }: { html: string; answer?: string }) {
-  const body = answer ? stripDuplicateHtmlOpener(html, answer) : html;
+export function ArticleHtml({
+  html,
+  answer,
+  title,
+}: {
+  html: string;
+  answer?: string;
+  title?: string;
+}) {
+  const stripped = answer ? stripDuplicateHtmlOpener(html, answer) : html;
+  const body = ensureImageAlts(stripped, title || "article");
   return <div className="article-html" dangerouslySetInnerHTML={{ __html: sanitize(body) }} />;
 }

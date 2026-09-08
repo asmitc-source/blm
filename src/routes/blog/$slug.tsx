@@ -95,7 +95,7 @@ function BlogPostPage() {
           {source === "static" && bodyMarkdown ? (
             <Markdown source={bodyMarkdown} />
           ) : (
-            <ArticleHtml html={article.body_html} answer={answer} />
+            <ArticleHtml html={article.body_html} answer={answer} title={article.title} />
           )}
         </div>
         <div className="mt-14 rounded-2xl bg-mint-soft px-6 py-7 hairline sm:px-8">
