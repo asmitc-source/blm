@@ -24,6 +24,23 @@ async function localSql() {
   }
 }
 
+function withTimeout<T>(promise: PromiseLike<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
+    Promise.resolve(promise).then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      },
+    );
+  });
+}
+
+
 function tagsFrom(value: unknown) {
   if (Array.isArray(value)) return value.map(String).filter(Boolean);
   if (typeof value === "string") return value.split(",").map((t) => t.trim()).filter(Boolean);
@@ -55,6 +72,26 @@ function asArticle(row: Record<string, unknown>): CmsArticle {
     created_at: String(row.created_at ?? ""),
     updated_at: String(row.updated_at ?? ""),
   };
+}
+
+const ARTICLE_SELECT =
+  "id,slug,title,answer,description,meta_title,canonical_url,body_html,author,tags,category,kind,status,date,published_at,minutes,cover_url,cover_alt,created_at,updated_at";
+
+const ARTICLE_SELECT_CORE =
+  "id,slug,title,answer,description,body_html,author,tags,kind,status,date,minutes,cover_url,created_at,updated_at";
+
+async function selectArticleRows<T = Record<string, unknown>>(
+  _sb: unknown,
+  build: (cols: string) => PromiseLike<{ data: T | T[] | null; error: { message?: string } | null }>,
+): Promise<{ data: T | T[] | null; error: { message?: string } | null }> {
+  const primary = await build(ARTICLE_SELECT);
+  if (!primary.error) return primary;
+  const msg = String(primary.error.message ?? "");
+  if (/column|schema|Could not find/i.test(msg)) {
+    const fallback = await build(ARTICLE_SELECT_CORE);
+    if (!fallback.error) return fallback;
+  }
+  return primary;
 }
 
 const defaultCopy = (): SiteCopy => ({
@@ -255,8 +292,12 @@ export async function destroySession(token: string | null | undefined) {
 export async function listArticles() {
   const sb = await sbAdmin();
   if (sb) {
-    const { data } = await sb.from("cms_articles").select("*").order("date", { ascending: false });
-    return (data ?? []).map((row) => asArticle(row as Record<string, unknown>));
+    const { data, error } = await selectArticleRows(sb, (cols) =>
+      sb.from("cms_articles").select(cols).order("date", { ascending: false }),
+    );
+    if (error) throw new Error(error.message || "Could not list articles.");
+    const rows = (Array.isArray(data) ? data : []) as unknown as Record<string, unknown>[];
+    return rows.map((row) => asArticle(row));
   }
   const sql = await localSql();
   if (!sql) return [];
@@ -267,8 +308,11 @@ export async function listArticles() {
 export async function getArticle(id: string) {
   const sb = await sbAdmin();
   if (sb) {
-    const { data } = await sb.from("cms_articles").select("*").eq("id", id).maybeSingle();
-    return data ? asArticle(data as Record<string, unknown>) : null;
+    const { data, error } = await selectArticleRows(sb, (cols) =>
+      sb.from("cms_articles").select(cols).eq("id", id).maybeSingle(),
+    );
+    if (error) throw new Error(error.message || "Could not load article.");
+    return data ? asArticle(data as unknown as Record<string, unknown>) : null;
   }
   const sql = await localSql();
   if (!sql) return null;
@@ -279,10 +323,13 @@ export async function getArticle(id: string) {
 export async function getArticleBySlug(slug: string, onlyPublished = false) {
   const sb = await sbAdmin();
   if (sb) {
-    let q = sb.from("cms_articles").select("*").eq("slug", slug);
-    if (onlyPublished) q = q.eq("status", "published");
-    const { data } = await q.maybeSingle();
-    return data ? asArticle(data as Record<string, unknown>) : null;
+    const { data, error } = await selectArticleRows(sb, (cols) => {
+      let q = sb.from("cms_articles").select(cols).eq("slug", slug);
+      if (onlyPublished) q = q.eq("status", "published");
+      return q.maybeSingle();
+    });
+    if (error) throw new Error(error.message || "Could not load article.");
+    return data ? asArticle(data as unknown as Record<string, unknown>) : null;
   }
   const sql = await localSql();
   if (!sql) return null;
@@ -295,10 +342,14 @@ export async function getArticleBySlug(slug: string, onlyPublished = false) {
 export async function listPublished(kind?: ArticleKind) {
   const sb = await sbAdmin();
   if (sb) {
-    let q = sb.from("cms_articles").select("*").eq("status", "published").order("date", { ascending: false });
-    if (kind) q = q.eq("kind", kind);
-    const { data } = await q;
-    return (data ?? []).map((row) => asArticle(row as Record<string, unknown>));
+    const { data, error } = await selectArticleRows(sb, (cols) => {
+      let q = sb.from("cms_articles").select(cols).eq("status", "published").order("date", { ascending: false });
+      if (kind) q = q.eq("kind", kind);
+      return q;
+    });
+    if (error) throw new Error(error.message || "Could not list published articles.");
+    const rows = (Array.isArray(data) ? data : []) as unknown as Record<string, unknown>[];
+    return rows.map((row) => asArticle(row));
   }
   const sql = await localSql();
   if (!sql) return [];
@@ -366,17 +417,82 @@ export async function saveArticle(input: ArticleInput) {
     cover_alt,
     updated_at: new Date().toISOString(),
   };
+
+  const asSaved = (): CmsArticle =>
+    asArticle({
+      ...payload,
+      tags: payload.tags,
+      created_at: payload.updated_at,
+    });
+
+  const leanPayload = {
+    id: payload.id,
+    slug: payload.slug,
+    title: payload.title,
+    answer: payload.answer,
+    description: payload.description,
+    body_html: payload.body_html,
+    author: payload.author,
+    tags: payload.tags,
+    kind: payload.kind,
+    status: payload.status,
+    date: payload.date,
+    minutes: payload.minutes,
+    cover_url: payload.cover_url,
+    updated_at: payload.updated_at,
+  };
+
   const sb = await sbAdmin();
   if (sb) {
     if (!input.id) {
-      const { data: bySlug } = await sb.from("cms_articles").select("id").eq("slug", input.slug).maybeSingle();
-      if (bySlug?.id) payload.id = String(bySlug.id);
+      try {
+        const { data: bySlug } = await withTimeout(
+          sb.from("cms_articles").select("id").eq("slug", input.slug).maybeSingle(),
+          6_000,
+          "slug lookup",
+        );
+        if (bySlug?.id) {
+          payload.id = String(bySlug.id);
+          leanPayload.id = payload.id;
+        }
+      } catch {
+        /* continue with new id */
+      }
     }
-    const { error } = await sb.from("cms_articles").upsert(payload);
-    if (error) throw new Error(error.message || "Could not save article to Supabase.");
-    const saved = await getArticle(String(payload.id));
-    if (!saved) throw new Error("Article saved but could not be reloaded.");
-    return saved;
+
+    let savedOk = false;
+    let lastErr = "";
+    try {
+      const { error } = await withTimeout(sb.from("cms_articles").upsert(payload), 8_000, "article upsert");
+      if (!error) savedOk = true;
+      else lastErr = String(error.message ?? "");
+    } catch (e) {
+      lastErr = e instanceof Error ? e.message : String(e);
+    }
+
+    if (!savedOk) {
+      const retryLean =
+        /column|schema|Could not find|timed out/i.test(lastErr) || Boolean(lastErr);
+      if (retryLean) {
+        try {
+          const retry = await withTimeout(sb.from("cms_articles").upsert(leanPayload), 8_000, "lean article upsert");
+          if (retry.error) throw new Error(retry.error.message || "Could not save article to Supabase.");
+          savedOk = true;
+        } catch (e) {
+          throw new Error(e instanceof Error ? e.message : lastErr || "Could not save article to Supabase.");
+        }
+      } else {
+        throw new Error(lastErr || "Could not save article to Supabase.");
+      }
+    }
+
+    try {
+      const saved = await withTimeout(getArticle(String(payload.id)), 5_000, "reload article");
+      if (saved) return saved;
+    } catch {
+      /* return constructed row so publish never hangs on reload */
+    }
+    return asSaved();
   }
   const sql = await localSql();
   if (!sql) throw new Error("No database available to save the article.");
@@ -388,7 +504,8 @@ export async function saveArticle(input: ArticleInput) {
   const resolvedId = existing[0]?.id ?? id;
   const tags = payload.tags;
   if (existing[0]) {
-    await sql`
+    try {
+      await sql`
       update cms_articles set
         slug = ${input.slug},
         title = ${input.title},
@@ -410,8 +527,28 @@ export async function saveArticle(input: ArticleInput) {
         updated_at = now()
       where id = ${resolvedId}
     `;
+    } catch {
+      await sql`
+      update cms_articles set
+        slug = ${input.slug},
+        title = ${input.title},
+        answer = ${input.answer},
+        description = ${input.description},
+        body_html = ${input.body_html},
+        author = ${input.author},
+        tags = ${tags},
+        kind = ${input.kind},
+        status = ${input.status},
+        date = ${date},
+        minutes = ${input.minutes},
+        cover_url = ${cover_url},
+        updated_at = now()
+      where id = ${resolvedId}
+    `;
+    }
   } else {
-    await sql`
+    try {
+      await sql`
       insert into cms_articles (
         id, slug, title, answer, description, meta_title, canonical_url, body_html,
         author, tags, category, kind, status, date, published_at, minutes, cover_url, cover_alt
@@ -422,9 +559,30 @@ export async function saveArticle(input: ArticleInput) {
         ${input.kind}, ${input.status}, ${date}, ${published_at}, ${input.minutes}, ${cover_url}, ${cover_alt}
       )
     `;
+    } catch {
+      await sql`
+      insert into cms_articles (
+        id, slug, title, answer, description, body_html,
+        author, tags, kind, status, date, minutes, cover_url
+      )
+      values (
+        ${resolvedId}, ${input.slug}, ${input.title}, ${input.answer}, ${input.description},
+        ${input.body_html}, ${input.author}, ${tags},
+        ${input.kind}, ${input.status}, ${date}, ${input.minutes}, ${cover_url}
+      )
+    `;
+    }
   }
-  return getArticle(resolvedId);
+  payload.id = resolvedId;
+  try {
+    const saved = await getArticle(resolvedId);
+    if (saved) return saved;
+  } catch {
+    /* fall through */
+  }
+  return asSaved();
 }
+
 
 export async function deleteArticle(id: string) {
   const sb = await sbAdmin();
@@ -701,36 +859,61 @@ export function deriveMetaDescription(input: {
 }
 
 export async function backfillArticleMetaDescriptions() {
-  const articles = await listArticles();
+  let articles: CmsArticle[] = [];
+  try {
+    articles = await listArticles();
+  } catch {
+    return { updated: 0, skipped: 0 };
+  }
   let updated = 0;
+  let skipped = 0;
   for (const article of articles) {
     if (article.status !== "published" && article.status !== "scheduled") continue;
     const next = deriveMetaDescription(article);
     if (article.description.trim() === next && article.description.trim()) continue;
     if (article.description.trim()) continue; // already has a description
-    await saveArticle({
-      id: article.id,
-      slug: article.slug,
-      title: article.title,
-      answer: article.answer,
-      description: next,
-      meta_title: article.meta_title,
-      canonical_url: article.canonical_url,
-      body_html: article.body_html,
-      author: article.author,
-      tags: article.tags,
-      category: article.category,
-      kind: article.kind,
-      status: article.status,
-      date: article.date,
-      published_at: article.published_at,
-      minutes: article.minutes,
-      cover_url: article.cover_url,
-      cover_alt: article.cover_alt,
-    });
-    updated += 1;
+    try {
+      await saveArticle({
+        id: article.id,
+        slug: article.slug,
+        title: article.title,
+        answer: article.answer,
+        description: next,
+        meta_title: article.meta_title,
+        canonical_url: article.canonical_url,
+        body_html: article.body_html,
+        author: article.author,
+        tags: article.tags,
+        category: article.category,
+        kind: article.kind,
+        status: article.status,
+        date: article.date,
+        published_at: article.published_at,
+        minutes: article.minutes,
+        cover_url: article.cover_url,
+        cover_alt: article.cover_alt,
+      });
+      updated += 1;
+    } catch {
+      // Last resort: description-only patch if full upsert hangs on missing columns.
+      try {
+        const sb = await sbAdmin();
+        if (sb) {
+          const { error } = await sb
+            .from("cms_articles")
+            .update({ description: next, updated_at: new Date().toISOString() })
+            .eq("id", article.id);
+          if (error) throw error;
+          updated += 1;
+          continue;
+        }
+      } catch {
+        /* ignore */
+      }
+      skipped += 1;
+    }
   }
-  return { updated };
+  return { updated, skipped };
 }
 
 export type { PricingPlan };

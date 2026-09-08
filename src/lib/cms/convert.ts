@@ -6,9 +6,13 @@ export function markdownToHtml(source: string) {
       const text = raw.trim();
       if (text.startsWith("## ")) return `<h2>${inline(text.slice(3))}</h2>`;
       if (text.startsWith("### ")) return `<h3>${inline(text.slice(4))}</h3>`;
-      if (text.startsWith("- ")) {
-        const items = text.split(/\n/).filter((l) => l.startsWith("- "));
-        return `<ul>${items.map((i) => `<li>${inline(i.slice(2))}</li>`).join("")}</ul>`;
+      if (text.startsWith("- ") || text.startsWith("* ")) {
+        const items = text.split(/\n/).filter((l) => /^[-*]\s+/.test(l));
+        return `<ul>${items.map((i) => `<li>${inline(i.replace(/^[-*]\s+/, ""))}</li>`).join("")}</ul>`;
+      }
+      if (/^\d+[.)]\s+/.test(text)) {
+        const items = text.split(/\n/).filter((l) => /^\d+[.)]\s+/.test(l));
+        return `<ol>${items.map((i) => `<li>${inline(i.replace(/^\d+[.)]\s+/, ""))}</li>`).join("")}</ol>`;
       }
       return `<p>${inline(text)}</p>`;
     })
@@ -17,9 +21,9 @@ export function markdownToHtml(source: string) {
 
 function inline(text: string) {
   return text
-    .replace(/&/g, "&")
-    .replace(/</g, "<")
-    .replace(/>/g, ">")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');

@@ -1,6 +1,6 @@
-/** Turn Google-exported / pasted HTML into clean article HTML (bold, italic, lists, headings). */
+/** Turn Google-exported / pasted HTML into clean article HTML (bold, italic, lists, headings, images). */
 
-const ALLOWED = new Set(["P", "H1", "H2", "H3", "H4", "UL", "OL", "LI", "STRONG", "B", "EM", "I", "A", "BR", "BLOCKQUOTE"]);
+const ALLOWED = new Set(["P", "H1", "H2", "H3", "H4", "UL", "OL", "LI", "STRONG", "B", "EM", "I", "A", "BR", "BLOCKQUOTE", "IMG"]);
 
 function classStyles(html: string) {
   const block = html.match(/<style[^>]*>([\s\S]*?)<\/style>/i)?.[1] ?? "";
@@ -29,6 +29,32 @@ function applyGoogleSpans(html: string, styles: Map<string, { bold?: boolean; it
   });
 }
 
+/** Images in body HTML missing a non-empty alt attribute. */
+export function imagesMissingAlt(html: string): string[] {
+  const missing: string[] = [];
+  for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
+    const tag = m[0];
+    const altMatch = tag.match(/\balt\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+    const alt = (altMatch?.[1] ?? altMatch?.[2] ?? altMatch?.[3] ?? "").trim();
+    if (!alt) {
+      const src = tag.match(/\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+      missing.push((src?.[1] ?? src?.[2] ?? src?.[3] ?? "image").slice(0, 120));
+    }
+  }
+  return missing;
+}
+
+function cleanImgTag(attrs: string) {
+  const src = attrs.match(/\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+  const alt = attrs.match(/\balt\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+  const srcVal = (src?.[1] ?? src?.[2] ?? src?.[3] ?? "").trim();
+  const altVal = (alt?.[1] ?? alt?.[2] ?? alt?.[3] ?? "").trim();
+  if (!srcVal) return "";
+  const safeSrc = srcVal.replace(/"/g, "&quot;");
+  const safeAlt = altVal.replace(/"/g, "&quot;");
+  return `<img src="${safeSrc}" alt="${safeAlt}">`;
+}
+
 export function cleanArticleHtml(raw: string) {
   if (!raw.trim()) return "";
   let html = raw;
@@ -39,6 +65,12 @@ export function cleanArticleHtml(raw: string) {
   html = html.replace(/<style[\s\S]*?<\/style>/gi, "");
   html = html.replace(/<meta[^>]*>/gi, "");
   html = applyGoogleSpans(html, styles);
+  // Preserve real lists: never rewrite div/section wrappers that sit inside ul/ol.
+  html = html.replace(/<(ul|ol)(\s[^>]*)?>[\s\S]*?<\/\1>/gi, (block) =>
+    block
+      .replace(/<\/?(?:span|font)[^>]*>/gi, "")
+      .replace(/<\/?(?:div|section|article|header|footer|main)[^>]*>/gi, ""),
+  );
   html = html.replace(/<\/?(span|font|div|section|article|header|footer|main)[^>]*>/gi, (tag) =>
     /^<\/?(div|section|article)/i.test(tag) ? (tag.startsWith("</") ? "</p>" : "<p>") : "",
   );
@@ -50,10 +82,12 @@ export function cleanArticleHtml(raw: string) {
   html = html.replace(/<a [^>]*href="([^"]+)"[^>]*>/gi, '<a href="$1">');
   html = html.replace(/<li[^>]*>/gi, "<li>");
   html = html.replace(/<ul[^>]*>/gi, "<ul>").replace(/<ol[^>]*>/gi, "<ol>");
+  html = html.replace(/<img([^>]*)\/?>/gi, (_all, attrs: string) => cleanImgTag(attrs));
   html = html.replace(/&nbsp;/g, " ");
   html = html.replace(/<p>\s*<\/p>/g, "");
   html = html.replace(/(<br\s*\/?>\s*){3,}/gi, "<br><br>");
   html = html.replace(/\n{3,}/g, "\n\n");
+  void ALLOWED;
   return html.trim();
 }
 
