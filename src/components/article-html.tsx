@@ -1,4 +1,5 @@
 import { ensureImageAlts } from "@/lib/cms/gdoc";
+import { repairArticleHtml } from "@/lib/content/repair-article-html";
 import { stripDuplicateHtmlOpener } from "@/lib/content/strip-duplicate-opener";
 
 function sanitize(html: string) {
@@ -20,6 +21,7 @@ export function ArticleHtml({
   title?: string;
 }) {
   const stripped = answer ? stripDuplicateHtmlOpener(html, answer) : html;
-  const body = ensureImageAlts(stripped, title || "article");
+  const repaired = repairArticleHtml(stripped);
+  const body = ensureImageAlts(repaired, title || "article");
   return <div className="article-html" dangerouslySetInnerHTML={{ __html: sanitize(body) }} />;
 }

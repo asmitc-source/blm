@@ -1,3 +1,4 @@
+import { repairArticleHtml } from "@/lib/content/repair-article-html";
 /** Turn Google-exported / pasted HTML into clean article HTML (bold, italic, lists, headings, images). */
 
 const ALLOWED = new Set(["P", "H1", "H2", "H3", "H4", "UL", "OL", "LI", "STRONG", "B", "EM", "I", "A", "BR", "BLOCKQUOTE", "IMG"]);
@@ -144,7 +145,7 @@ export function cleanArticleHtml(raw: string, opts?: { title?: string; fillEmpty
   html = html.replace(/(<br\s*\/?>\s*){3,}/gi, "<br><br>");
   html = html.replace(/\n{3,}/g, "\n\n");
   void ALLOWED;
-  const cleaned = html.trim();
+  const cleaned = repairArticleHtml(html.trim());
   if (opts?.fillEmptyAlts === false) return cleaned;
   const title = (opts?.title || extractTitleFromHtml(cleaned) || "article").trim();
   return ensureImageAlts(cleaned, title);
