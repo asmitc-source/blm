@@ -1,4 +1,4 @@
-export const COVERAGE = "Google, Apple, Bing, and the directory network";
+export const COVERAGE = "Google, Apple, Bing, MapQuest, and the directory network";
 export const COVERAGE_LONG =
   "Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, MapQuest, and the directory network used in local search";
 
