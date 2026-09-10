@@ -154,7 +154,7 @@ function seedPublishers(hasLocation: boolean): PublisherRow[] {
       { name: "Apple Maps", group: "Maps", status: "missing" },
       { name: "Bing Places", group: "Maps", status: "missing" },
       { name: "Apple Business Connect", group: "Maps", status: "missing" },
-      { name: "Yelp", group: "Directories", status: "missing" },
+      { name: "MapQuest", group: "Directories", status: "missing" },
       { name: "Facebook", group: "Directories", status: "missing" },
       { name: "Tripadvisor", group: "Directories", status: "missing" },
       { name: "BBB", group: "Directories", status: "missing" },
@@ -165,7 +165,7 @@ function seedPublishers(hasLocation: boolean): PublisherRow[] {
     { name: "Apple Maps", group: "Maps", status: "stale" },
     { name: "Bing Places", group: "Maps", status: "missing" },
     { name: "Apple Business Connect", group: "Maps", status: "present" },
-    { name: "Yelp", group: "Directories", status: "stale" },
+    { name: "MapQuest", group: "Directories", status: "stale" },
     { name: "Facebook", group: "Directories", status: "present" },
     { name: "Tripadvisor", group: "Directories", status: "missing" },
     { name: "BBB", group: "Directories", status: "present" },
@@ -180,7 +180,7 @@ function seedDuplicates(loc: WorkspaceLocation | null): DuplicateRisk[] {
       title: `${loc.name} — suite variant`,
       match: "Same phone · address punctuation drift",
       confidence: 86,
-      publisher: "Yelp",
+      publisher: "MapQuest",
     },
     {
       id: "d2",
@@ -218,7 +218,7 @@ function seedAlerts(loc: WorkspaceLocation | null): AlertItem[] {
     },
     {
       id: "a3",
-      title: "Yelp NAP punctuation drift",
+      title: "MapQuest NAP punctuation drift",
       detail: "Suite formatting differs from the canonical fingerprint.",
       tone: "coral",
     },
@@ -575,7 +575,7 @@ export function WorkspaceDashboard({
               ceiling={`Coverage ${cov}% → 95%+`}
               bullets={[
                 `Open ${missingCount} missing publishers (e.g. Bing, Tripadvisor)`,
-                `Refresh ${staleCount} stale pins (Apple Maps, Yelp)`,
+                `Refresh ${staleCount} stale pins (Apple Maps, MapQuest)`,
                 "Multi-directory push from one desk after you continue",
               ]}
             />

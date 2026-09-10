@@ -281,7 +281,7 @@ function WhySwitch() {
             {
               t: "Versus Google-only",
               d: "GBP is one publisher. Drift lives on Apple, Bing, and directories you never opened.",
-              extra: "Apple Maps, Bing Places, and Yelp still serve last week’s NAP.",
+              extra: "Apple Maps, Bing Places, and MapQuest still serve last week’s NAP.",
             },
             {
               t: "Versus Yext",

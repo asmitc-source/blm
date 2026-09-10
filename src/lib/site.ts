@@ -1,6 +1,6 @@
 export const COVERAGE = "Google, Apple, Bing, and the directory network";
 export const COVERAGE_LONG =
-  "Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, Yelp, and the directory network used in local search";
+  "Google Business Profile, Apple Maps / Apple Business Connect, Bing Places, Facebook, MapQuest, and the directory network used in local search";
 
 export const SITE = {
   name: "BLM",
@@ -121,14 +121,13 @@ export const INTEGRATIONS = [
   { name: "Apple Maps", group: "Maps & search", tone: "sky" },
   { name: "Apple Business Connect", group: "Maps & search", tone: "sky" },
   { name: "Bing Places", group: "Maps & search", tone: "lavender" },
+  { name: "MapQuest", group: "Directories", tone: "lavender" },
   { name: "Facebook", group: "Social & discovery", tone: "lavender" },
   { name: "Instagram", group: "Social & discovery", tone: "coral" },
-  { name: "Yelp", group: "Directories", tone: "coral" },
   { name: "Tripadvisor", group: "Directories", tone: "butter" },
   { name: "BBB", group: "Directories", tone: "mint" },
   { name: "Foursquare", group: "Directories", tone: "sky" },
   { name: "Yellow Pages", group: "Directories", tone: "butter" },
-  { name: "MapQuest", group: "Directories", tone: "lavender" },
   { name: "Here WeGo", group: "Maps & search", tone: "mint" },
   { name: "Nextdoor", group: "Social & discovery", tone: "coral" },
   { name: "Apple Wallet / Maps", group: "Maps & search", tone: "sky" },
@@ -329,7 +328,7 @@ export const DIRECTORIES = [
   "Apple Maps",
   "Bing Places",
   "Apple Business Connect",
-  "Yelp",
+  "MapQuest",
   "Facebook",
   "Tripadvisor",
   "BBB",

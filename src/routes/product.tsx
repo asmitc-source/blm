@@ -31,29 +31,29 @@ const METRICS = [
       { name: "Google", state: "Name matches", ok: true },
       { name: "Apple Maps", state: "Suite aligned", ok: true },
       { name: "Bing", state: "LLC suffix leftover", ok: false },
-      { name: "Yelp", state: "Legal name, not DBA", ok: false },
+      { name: "MapQuest", state: "Legal name, not DBA", ok: false },
     ],
   },
   {
     l: "Coverage",
     v: 81,
-    note: "Yelp is missing the city. Apple has the suite line. Google does not.",
+    note: "MapQuest is missing the city. Apple has the suite line. Google does not.",
     pubs: [
       { name: "Google", state: "Live", ok: true },
       { name: "Apple Maps", state: "Missing city", ok: false },
       { name: "Bing", state: "Phone mismatch", ok: false },
-      { name: "Yelp", state: "City blank", ok: false },
+      { name: "MapQuest", state: "City blank", ok: false },
     ],
   },
   {
     l: "Duplicates",
     v: 18,
-    note: "Northline Cafe on Yelp is the leftover risk, not a second storefront.",
+    note: "Northline Cafe on MapQuest is the leftover risk, not a second storefront.",
     pubs: [
       { name: "Google", state: "Surviving pin", ok: true },
       { name: "Apple Maps", state: "Same place id", ok: true },
       { name: "Bing", state: "Near-match", ok: false },
-      { name: "Yelp", state: "Northline Cafe leftover", ok: false },
+      { name: "MapQuest", state: "Northline Cafe leftover", ok: false },
     ],
   },
   {
@@ -64,7 +64,7 @@ const METRICS = [
       { name: "Google", state: "Sunday 9-5", ok: false },
       { name: "Apple Maps", state: "Sunday closed", ok: true },
       { name: "Bing", state: "Sunday closed", ok: true },
-      { name: "Yelp", state: "Holiday hours stale", ok: false },
+      { name: "MapQuest", state: "Holiday hours stale", ok: false },
     ],
   },
 ] as const;
@@ -139,7 +139,7 @@ function ProductPage() {
                 ) : null}
                 {item.body === "dupes" ? (
                   <div className="mt-5 space-y-2">
-                    {["Northline · Wicker Park · 92% match", "Northline Coffee LLC · Google · 81%", "Northline Cafe · Yelp"].map((r) => (
+                    {["Northline · Wicker Park · 92% match", "Northline Coffee LLC · Google · 81%", "Northline Cafe · MapQuest"].map((r) => (
                       <p key={r} className="rounded-xl bg-paper px-3 py-2 text-sm hairline">
                         {r}
                       </p>

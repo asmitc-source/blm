@@ -9,7 +9,7 @@ import {
   GoogleMark,
   MetaMark,
   TripadvisorMark,
-  YelpMark,
+  MapQuestMark,
 } from "@/components/brand-marks";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +39,7 @@ const PUBLISHERS = [
   { name: "Apple", Mark: AppleMark },
   { name: "Facebook", Mark: MetaMark },
   { name: "Tripadvisor", Mark: TripadvisorMark },
-  { name: "Yelp", Mark: YelpMark },
+  { name: "MapQuest", Mark: MapQuestMark },
   { name: "Bing", Mark: BingMark },
 ] as const;
 
@@ -195,7 +195,7 @@ export function ProductProof({ explore = true }: { explore?: boolean }) {
                       </div>
                       <p className="mt-2 max-w-sm text-sm text-ink-soft sm:mt-3">
                         {locked
-                          ? "Pushed to Google, Apple, Bing, Facebook, Tripadvisor, and Yelp."
+                          ? "Pushed to Google, Apple, Bing, Facebook, Tripadvisor, and MapQuest."
                           : "Maps still show the drifted string. Keep scrolling and every publisher rewrites."}
                       </p>
                       <div className="mt-3 flex gap-1 sm:mt-4" aria-hidden="true">

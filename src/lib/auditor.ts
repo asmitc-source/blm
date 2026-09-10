@@ -41,7 +41,7 @@ const DIRECTORY_DEFS: Array<Omit<DirectoryPresence, "status">> = [
   { id: "apple", label: "Apple Maps", short: "Apple", tone: "sky" },
   { id: "bing", label: "Bing Places", short: "Bing", tone: "lavender" },
   { id: "facebook", label: "Facebook", short: "Facebook", tone: "coral" },
-  { id: "yelp", label: "Yelp", short: "Yelp", tone: "butter" },
+  { id: "mapquest", label: "MapQuest", short: "MapQuest", tone: "butter" },
   { id: "yp", label: "Yellow Pages", short: "YP", tone: "mint" },
   { id: "fsq", label: "Foursquare", short: "Foursquare", tone: "sky" },
   { id: "bbb", label: "BBB", short: "BBB", tone: "lavender" },

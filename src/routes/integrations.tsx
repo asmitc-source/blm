@@ -11,7 +11,7 @@ export const Route = createFileRoute("/integrations")({
     pageHead({
       title: "Business listing management integrations",
       description:
-        "Business listing management integrations on BLM: Google Business Profile, Apple Maps, Bing Places, Facebook, Yelp, and the directory network used in local search.",
+        "Business listing management integrations on BLM: Google Business Profile, Apple Maps, Bing Places, Facebook, MapQuest, and the directory network used in local search.",
       path: "/integrations",
     }),
   component: IntegrationsPage,
@@ -66,7 +66,7 @@ function IntegrationsPage() {
           ))}
         </div>
         <p className="mt-8 max-w-2xl text-sm text-muted">
-          Publisher availability varies by country and category. Growth covers the core maps graph. Enterprise extends the directory set for franchises and agencies.
+          MapQuest is currently very popular with US local search traffic. Publisher availability varies by country and category. Growth covers the core maps graph. Enterprise extends the directory set for franchises and agencies.
         </p>
         <div className="mt-8">
           <Button asChild>

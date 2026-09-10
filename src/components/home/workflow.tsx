@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Bell, Check, GitMerge, Shield, Upload } from "lucide-react";
 import { useScrollSpy } from "@/components/home/scroll";
-import { AppleMark, BingMark, GoogleMark, YelpMark } from "@/components/brand-marks";
+import { AppleMark, BingMark, GoogleMark, MapQuestMark } from "@/components/brand-marks";
 import { WORKFLOW } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -243,7 +243,7 @@ function NapMock() {
         { Mark: GoogleMark, v: "Northline · 1420 N Milwaukee · (312) 555-0199", ok: true },
         { Mark: AppleMark, v: "Northline · 1420 N Milwaukee · (312) 555-0199", ok: true },
         { Mark: BingMark, v: "Northline Coffee LLC · 1420 North Milwaukee · 3125550142", ok: false },
-        { Mark: YelpMark, v: "Northline · 1420 N Milwaukee Ave · (312) 555-0199", ok: true },
+        { Mark: MapQuestMark, v: "Northline · 1420 N Milwaukee Ave · (312) 555-0199", ok: true },
       ].map((row, i) => (
         <div key={i} className="rounded-xl bg-paper px-3 py-3 hairline">
           <div className="flex items-center justify-between">
@@ -287,7 +287,7 @@ function AuditMock() {
           { t: "Google Business Profile", s: "Healthy", ok: true, Mark: GoogleMark },
           { t: "Apple Business Connect", s: "Stale hours", ok: false, Mark: AppleMark },
           { t: "Bing Places", s: "Phone mismatch", ok: false, Mark: BingMark },
-          { t: "Yelp", s: "Duplicate risk", ok: false, Mark: YelpMark },
+          { t: "MapQuest", s: "Duplicate risk", ok: false, Mark: MapQuestMark },
         ].map((r) => (
           <li key={r.t} className="flex items-center justify-between rounded-xl bg-paper px-3 py-2 hairline">
             <span className="inline-flex items-center gap-2 text-ink">
@@ -347,7 +347,7 @@ function UnifyMock() {
             </tr>
             <tr className="border-t border-line">
               <td className="px-3 py-2">
-                <YelpMark />
+                <MapQuestMark />
               </td>
               <td className="px-3 py-2 text-ink-soft">Avenue suffix</td>
               <td className="px-3 py-2 font-semibold text-brand">Matches</td>
@@ -368,7 +368,7 @@ function DupeMock() {
       {[
         { t: "Northline · Wicker Park", s: "Survivor · 412 reviews · Google + Apple", ok: true },
         { t: "Northline Coffee LLC · Google", s: "94% match · 38 reviews · same block", ok: false },
-        { t: "Northline Cafe · Yelp", s: "81% match · 12 reviews · old DBA", ok: false },
+        { t: "Northline Cafe · MapQuest", s: "81% match · 12 reviews · old DBA", ok: false },
       ].map((r) => (
         <div key={r.t} className="flex items-center justify-between rounded-xl bg-paper px-4 py-3 hairline">
           <div>
@@ -426,7 +426,7 @@ function GovernMock() {
         <p className="font-display text-xl font-semibold">Northline health 86</p>
         <p className="mt-1 text-sm text-ink-soft">0 duplicates · 1 hours change pending · 42 cafes</p>
         <ul className="mt-4 space-y-2 text-sm">
-          {["Sunday closure propagated to Apple", "Bing NAP unified on Wicker Park", "Yelp category locked as Cafe"].map(
+          {["Sunday closure propagated to Apple", "Bing NAP unified on Wicker Park", "MapQuest category locked as Cafe"].map(
             (r) => (
               <li key={r} className="flex gap-2 text-ink-soft">
                 <Check className="size-4 shrink-0 text-brand" />

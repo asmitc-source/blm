@@ -8,7 +8,7 @@ import {
   GoogleMark,
   MetaMark,
   TripadvisorMark,
-  YelpMark,
+  MapQuestMark,
 } from "@/components/brand-marks";
 import { cn } from "@/lib/utils";
 
@@ -71,8 +71,8 @@ const SLIPS = [
     mobile: true,
   },
   {
-    name: "Yelp",
-    Mark: YelpMark,
+    name: "MapQuest",
+    Mark: MapQuestMark,
     listed: "Northline Cafe",
     line: "Same block · 12 reviews",
     wrong: "Forked listing",
