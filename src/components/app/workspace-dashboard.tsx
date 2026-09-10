@@ -69,7 +69,7 @@ const TOOLKIT_SECTIONS: {
   {
     id: "auditor",
     label: "Listing auditor",
-    blurb: "Run the full health scan",
+    blurb: "Run the illustrative health preview",
     icon: ShieldCheck,
     tone: "text-mint bg-mint-soft",
   },
@@ -635,7 +635,7 @@ export function WorkspaceDashboard({
           <SectionTitle
             eyebrow="Listing health"
             title="Auditor"
-            copy="Run the scan to see coverage gaps, mismatches, and duplicate risk. After results, we show what we’d fix once trial ends — not a live publisher push."
+            copy="Run the preview to see estimated coverage gaps, mismatches, and duplicate risk. After results, we show what we’d fix once trial ends — not a live publisher push."
           />
           <ListingAuditor compact workspace />
         </section>

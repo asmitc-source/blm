@@ -152,7 +152,10 @@ export function ListingAuditor({ compact = false, workspace = false }: { compact
                 Listing Health Auditor
               </p>
               <p className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink sm:text-[1.7rem]">
-                See what maps and directories actually show.
+                Preview listing health for a name and city.
+              </p>
+              <p className="mt-2 max-w-2xl text-sm text-muted">
+                Illustrative preview — not a live publisher scan. Scores are estimated from the name/city you enter until connected APIs ship.
               </p>
             </div>
             <span className="rounded-full bg-sand px-3 py-1 text-xs font-medium text-muted">
@@ -183,7 +186,7 @@ export function ListingAuditor({ compact = false, workspace = false }: { compact
               autoComplete="address-level2"
             />
             <Button type="submit" className="w-full sm:w-auto">
-              Run listing audit
+              Run preview audit
             </Button>
           </form>
 
@@ -262,7 +265,7 @@ function ScanPanel({ step }: { step: number }) {
         })}
       </ul>
       <p className="mt-3 text-sm text-muted">
-        Scanning Google, Apple, Bing, and the directory network…
+        Building an illustrative preview across Google, Apple, Bing, MapQuest, and the directory network…
       </p>
     </div>
   );
@@ -287,13 +290,13 @@ function ResultPanel({
           {showBurst ? <ConfettiLite /> : null}
           <ScoreRing score={displayScore} tone={tone} />
           <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-            Health score
+            Estimated health score
           </p>
           <p className="mt-1 max-w-[16rem] text-center text-sm text-ink-soft">{result.summary}</p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <MetricCard label="NAP consistency" value={result.nap} tone="mint" hint="Name, address, phone" />
-          <MetricCard label="Directory coverage" value={result.coverage} tone="sky" hint={`${result.scannedSources} sources checked`} />
+          <MetricCard label="Directory coverage" value={result.coverage} tone="sky" hint={`${result.scannedSources} sources in preview model`} />
           <MetricCard label="Duplicate risk" value={result.duplicateRisk} tone="lavender" invert hint="Lower is healthier" />
           <MetricCard label="Hours / category" value={result.hours} tone="butter" hint="Gaps and mismatches" />
         </div>
@@ -302,7 +305,7 @@ function ResultPanel({
       <PresenceMap directories={result.directories} city={result.city} name={result.displayName} />
 
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Top issues</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Top estimated issues</p>
         <ul className="mt-2 grid gap-2">
           {result.issues.map((issue) => (
             <li key={issue.id} className="flex flex-col gap-1 rounded-2xl bg-paper px-4 py-3 hairline sm:flex-row sm:items-start sm:gap-4">
@@ -437,7 +440,7 @@ function PresenceMap({
             </span>
           ))}
         </div>
-        <p className="mt-2 text-xs text-muted">Colored pins mark how {name} appears across publishers.</p>
+        <p className="mt-2 text-xs text-muted">Colored pins illustrate a preview model of how {name} might appear across publishers.</p>
       </div>
       <ul className="grid grid-cols-2 gap-2">
         {directories.map((dir) => (
@@ -506,7 +509,7 @@ function WorkspaceFixStrip({ result }: { result: AuditResult }) {
             </div>
           </div>
           <p className="mt-2 max-w-2xl text-sm text-ink-soft">
-            Trial keeps the scan. Publisher sync, suppressions, and multi-directory push unlock with Growth — no live fix from this desk yet.
+            Trial keeps this preview. Publisher sync, suppressions, and multi-directory push unlock with Growth — no live fix from this desk yet.
           </p>
         </div>
         <div className="flex shrink-0 flex-col gap-2 sm:items-end">
@@ -589,7 +592,7 @@ function EmailGate({ result }: { result: AuditResult }) {
         <div>
           <p className="font-semibold text-ink">Email me the full report</p>
           <p className="text-sm text-muted">
-            We’ll send the source-by-source breakdown for {result.displayName}.
+            We’ll send the illustrative source-by-source preview for {result.displayName}.
           </p>
         </div>
       </div>

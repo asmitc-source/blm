@@ -49,12 +49,12 @@ const DIRECTORY_DEFS: Array<Omit<DirectoryPresence, "status">> = [
 
 export const SCAN_STEPS = [
   { id: "identity", label: "Resolving identity" },
-  { id: "google", label: "Checking Google" },
-  { id: "apple", label: "Checking Apple Maps" },
-  { id: "bing", label: "Checking Bing" },
-  { id: "facebook", label: "Checking Facebook" },
-  { id: "dirs", label: "Scanning directories" },
-  { id: "score", label: "Scoring NAP + duplicates" },
+  { id: "google", label: "Previewing Google" },
+  { id: "apple", label: "Previewing Apple Maps" },
+  { id: "bing", label: "Previewing Bing" },
+  { id: "facebook", label: "Previewing Facebook" },
+  { id: "dirs", label: "Previewing directories" },
+  { id: "score", label: "Estimating NAP + duplicates" },
 ] as const;
 
 function hashString(input: string): number {
@@ -185,10 +185,10 @@ export function runListingAudit(input: { query: string; city?: string }): AuditR
     issues.push({
       id: "coverage-gap",
       title: missingLabels.length
-        ? `No confirmed listing on ${missingLabels.join(", ")}`
+        ? `Estimated gap on ${missingLabels.join(", ")}`
         : "Directory coverage is thinner than peer locations",
       detail: hasCity
-        ? `We could not verify a complete presence in ${city} on every primary publisher. Coverage gaps suppress map-pack eligibility.`
+        ? `This preview model estimates incomplete presence in ${city} on one or more primary publishers. Coverage gaps typically suppress map-pack eligibility.`
         : "Add a city so Apple Maps and local directories can be matched to a single storefront instead of a brand-level collision.",
       severity: missing >= 2 || !hasCity ? "high" : "medium",
       category: "coverage",
